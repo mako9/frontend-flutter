@@ -1,6 +1,6 @@
 {
-    "name": "flutter_frontend",
-    "short_name": "flutter_frontend",
+    "name": "frontend_flutter",
+    "short_name": "frontend_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
