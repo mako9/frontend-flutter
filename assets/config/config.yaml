@@ -1,3 +1,4 @@
+baseUrl: http://localhost:49430
 clientId: backend-service
 clientSecret: secret
 redirectUrl: com.flutter-auth-test:/oauth-redirect
@@ -5,6 +6,7 @@ issuer: http://localhost:8180/realms/quarkus
 discoveryUrl: http://localhost:8180/realms/quarkus/protocol/openid-connect/token/introspect
 postLogoutRedirectUrl: com.flutter-auth-test:/oauth-logout
 scopes:
+ - openid
  - profile
  - email
 authorizationEndpoint: http://localhost:8180/realms/quarkus/protocol/openid-connect/auth

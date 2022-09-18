@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/services/auth_service.dart';
 import 'package:frontend_flutter/widgets/home_screen.dart';
@@ -26,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = AuthService();
 
   Future<bool> _login() async {
-    bool loginSuccess = await _authService.signInWithAutoCodeExchange();
+    bool loginSuccess = await _authService.authenticate();
     setState(() { });
     return loginSuccess;
   }

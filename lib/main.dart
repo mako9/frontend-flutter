@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             title: 'Frontend Flutter',
             initialRoute: snapshot.data,
             routes: {
-              '/': (context) => const LoginScreen(title: 'Login'),
+              '/': (context) => const LoginScreen(title: "Login"),
               '/home': (context) => const HomeScreen(title: 'Home'),
             },
           );
