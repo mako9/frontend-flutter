@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 
 import '../../di/service_locator.dart';
-import '../../models/config.dart';
-import 'package:frontend_flutter/services/auth/auth_interface.dart';
+import '../../model/config.dart';
+import 'package:frontend_flutter/service/auth/auth_interface.dart';
 
-import '../../models/credential.dart';
+import '../../model/credential.dart';
 
 class AuthIo implements Auth {
   final _config = getIt.get<Config>();

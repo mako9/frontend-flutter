@@ -1,7 +1,7 @@
 import 'package:frontend_flutter/di/service_locator.dart';
-import 'package:frontend_flutter/services/request_service.dart';
+import 'package:frontend_flutter/service/request_service.dart';
 
-import '../models/user.dart';
+import '../model/user.dart';
 
 class UserService {
   final RequestService _requestService = getIt.get<RequestService>();

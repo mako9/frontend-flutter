@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:html' as html;
 
-import 'package:frontend_flutter/models/config.dart';
-import 'package:frontend_flutter/services/auth/auth_interface.dart';
+import 'package:frontend_flutter/model/config.dart';
+import 'package:frontend_flutter/service/auth/auth_interface.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 
 import '../../di/service_locator.dart';
-import '../../models/credential.dart';
+import '../../model/credential.dart';
 
 class AuthWeb implements Auth {
   final _config = getIt.get<Config>();

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/services/user_service.dart';
+import 'package:frontend_flutter/di/service_locator.dart';
+import 'package:frontend_flutter/service/auth_service.dart';
+import 'package:frontend_flutter/widget/home_screen.dart';
 
-import '../di/service_locator.dart';
-import '../models/user.dart';
-import '../services/auth_service.dart';
-
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -18,30 +16,23 @@ class ProfileScreen extends StatefulWidget {
   // always marked "final".
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  final UserService _userService = getIt.get<UserService>();
+class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = getIt.get<AuthService>();
 
-  User? _user;
-
-  Future<void> initUser() async {
-    _user = await _userService.getUser();
-    setState(() {});
-  }
-
-  Future<void> _logout() async {
-     await _authService.logout();
+  Future<bool> _login() async {
+    bool loginSuccess = await _authService.authenticate();
     setState(() { });
+    return loginSuccess;
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    initUser();
+  void setState(fn) {
+    if(mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
@@ -77,25 +68,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               'You are not logged in, login here:',
             ),
             const SizedBox(height: 30),
-            Text(_user?.firstName ?? "Undefined"),
-            Text(_user?.lastName ?? "Undefined"),
-            Text(_user?.mail ?? "Undefined"),
-            Text(_user?.street ?? "Undefined"),
-            Text(_user?.houseNumber ?? "Undefined"),
-            Text(_user?.postalCode ?? "Undefined"),
-            Text(_user?.city ?? "Undefined"),
-        const SizedBox(height: 30),
-        TextButton(
-          style: TextButton.styleFrom(
-            textStyle: const TextStyle(fontSize: 20),
-          ),
-          onPressed: () {
-            _logout().then((_) {
-              Navigator.pop(context);
-            });
-          },
-          child: const Text('Logout'),
-        ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () {
+                _login().then((result) {
+                  if (result) {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    );
+                  }
+                });
+              },
+              child: const Text('Login'),
+            ),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

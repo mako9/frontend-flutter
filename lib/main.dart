@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:frontend_flutter/services/auth_service.dart';
-import 'package:frontend_flutter/widgets/home_screen.dart';
-import 'package:frontend_flutter/widgets/login_screen.dart';
+import 'package:frontend_flutter/service/auth_service.dart';
+import 'package:frontend_flutter/widget/home_screen.dart';
+import 'package:frontend_flutter/widget/login_screen.dart';
 
 import 'di/service_locator.dart';
-import 'models/config.dart';
+import 'model/config.dart';
 
 main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
             ),
             initialRoute: snapshot.data,
             routes: {
-              '/login': (context) => const LoginScreen(),
-              '/': (context) => const HomeScreen(),
+              '/login': (context) => const LoginScreen(key: Key('Login')),
+              '/': (context) => const HomeScreen(key: Key('Home')),
             },
           );
         }

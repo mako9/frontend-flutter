@@ -1,8 +1,8 @@
-import 'package:frontend_flutter/models/config.dart';
-import 'package:frontend_flutter/services/auth_service.dart';
-import 'package:frontend_flutter/services/request_service.dart';
-import 'package:frontend_flutter/services/storage_service.dart';
-import 'package:frontend_flutter/services/user_service.dart';
+import 'package:frontend_flutter/model/config.dart';
+import 'package:frontend_flutter/service/auth_service.dart';
+import 'package:frontend_flutter/service/request_service.dart';
+import 'package:frontend_flutter/service/storage_service.dart';
+import 'package:frontend_flutter/service/user_service.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
