@@ -3,6 +3,7 @@ import 'package:yaml/yaml.dart';
 
 class Config {
   String baseUrl = '';
+  String backendBaseUrl = '';
   String clientId = '';
   String clientSecret = '';
   String redirectUrl = '';
@@ -14,14 +15,6 @@ class Config {
   String tokenEndpoint = '';
   String endSessionEndpoint = '';
 
-  static final Config _singleton = Config._internal();
-
-  factory Config() {
-    return _singleton;
-  }
-
-  Config._internal();
-
   loadConfig(BuildContext context) async {
     final yamlString = await DefaultAssetBundle.of(context)
         .loadString('assets/config/config.yaml');
@@ -31,6 +24,7 @@ class Config {
 
 
     baseUrl = yamlMap['baseUrl'] as String;
+    backendBaseUrl = yamlMap['backendBaseUrl'] as String;
     clientId = yamlMap['clientId'] as String;
     clientSecret = yamlMap['clientSecret'] as String;
     redirectUrl = yamlMap['redirectUrl'] as String;

@@ -51,6 +51,8 @@ dev_dependencies:
   yaml: ^3.1.0
   flutter_native_splash: ^2.2.9
   oauth2: ^2.0.0
+  http: ^0.13.5
+  get_it: ^7.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

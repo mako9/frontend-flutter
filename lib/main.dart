@@ -4,11 +4,14 @@ import 'package:frontend_flutter/services/auth_service.dart';
 import 'package:frontend_flutter/widgets/home_screen.dart';
 import 'package:frontend_flutter/widgets/login_screen.dart';
 
+import 'di/service_locator.dart';
 import 'models/config.dart';
 
 main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  getServices();
 
   runApp(const MyApp());
 }
@@ -18,11 +21,12 @@ class MyApp extends StatelessWidget {
 
   Future<String> _initialAsync(BuildContext context) async {
     // init global config
-    await Config().loadConfig(context);
+    final config = getIt.get<Config>();
+    await config.loadConfig(context);
 
-    final AuthService authService = AuthService();
+    final AuthService authService = getIt.get<AuthService>();
     final bool isLoggedIn = await authService.isLoggedIn();
-    return isLoggedIn ? '/home' : '/';
+    return isLoggedIn ? '/' : '/login';
   }
 
   // This widget is the root of your application.
@@ -37,10 +41,19 @@ class MyApp extends StatelessWidget {
           FlutterNativeSplash.remove();
           return MaterialApp(
             title: 'Frontend Flutter',
+            theme: ThemeData(
+              // Define the default brightness and colors.
+              brightness: Brightness.dark,
+              primaryColor: Colors.brown[300],
+              indicatorColor: Colors.white,
+
+              // Define the default font family.
+              fontFamily: 'Georgia',
+            ),
             initialRoute: snapshot.data,
             routes: {
-              '/': (context) => const LoginScreen(title: "Login"),
-              '/home': (context) => const HomeScreen(title: 'Home'),
+              '/login': (context) => const LoginScreen(),
+              '/': (context) => const HomeScreen(),
             },
           );
         }

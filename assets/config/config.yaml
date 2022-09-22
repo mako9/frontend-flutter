@@ -1,4 +1,10 @@
+# Base URL of the web application
 baseUrl: http://localhost:49430
+
+# Base URL of the backend API
+backendBaseUrl: http://localhost:8080/api
+
+# Configuration of authorization
 clientId: backend-service
 clientSecret: secret
 redirectUrl: com.flutter-auth-test:/oauth-redirect

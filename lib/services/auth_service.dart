@@ -12,8 +12,16 @@ class AuthService {
     return (credential != null);
   }
 
+  Future<String?> refresh() async {
+    final refreshToken = await _getStoredToken(TokenType.refreshToken);
+    if (refreshToken == null) { return null; }
+    Credential? credential = await auth.refresh(refreshToken);
+    await _storeTokenFromCredential(credential);
+    return credential?.accessToken;
+  }
+
   Future<bool> isLoggedIn() async {
-    var accessToken = await _getStoredToken(TokenType.accessToken);
+    final accessToken = await _getStoredToken(TokenType.accessToken);
     return accessToken != null;
   }
 

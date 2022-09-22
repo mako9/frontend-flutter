@@ -5,12 +5,14 @@ import 'package:frontend_flutter/models/config.dart';
 import 'package:frontend_flutter/services/auth/auth_interface.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 
+import '../../di/service_locator.dart';
 import '../../models/credential.dart';
 
 class AuthWeb implements Auth {
+  final _config = getIt.get<Config>();
   _WebAuthenticationSession? _authenticationSession;
 
-  Uri get redirectUrl => Uri.parse('${Config().baseUrl}/callback.html');
+  Uri get redirectUrl => Uri.parse('${_config.baseUrl}/callback.html');
 
   AuthWeb() {
     html.window.addEventListener('message', _eventListener);
@@ -26,18 +28,18 @@ class AuthWeb implements Auth {
       return null;
     }
 
-    Uri authorizationEndpoint =  Uri.parse(Config().authorizationEndpoint);
-    Uri tokenEndpoint = Uri.parse(Config().tokenEndpoint);
+    Uri authorizationEndpoint =  Uri.parse(_config.authorizationEndpoint);
+    Uri tokenEndpoint = Uri.parse(_config.tokenEndpoint);
     final grant = oauth2.AuthorizationCodeGrant(
-      Config().clientId,
+      _config.clientId,
       authorizationEndpoint,
       tokenEndpoint,
-      secret: Config().clientSecret,
+      secret: _config.clientSecret,
     );
 
     var authorizationUrl = grant.getAuthorizationUrl(
       redirectUrl,
-      scopes: Config().scopes,
+      scopes: _config.scopes,
     );
 
     final url =
