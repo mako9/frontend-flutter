@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:frontend_flutter/service/auth_service.dart';
-import 'package:frontend_flutter/widget/home_screen.dart';
-import 'package:frontend_flutter/widget/login_screen.dart';
+import 'package:frontend_flutter/widget/home/home_screen.dart';
+import 'package:frontend_flutter/widget/login/login_screen.dart';
+import 'package:frontend_flutter/main_cubit.dart';
 
 import 'di/service_locator.dart';
-import 'model/config.dart';
 
 main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -13,50 +13,50 @@ main() async {
 
   getServices();
 
-  runApp(const MyApp());
+  runApp(const MainScreen());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
-  Future<String> _initialAsync(BuildContext context) async {
-    // init global config
-    final config = getIt.get<Config>();
-    await config.loadConfig(context);
-
-    final AuthService authService = getIt.get<AuthService>();
-    final bool isLoggedIn = await authService.isLoggedIn();
-    return isLoggedIn ? '/' : '/login';
-  }
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: _initialAsync(context),
-        builder: (context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const SizedBox.shrink();
-          }
-          FlutterNativeSplash.remove();
-          return MaterialApp(
-            title: 'Frontend Flutter',
-            theme: ThemeData(
-              // Define the default brightness and colors.
-              brightness: Brightness.dark,
-              primaryColor: Colors.brown[300],
-              indicatorColor: Colors.white,
+    return BlocProvider(
+        create: (_) => MainCubit(null, context),
+    child: const _MainScreenContent()
+    );
+  }
+}
 
-              // Define the default font family.
-              fontFamily: 'Georgia',
-            ),
-            initialRoute: snapshot.data,
-            routes: {
-              '/login': (context) => const LoginScreen(key: Key('Login')),
-              '/': (context) => const HomeScreen(key: Key('Home')),
-            },
-          );
-        }
+class _MainScreenContent extends StatelessWidget {
+  const _MainScreenContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MainCubit, String?>(
+    builder: (_, route) {
+      if (route == null) {
+        return const SizedBox.shrink();
+      }
+      FlutterNativeSplash.remove();
+      return MaterialApp(
+        title: 'Frontend Flutter',
+        theme: ThemeData(
+          // Define the default brightness and colors.
+          brightness: Brightness.dark,
+          primaryColor: Colors.brown[300],
+          indicatorColor: Colors.white,
+
+          // Define the default font family.
+          fontFamily: 'Georgia',
+        ),
+        initialRoute: route,
+        routes: {
+          LoginScreen.route: (context) => const LoginScreen(key: Key('Login')),
+          HomeScreen.route: (context) => const HomeScreen(key: Key('Home')),
+        },
+      );
+    }
     );
   }
 }

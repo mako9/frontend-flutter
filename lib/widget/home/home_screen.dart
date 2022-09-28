@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/widget/profile_screen.dart';
+import 'package:frontend_flutter/widget/profile/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  static const route = '/';
 
   @override
   Widget build(BuildContext context) {

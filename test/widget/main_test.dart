@@ -12,7 +12,7 @@ import 'package:frontend_flutter/main.dart';
 void main() {
   testWidgets('Test main widget', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const MainScreen());
 
     // expect(find.text('Frontend Flutter'), findsOneWidget);
 

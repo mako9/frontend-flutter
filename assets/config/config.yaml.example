@@ -1,0 +1,27 @@
+#########
+##
+## Usage: Copy and rename file to config.yaml. Set the values for the below named keys.
+##
+#########
+
+
+# Base URL of the web application
+baseUrl:
+
+# Base URL of the backend API
+backendBaseUrl:
+
+# Configuration of authorization
+clientId:
+clientSecret:
+redirectUrl:
+issuer:
+discoveryUrl:
+postLogoutRedirectUrl:
+scopes:
+ - openid
+ - profile
+ - email
+authorizationEndpoint:
+tokenEndpoint:
+endSessionEndpoint:
