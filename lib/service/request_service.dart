@@ -1,4 +1,5 @@
 import 'dart:convert' as convert;
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:frontend_flutter/model/config.dart';
@@ -50,21 +51,22 @@ class RequestService {
     final uri = Uri.parse('${_config.backendBaseUrl}/$path');
 
     final headers = httpHeaders(accessToken);
+    final jsonData = json.encode(body);
 
     http.Response response;
     try {
       switch (method) {
         case HttpMethod.post:
           response = await client
-              .post(uri, headers: headers, body: body);
+              .post(uri, headers: headers, body: jsonData);
           break;
         case HttpMethod.patch:
           response = await client
-              .patch(uri, headers: headers, body: body);
+              .patch(uri, headers: headers, body: jsonData);
           break;
         case HttpMethod.put:
           response = await client
-              .put(uri, headers: headers, body: body);
+              .put(uri, headers: headers, body: jsonData);
           break;
         case HttpMethod.delete:
           response = await client

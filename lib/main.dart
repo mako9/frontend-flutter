@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:frontend_flutter/widget/element/custom_theme.dart';
 import 'package:frontend_flutter/widget/home/home_screen.dart';
 import 'package:frontend_flutter/widget/login/login_screen.dart';
 import 'package:frontend_flutter/main_cubit.dart';
@@ -41,15 +42,7 @@ class _MainScreenContent extends StatelessWidget {
       FlutterNativeSplash.remove();
       return MaterialApp(
         title: 'Frontend Flutter',
-        theme: ThemeData(
-          // Define the default brightness and colors.
-          brightness: Brightness.dark,
-          primaryColor: Colors.brown[300],
-          indicatorColor: Colors.white,
-
-          // Define the default font family.
-          fontFamily: 'Georgia',
-        ),
+        theme: customTheme,
         initialRoute: route,
         routes: {
           LoginScreen.route: (context) => const LoginScreen(key: Key('Login')),

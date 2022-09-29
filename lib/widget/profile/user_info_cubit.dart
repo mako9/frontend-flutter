@@ -6,13 +6,19 @@ import '../../service/user_service.dart';
 
 class UserInfoCubit extends Cubit<User?> {
   final UserService _userService = getIt.get<UserService>();
+  User? _user;
 
   UserInfoCubit(super.initialState) {
     loadUser();
   }
 
   Future<void> loadUser() async {
-    final user = await _userService.getUser();
-    emit(user);
+    _user = await _userService.getUser();
+    emit(_user);
+  }
+
+  Future<void> updateUser(User user) async {
+    _user = await _userService.updateUser(user);
+    emit(_user);
   }
 }

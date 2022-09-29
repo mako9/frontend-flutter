@@ -1,24 +1,24 @@
 class User {
-  final String uuid;
-  final String firstName;
-  final String lastName;
-  final String mail;
+  final String? uuid;
+  final String? firstName;
+  final String? lastName;
+  final String? mail;
   final String? street;
   final String? houseNumber;
   final String? postalCode;
   final String? city;
-  final List<UserRole> roles;
+  final List<UserRole>? roles;
 
   const User({
-    required this.uuid,
-    required this.firstName,
-    required this.lastName,
-    required this.mail,
-    required this.street,
-    required this.houseNumber,
-    required this.postalCode,
-    required this.city,
-    required this.roles,
+    this.uuid,
+    this.firstName,
+    this.lastName,
+    this.mail,
+    this.street,
+    this.houseNumber,
+    this.postalCode,
+    this.city,
+    this.roles,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -36,6 +36,15 @@ class User {
       roles: roles,
     );
   }
+
+  Map toJson() => {
+    'firstName': firstName,
+    'lastName': lastName,
+    'street': street,
+    'houseNumber': houseNumber,
+    'postalCode': postalCode,
+    'city': city,
+  };
 }
 
 enum UserRole {

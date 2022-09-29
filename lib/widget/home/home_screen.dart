@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_flutter/widget/profile/profile_screen.dart';
+import 'package:frontend_flutter/widget/setting/setting_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
               Icon(Icons.directions_car),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
-              ProfileScreen()
+              SettingScreen()
             ],
           ),
         ),
