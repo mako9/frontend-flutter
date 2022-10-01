@@ -4,15 +4,17 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
-import 'dart:convert' as _i7;
-import 'dart:typed_data' as _i8;
+import 'dart:convert' as _i9;
+import 'dart:typed_data' as _i10;
 
-import 'package:frontend_flutter/model/credential.dart' as _i11;
+import 'package:frontend_flutter/model/credential.dart' as _i13;
 import 'package:frontend_flutter/model/http_json_response.dart' as _i4;
+import 'package:frontend_flutter/model/user.dart' as _i8;
 import 'package:frontend_flutter/service/auth/auth_interface.dart' as _i3;
-import 'package:frontend_flutter/service/auth_service.dart' as _i9;
-import 'package:frontend_flutter/service/request_service.dart' as _i10;
+import 'package:frontend_flutter/service/auth_service.dart' as _i11;
+import 'package:frontend_flutter/service/request_service.dart' as _i12;
 import 'package:frontend_flutter/service/storage_service.dart' as _i5;
+import 'package:frontend_flutter/service/user_service.dart' as _i7;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -138,6 +140,30 @@ class MockStorageService extends _i1.Mock implements _i5.StorageService {
       ) as _i6.Future<bool>);
 }
 
+/// A class which mocks [UserService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserService extends _i1.Mock implements _i7.UserService {
+  @override
+  _i6.Future<_i8.User?> getUser() => (super.noSuchMethod(
+        Invocation.method(
+          #getUser,
+          [],
+        ),
+        returnValue: _i6.Future<_i8.User?>.value(),
+        returnValueForMissingStub: _i6.Future<_i8.User?>.value(),
+      ) as _i6.Future<_i8.User?>);
+  @override
+  _i6.Future<_i8.User?> updateUser(_i8.User? user) => (super.noSuchMethod(
+        Invocation.method(
+          #updateUser,
+          [user],
+        ),
+        returnValue: _i6.Future<_i8.User?>.value(),
+        returnValueForMissingStub: _i6.Future<_i8.User?>.value(),
+      ) as _i6.Future<_i8.User?>);
+}
+
 /// A class which mocks [Client].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -205,7 +231,7 @@ class MockClient extends _i1.Mock implements _i2.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i7.Encoding? encoding,
+    _i9.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -248,7 +274,7 @@ class MockClient extends _i1.Mock implements _i2.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i7.Encoding? encoding,
+    _i9.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -291,7 +317,7 @@ class MockClient extends _i1.Mock implements _i2.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i7.Encoding? encoding,
+    _i9.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -334,7 +360,7 @@ class MockClient extends _i1.Mock implements _i2.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i7.Encoding? encoding,
+    _i9.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -387,7 +413,7 @@ class MockClient extends _i1.Mock implements _i2.Client {
         returnValueForMissingStub: _i6.Future<String>.value(''),
       ) as _i6.Future<String>);
   @override
-  _i6.Future<_i8.Uint8List> readBytes(
+  _i6.Future<_i10.Uint8List> readBytes(
     Uri? url, {
     Map<String, String>? headers,
   }) =>
@@ -397,10 +423,10 @@ class MockClient extends _i1.Mock implements _i2.Client {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i6.Future<_i8.Uint8List>.value(_i8.Uint8List(0)),
+        returnValue: _i6.Future<_i10.Uint8List>.value(_i10.Uint8List(0)),
         returnValueForMissingStub:
-            _i6.Future<_i8.Uint8List>.value(_i8.Uint8List(0)),
-      ) as _i6.Future<_i8.Uint8List>);
+            _i6.Future<_i10.Uint8List>.value(_i10.Uint8List(0)),
+      ) as _i6.Future<_i10.Uint8List>);
   @override
   _i6.Future<_i2.StreamedResponse> send(_i2.BaseRequest? request) =>
       (super.noSuchMethod(
@@ -438,7 +464,7 @@ class MockClient extends _i1.Mock implements _i2.Client {
 /// A class which mocks [AuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthService extends _i1.Mock implements _i9.AuthService {
+class MockAuthService extends _i1.Mock implements _i11.AuthService {
   @override
   _i3.Auth get auth => (super.noSuchMethod(
         Invocation.getter(#auth),
@@ -500,7 +526,7 @@ class MockAuthService extends _i1.Mock implements _i9.AuthService {
 /// A class which mocks [RequestService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRequestService extends _i1.Mock implements _i10.RequestService {
+class MockRequestService extends _i1.Mock implements _i12.RequestService {
   @override
   _i2.Client get client => (super.noSuchMethod(
         Invocation.getter(#client),
@@ -524,7 +550,7 @@ class MockRequestService extends _i1.Mock implements _i10.RequestService {
   @override
   _i6.Future<_i4.HttpJsonResponse> request(
     String? path, {
-    _i10.HttpMethod? method = _i10.HttpMethod.get,
+    _i12.HttpMethod? method = _i12.HttpMethod.get,
     Object? body,
     bool? needsAuth = true,
   }) =>
@@ -581,24 +607,24 @@ class MockRequestService extends _i1.Mock implements _i10.RequestService {
 /// See the documentation for Mockito's code generation for more information.
 class MockAuth extends _i1.Mock implements _i3.Auth {
   @override
-  _i6.Future<_i11.Credential?> authenticate() => (super.noSuchMethod(
+  _i6.Future<_i13.Credential?> authenticate() => (super.noSuchMethod(
         Invocation.method(
           #authenticate,
           [],
         ),
-        returnValue: _i6.Future<_i11.Credential?>.value(),
-        returnValueForMissingStub: _i6.Future<_i11.Credential?>.value(),
-      ) as _i6.Future<_i11.Credential?>);
+        returnValue: _i6.Future<_i13.Credential?>.value(),
+        returnValueForMissingStub: _i6.Future<_i13.Credential?>.value(),
+      ) as _i6.Future<_i13.Credential?>);
   @override
-  _i6.Future<_i11.Credential?> refresh(String? refreshToken) =>
+  _i6.Future<_i13.Credential?> refresh(String? refreshToken) =>
       (super.noSuchMethod(
         Invocation.method(
           #refresh,
           [refreshToken],
         ),
-        returnValue: _i6.Future<_i11.Credential?>.value(),
-        returnValueForMissingStub: _i6.Future<_i11.Credential?>.value(),
-      ) as _i6.Future<_i11.Credential?>);
+        returnValue: _i6.Future<_i13.Credential?>.value(),
+        returnValueForMissingStub: _i6.Future<_i13.Credential?>.value(),
+      ) as _i6.Future<_i13.Credential?>);
   @override
   _i6.Future<void> logout(String? idToken) => (super.noSuchMethod(
         Invocation.method(
