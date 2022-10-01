@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 
-import '../../models/config.dart';
-import 'package:frontend_flutter/services/auth/auth_interface.dart';
+import '../../di/service_locator.dart';
+import '../../model/config.dart';
+import 'package:frontend_flutter/service/auth/auth_interface.dart';
 
-import '../../models/credential.dart';
+import '../../model/credential.dart';
 
 class AuthIo implements Auth {
+  final _config = getIt.get<Config>();
   final FlutterAppAuth _appAuth = const FlutterAppAuth();
 
   late final AuthorizationResponse authorizationResponse;
@@ -18,11 +20,11 @@ class AuthIo implements Auth {
       AuthorizationTokenResponse? response = await _appAuth
           .authorizeAndExchangeCode(
         AuthorizationTokenRequest(
-          Config().clientId,
-          Config().redirectUrl,
-          clientSecret: Config().clientSecret,
+          _config.clientId,
+          _config.redirectUrl,
+          clientSecret: _config.clientSecret,
           serviceConfiguration: _getAuthorizationServiceConfiguration(),
-          scopes: Config().scopes,
+          scopes: _config.scopes,
           preferEphemeralSession: false,
         ),
       );
@@ -47,18 +49,18 @@ class AuthIo implements Auth {
   @override
   Future<Credential?> refresh(String refreshToken) async {
     final TokenResponse? response = await _appAuth.token(TokenRequest(
-        Config().clientId, Config().redirectUrl,
+        _config.clientId, _config.redirectUrl,
         refreshToken: refreshToken,
-        issuer: Config().issuer,
-        scopes: Config().scopes));
+        issuer: _config.issuer,
+        scopes: _config.scopes));
     return _getCredentialFromResponse(response);
   }
 
   AuthorizationServiceConfiguration _getAuthorizationServiceConfiguration() {
     return AuthorizationServiceConfiguration(
-      authorizationEndpoint: Config().authorizationEndpoint,
-      tokenEndpoint: Config().tokenEndpoint,
-      endSessionEndpoint: Config().endSessionEndpoint,
+      authorizationEndpoint: _config.authorizationEndpoint,
+      tokenEndpoint: _config.tokenEndpoint,
+      endSessionEndpoint: _config.endSessionEndpoint,
     );
   }
 
@@ -78,7 +80,7 @@ class AuthIo implements Auth {
   Future<void> logout(String idToken) async {
     await _appAuth.endSession(EndSessionRequest(
         idTokenHint: idToken,
-        postLogoutRedirectUrl: Config().postLogoutRedirectUrl,
+        postLogoutRedirectUrl: _config.postLogoutRedirectUrl,
         serviceConfiguration: _getAuthorizationServiceConfiguration()));
   }
 }

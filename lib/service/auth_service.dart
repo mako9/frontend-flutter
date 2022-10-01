@@ -1,10 +1,16 @@
-import 'package:frontend_flutter/models/credential.dart';
-import 'package:frontend_flutter/services/auth/auth_interface.dart';
-import 'package:frontend_flutter/services/storage_service.dart';
+import 'package:frontend_flutter/model/credential.dart';
+import 'package:frontend_flutter/service/auth/auth_interface.dart';
+import 'package:frontend_flutter/service/storage_service.dart';
+
+import '../di/service_locator.dart';
 
 class AuthService {
-  final StorageService _storageService = StorageService();
-  final auth = Auth();
+  final _storageService = getIt.get<StorageService>();
+  late Auth auth;
+
+  AuthService({Auth? auth}) {
+    this.auth = auth ?? Auth();
+  }
 
   Future<bool> authenticate() async {
     Credential? credential = await auth.authenticate();
@@ -12,8 +18,16 @@ class AuthService {
     return (credential != null);
   }
 
+  Future<String?> refresh() async {
+    final refreshToken = await _getStoredToken(TokenType.refreshToken);
+    if (refreshToken == null) { return null; }
+    Credential? credential = await auth.refresh(refreshToken);
+    await _storeTokenFromCredential(credential);
+    return credential?.accessToken;
+  }
+
   Future<bool> isLoggedIn() async {
-    var accessToken = await _getStoredToken(TokenType.accessToken);
+    final accessToken = await _getStoredToken(TokenType.accessToken);
     return accessToken != null;
   }
 
