@@ -5,6 +5,11 @@ final customTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.brown[300],
   indicatorColor: Colors.white,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.brown[300],
+    ),
+  ),
   textSelectionTheme: TextSelectionThemeData(
       selectionColor: Colors.brown[300]
   ),

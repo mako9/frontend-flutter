@@ -28,7 +28,7 @@ class RequestService {
     this.client = client ?? http.Client();
   }
 
-  Future<HttpJsonResponse> request(String path, {HttpMethod method = HttpMethod.get, Object? body, bool needsAuth = true}) async {
+  Future<HttpJsonResponse> request(String path, {HttpMethod method = HttpMethod.get, Object? body, Map<String, String>? queryParameters, bool needsAuth = true}) async {
     String? accessToken;
     if (needsAuth) {
       accessToken = await _storageService.readToken(TokenType.accessToken);
@@ -36,19 +36,19 @@ class RequestService {
         return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null);
       }
     }
-    HttpJsonResponse response = await _request(path, method: method, body: body, accessToken: accessToken);
+    HttpJsonResponse response = await _request(path, method: method, body: body, accessToken: accessToken, queryParameters: queryParameters);
     if (response.status == HttpStatus.unauthorized) {
       accessToken = await _authService.refresh();
       if (accessToken == null) {
         return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null);
       }
-      response = await _request(path, method: method, body: body, accessToken: accessToken);
+      response = await _request(path, method: method, body: body, accessToken: accessToken, queryParameters: queryParameters);
     }
     return response;
   }
 
-  Future<HttpJsonResponse> _request(String path, {HttpMethod method = HttpMethod.get, Object? body, String? accessToken}) async {
-    final uri = Uri.parse('${_config.backendBaseUrl}/$path');
+  Future<HttpJsonResponse> _request(String path, {HttpMethod method = HttpMethod.get, Object? body, Map<String, String>? queryParameters, String? accessToken}) async {
+    final uri = Uri(scheme: _config.backendScheme, host: _config.backendHost, port: _config.backendPort, path: '${_config.backendBasePath}/$path', queryParameters: queryParameters);
 
     final headers = httpHeaders(accessToken);
     final jsonData = json.encode(body);

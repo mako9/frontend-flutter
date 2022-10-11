@@ -6,7 +6,7 @@ import '../model/user.dart';
 
 class UserService {
   final RequestService _requestService = getIt.get<RequestService>();
-  final String _userPath = 'users/me';
+  final String _userPath = 'user/me';
 
   Future<User?> getUser() async {
     final response = await _requestService.request(_userPath);

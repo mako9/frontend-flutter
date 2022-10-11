@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/widget/community/community_screen.dart';
 import 'package:frontend_flutter/widget/setting/setting_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               Icon(Icons.directions_car),
               Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
+              CommunityScreen(),
               SettingScreen()
             ],
           ),
@@ -42,11 +43,11 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.assignment),
           ),
           Tab(
-            text: "Balance",
-            icon: Icon(Icons.account_balance_wallet),
+            text: "Communities",
+            icon: Icon(Icons.list),
           ),
           Tab(
-            text: "Options",
+            text: "Settings",
             icon: Icon(Icons.settings),
           ),
         ],

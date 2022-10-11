@@ -3,7 +3,10 @@ import 'package:yaml/yaml.dart';
 
 class Config {
   String baseUrl = '';
-  String backendBaseUrl = '';
+  String backendHost = '';
+  String backendScheme = '';
+  int? backendPort;
+  String backendBasePath = '';
   String clientId = '';
   String clientSecret = '';
   String redirectUrl = '';
@@ -24,7 +27,10 @@ class Config {
 
 
     baseUrl = yamlMap['baseUrl'] as String;
-    backendBaseUrl = yamlMap['backendBaseUrl'] as String;
+    backendHost = yamlMap['backendHost'] as String;
+    backendScheme = yamlMap['backendScheme'] as String;
+    backendPort = yamlMap['backendPort'] as int?;
+    backendBasePath = yamlMap['backendBasePath'] as String;
     clientId = yamlMap['clientId'] as String;
     clientSecret = yamlMap['clientSecret'] as String;
     redirectUrl = yamlMap['redirectUrl'] as String;
