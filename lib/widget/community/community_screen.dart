@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 
 import '../../model/community.dart';
-import 'community_cubit.dart';
 import '../../model/data_page.dart';
+import 'community_cubit.dart';
 
 class CommunityScreen extends StatelessWidget {
   const CommunityScreen({Key? key}) : super(key: key);
@@ -29,8 +30,10 @@ class _CommunityScreenContent extends StatelessWidget {
           child: BlocBuilder<CommunityPageCubit, DataPage<Community>?>(
             builder: (_, communityPage) {
               if (communityPage == null) {
+                LoadingOverlay.of(context).show();
                 return const Text("empty page");
               }
+              LoadingOverlay.of(context).hide();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -58,6 +61,7 @@ class _CommunityScreenContent extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ElevatedButton(onPressed: (communityPage.pageNumber - 1 <= 0) ? null : () {
+                          LoadingOverlay.of(context).show();
                           context.read<CommunityPageCubit>().loadOwnCommunity(communityPage.pageNumber - 1);
                         }, child: const Icon(Icons.navigate_before)),
                         const SizedBox(width: 12),
@@ -74,7 +78,8 @@ class _CommunityScreenContent extends StatelessWidget {
                                   if (int.parse(value) < 0 || int.parse(value) > communityPage.totalPages) {
                                     return;
                                   }
-                                  context.read<CommunityPageCubit>().loadOwnCommunity(int.parse(value));
+                                  LoadingOverlay.of(context).show();
+                                  context.read<CommunityPageCubit>().loadOwnCommunity(int.parse(value) - 1);
                                 })),
                             const SizedBox(width: 12),
                             Text('of ${communityPage.totalPages.toString()} pages')
@@ -84,6 +89,7 @@ class _CommunityScreenContent extends StatelessWidget {
                         const SizedBox(width: 12),
                         ElevatedButton(onPressed: (communityPage.pageNumber + 1 >= communityPage.totalPages) ? null : () {
                           if (communityPage.pageNumber + 1 > communityPage.totalPages) { return; }
+                          LoadingOverlay.of(context).show();
                           context.read<CommunityPageCubit>().loadOwnCommunity(communityPage.pageNumber + 1);
                         }, child: const Icon(Icons.navigate_next)),
                       ],

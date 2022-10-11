@@ -5,6 +5,7 @@ import 'package:frontend_flutter/widget/profile/user_info_cubit.dart';
 
 import '../../model/user.dart';
 import '../element/custom_text_form_field.dart';
+import '../element/loading_overlay.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => UserInfoCubit(null),
-      child: _ProfileScreenContent(),
+      child: LoadingOverlay(child: _ProfileScreenContent()),
     );
   }
 }
@@ -47,6 +48,7 @@ class _ProfileScreenContent extends StatelessWidget {
            Expanded(
              child: BlocBuilder<UserInfoCubit, User?>(
               builder: (_, user) {
+                if (user != null) { LoadingOverlay.of(context).hide(); }
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -81,6 +83,7 @@ class _ProfileScreenContent extends StatelessWidget {
                           postalCode: _postalCodeController.text,
                           city: _cityController.text
                         );
+                        LoadingOverlay.of(context).show();
                         context.read<UserInfoCubit>().updateUser(updatedUser);
                       }),
                     ]

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/home/home_screen.dart';
 import 'package:frontend_flutter/widget/login/login_cubit.dart';
 
@@ -14,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LoginCubit(false),
-      child: const _LoginScreenContent()
+      child: const LoadingOverlay(child: _LoginScreenContent()),
     );
   }
 }
@@ -29,6 +30,7 @@ class _LoginScreenContent extends StatelessWidget {
         child: BlocListener(
           bloc: BlocProvider.of<LoginCubit>(context),
           listener: (BuildContext context, bool isLoggedIn) {
+            LoadingOverlay.of(context).hide();
               if (isLoggedIn) {
                   Navigator.pushNamed(
                   context,
@@ -45,6 +47,7 @@ class _LoginScreenContent extends StatelessWidget {
               ),
               const SizedBox(height: 60),
               CustomButton('Login', Icons.login, () {
+                LoadingOverlay.of(context).show();
                 context.read<LoginCubit>().login();
               }),
             ],
