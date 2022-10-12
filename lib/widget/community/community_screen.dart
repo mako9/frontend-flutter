@@ -4,6 +4,7 @@ import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 
 import '../../model/community.dart';
 import '../../model/data_page.dart';
+import '../../model/data_response.dart';
 import 'community_cubit.dart';
 
 class CommunityScreen extends StatelessWidget {
@@ -12,14 +13,18 @@ class CommunityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return BlocProvider(
-        create: (_) => CommunityPageCubit(null),
-       child: const _CommunityScreenContent(),
+        create: (_) => CommunityCubit.ofInitialState(),
+       child: _CommunityScreenContent(),
     );
   }
 }
 
+//ignore: must_be_immutable
 class _CommunityScreenContent extends StatelessWidget {
-  const _CommunityScreenContent();
+  _CommunityScreenContent();
+
+  final List<bool> _selectedToggle = <bool>[true, false];
+  bool _isInitialized = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,74 +32,99 @@ class _CommunityScreenContent extends StatelessWidget {
       body: Container(
           padding: const EdgeInsets.all(60.0),
           alignment: Alignment.topCenter,
-          child: BlocBuilder<CommunityPageCubit, DataPage<Community>?>(
-            builder: (_, communityPage) {
-              if (communityPage == null) {
+          child: BlocBuilder<CommunityCubit, DataResponse<DataPage<Community>>>(
+            builder: (_, dataResponse) {
+              final page = dataResponse.data;
+              if (_isInitialized) {
+                LoadingOverlay.of(context).hide();
+              } else {
                 LoadingOverlay.of(context).show();
-                return const Text("empty page");
+                _isInitialized = true;
               }
-              LoadingOverlay.of(context).hide();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   const SizedBox(height: 30),
-                  const Text(
-                    'Communities',
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  ToggleButtons(
+                    direction: Axis.horizontal,
+                    onPressed: (int index) {
+                      LoadingOverlay.of(context).show();
+                      switch (index) {
+                        case 0:
+                          context.read<CommunityCubit>().loadMyCommunities();
+                          break;
+                        case 1:
+                          context.read<CommunityCubit>().loadAllCommunities();
+                          break;
+                      }
+                      for (int i = 0; i < _selectedToggle.length; i++) {
+                        _selectedToggle[i] = i == index;
+                      }
+                    },
+                    constraints: const BoxConstraints(
+                      minHeight: 40.0,
+                      minWidth: 150.0,
+                    ),
+                    isSelected: _selectedToggle,
+                    children: const [Text('My communities'), Text('All communities')],
                   ),
-                  const SizedBox(height: 30),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: communityPage.content.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                            child: ListTile(
-                                title: Text(communityPage.content[index].name!),
-                            ));
-                      }),
-                  const Spacer(),
-                  SizedBox(
-                    height: 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ElevatedButton(onPressed: (communityPage.pageNumber - 1 <= 0) ? null : () {
-                          LoadingOverlay.of(context).show();
-                          context.read<CommunityPageCubit>().loadOwnCommunity(communityPage.pageNumber - 1);
-                        }, child: const Icon(Icons.navigate_before)),
-                        const SizedBox(width: 12),
-                        Flexible(child:
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                                width: 24,
-                                child:
-                            TextFormField(initialValue: (communityPage.pageNumber + 1).toString(), keyboardType: TextInputType.number,
-                                onFieldSubmitted: (value) {
-                                  if (int.parse(value) < 0 || int.parse(value) > communityPage.totalPages) {
-                                    return;
-                                  }
-                                  LoadingOverlay.of(context).show();
-                                  context.read<CommunityPageCubit>().loadOwnCommunity(int.parse(value) - 1);
-                                })),
-                            const SizedBox(width: 12),
-                            Text('of ${communityPage.totalPages.toString()} pages')
-                          ],
-                        ),
-                        ),
-                        const SizedBox(width: 12),
-                        ElevatedButton(onPressed: (communityPage.pageNumber + 1 >= communityPage.totalPages) ? null : () {
-                          if (communityPage.pageNumber + 1 > communityPage.totalPages) { return; }
-                          LoadingOverlay.of(context).show();
-                          context.read<CommunityPageCubit>().loadOwnCommunity(communityPage.pageNumber + 1);
-                        }, child: const Icon(Icons.navigate_next)),
-                      ],
-                    )
-                  ),
+                  if (dataResponse.errorMessage != null) ...[ Text(dataResponse.errorMessage!) ]
+                  else if (page != null && page.content.isNotEmpty) ...[
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: dataResponse.data?.content.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                              child: ListTile(
+                                  title: Text(page.content[index].name!),
+                              ));
+                        }),
+                    const Spacer(),
+                    if (page.content.length > 10) ...[
+                      SizedBox(
+                          height: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ElevatedButton(onPressed: (page.pageNumber - 1 <= 0) ? null : () {
+                                LoadingOverlay.of(context).show();
+                                context.read<CommunityCubit>().loadMyCommunities(pageNumber: page.pageNumber - 1);
+                              }, child: const Icon(Icons.navigate_before)),
+                              const SizedBox(width: 12),
+                              Flexible(child:
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                      width: 24,
+                                      child:
+                                      TextFormField(initialValue: (page.pageNumber + 1).toString(), keyboardType: TextInputType.number,
+                                          onFieldSubmitted: (value) {
+                                            if (int.parse(value) < 0 || int.parse(value) > page.totalPages) {
+                                              return;
+                                            }
+                                            LoadingOverlay.of(context).show();
+                                            context.read<CommunityCubit>().loadMyCommunities(pageNumber: int.parse(value) - 1);
+                                          })),
+                                  const SizedBox(width: 12),
+                                  Text('of ${page.totalPages.toString()} pages')
+                                ],
+                              ),
+                              ),
+                              const SizedBox(width: 12),
+                              ElevatedButton(onPressed: (page.pageNumber + 1 >= page.totalPages) ? null : () {
+                                if (page.pageNumber + 1 > page.totalPages) { return; }
+                                LoadingOverlay.of(context).show();
+                                context.read<CommunityCubit>().loadMyCommunities(pageNumber: page.pageNumber + 1);
+                              }, child: const Icon(Icons.navigate_next)),
+                            ],
+                          )
+                      ),
+                    ]
+                  ]
                 ],
               );
             }

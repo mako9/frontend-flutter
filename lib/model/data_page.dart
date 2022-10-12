@@ -1,5 +1,3 @@
-import 'package:frontend_flutter/model/community.dart';
-
 class DataPage<E> {
   final List<E> content;
   final bool isFirstPage;
@@ -18,6 +16,18 @@ class DataPage<E> {
     required this.totalElements,
     required this.totalPages,
   });
+
+  factory DataPage.emptyPage() {
+    return DataPage(
+        content: List<E>.empty(),
+        isFirstPage: true,
+        isLastPage: true,
+        pageNumber: 0,
+        pageSize: 0,
+        totalElements: 0,
+        totalPages: 0,
+    );
+  }
 
   factory DataPage.fromJson(Map<String, dynamic> json, Function(Map<String, dynamic>) convert) {
     final content = json['content'] as List;

@@ -1,15 +1,25 @@
 class HttpJsonResponse {
   final HttpStatus status;
   final Map<String, dynamic>? json;
+  final String? errorMessage;
 
   const HttpJsonResponse({
     required this.status,
     required this.json,
+    this.errorMessage,
   });
 
   @override
   String toString() {
-    return 'Status: ${status.value}, body: $json';
+    return 'Status: ${status.value}, body: $json, errorMessage: $errorMessage';
+  }
+
+  Map<String, dynamic>? getJson() {
+    if (status.isSuccessful()) {
+      return json;
+    } else {
+      return null;
+    }
   }
 }
 

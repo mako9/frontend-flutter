@@ -33,14 +33,14 @@ class RequestService {
     if (needsAuth) {
       accessToken = await _storageService.readToken(TokenType.accessToken);
       if (accessToken == null) {
-        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null);
+        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null, errorMessage: null);
       }
     }
     HttpJsonResponse response = await _request(path, method: method, body: body, accessToken: accessToken, queryParameters: queryParameters);
     if (response.status == HttpStatus.unauthorized) {
       accessToken = await _authService.refresh();
       if (accessToken == null) {
-        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null);
+        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null, errorMessage: null);
       }
       response = await _request(path, method: method, body: body, accessToken: accessToken, queryParameters: queryParameters);
     }
@@ -79,17 +79,17 @@ class RequestService {
       }
     } catch (error) {
       print('Error during request: ${error.toString()}');
-      return const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null);
+      return HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null, errorMessage: error.toString());
     }
 
     final status = HttpStatus.fromValue(response.statusCode);
 
-    HttpJsonResponse httpJsonResponse = HttpJsonResponse(status: status, json: null);
+    HttpJsonResponse httpJsonResponse = HttpJsonResponse(status: status, json: null, errorMessage: response.reasonPhrase);
 
     if (status.isSuccessful()) {
       final jsonResponse =
       convert.jsonDecode(response.body) as Map<String, dynamic>;
-      httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse);
+      httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse, errorMessage: response.reasonPhrase);
     }
     print('$path: ${httpJsonResponse.toString()}');
 
