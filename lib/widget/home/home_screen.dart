@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/widget/community/community_screen.dart';
+import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/setting/setting_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,20 +10,28 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return LoadingOverlay(child: _HomeScreenContent());
+  }
+}
+
+class _HomeScreenContent extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          bottomNavigationBar: menu(context),
-          body: const TabBarView(
-            children: [
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
-              SettingScreen()
-            ],
-          ),
+      length: 4,
+      child: Scaffold(
+        bottomNavigationBar: menu(context),
+        body: const TabBarView(
+          children: [
+            Icon(Icons.directions_car),
+            Icon(Icons.directions_transit),
+            CommunityScreen(),
+            SettingScreen()
+          ],
         ),
-      );
+      ),
+    );
   }
 
   Widget menu(BuildContext context) {
@@ -42,11 +52,11 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.assignment),
           ),
           Tab(
-            text: "Balance",
-            icon: Icon(Icons.account_balance_wallet),
+            text: "Communities",
+            icon: Icon(Icons.list),
           ),
           Tab(
-            text: "Options",
+            text: "Settings",
             icon: Icon(Icons.settings),
           ),
         ],

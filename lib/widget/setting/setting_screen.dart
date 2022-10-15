@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
 import 'package:frontend_flutter/widget/login/login_screen.dart';
 
-import '../profile/logout_cubit.dart';
+import 'logout_cubit.dart';
 import '../profile/profile_screen.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -11,11 +11,9 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
+      return BlocProvider(
         create: (_) => LogoutCubit(false),
-      ),
-    ], child: _SettingsScreenContent()
+     child: _SettingsScreenContent(),
     );
   }
 }

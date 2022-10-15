@@ -1,8 +1,11 @@
 # Base URL of the web application
 baseUrl: http://localhost:49430
 
-# Base URL of the backend API
-backendBaseUrl: http://localhost:8080/api
+# Backend API
+backendScheme: http
+backendHost: localhost
+backendPort: 8080
+backendBasePath: /api
 
 # Configuration of authorization
 clientId: backend-service

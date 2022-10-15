@@ -28,27 +28,27 @@ class RequestService {
     this.client = client ?? http.Client();
   }
 
-  Future<HttpJsonResponse> request(String path, {HttpMethod method = HttpMethod.get, Object? body, bool needsAuth = true}) async {
+  Future<HttpJsonResponse> request(String path, {HttpMethod method = HttpMethod.get, Object? body, Map<String, String>? queryParameters, bool needsAuth = true}) async {
     String? accessToken;
     if (needsAuth) {
       accessToken = await _storageService.readToken(TokenType.accessToken);
       if (accessToken == null) {
-        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null);
+        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null, errorMessage: null);
       }
     }
-    HttpJsonResponse response = await _request(path, method: method, body: body, accessToken: accessToken);
+    HttpJsonResponse response = await _request(path, method: method, body: body, accessToken: accessToken, queryParameters: queryParameters);
     if (response.status == HttpStatus.unauthorized) {
       accessToken = await _authService.refresh();
       if (accessToken == null) {
-        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null);
+        return const HttpJsonResponse(status: HttpStatus.unauthorized, json: null, errorMessage: null);
       }
-      response = await _request(path, method: method, body: body, accessToken: accessToken);
+      response = await _request(path, method: method, body: body, accessToken: accessToken, queryParameters: queryParameters);
     }
     return response;
   }
 
-  Future<HttpJsonResponse> _request(String path, {HttpMethod method = HttpMethod.get, Object? body, String? accessToken}) async {
-    final uri = Uri.parse('${_config.backendBaseUrl}/$path');
+  Future<HttpJsonResponse> _request(String path, {HttpMethod method = HttpMethod.get, Object? body, Map<String, String>? queryParameters, String? accessToken}) async {
+    final uri = Uri(scheme: _config.backendScheme, host: _config.backendHost, port: _config.backendPort, path: '${_config.backendBasePath}/$path', queryParameters: queryParameters);
 
     final headers = httpHeaders(accessToken);
     final jsonData = json.encode(body);
@@ -79,17 +79,17 @@ class RequestService {
       }
     } catch (error) {
       print('Error during request: ${error.toString()}');
-      return const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null);
+      return HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null, errorMessage: error.toString());
     }
 
     final status = HttpStatus.fromValue(response.statusCode);
 
-    HttpJsonResponse httpJsonResponse = HttpJsonResponse(status: status, json: null);
+    HttpJsonResponse httpJsonResponse = HttpJsonResponse(status: status, json: null, errorMessage: response.reasonPhrase);
 
     if (status.isSuccessful()) {
       final jsonResponse =
       convert.jsonDecode(response.body) as Map<String, dynamic>;
-      httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse);
+      httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse, errorMessage: response.reasonPhrase);
     }
     print('$path: ${httpJsonResponse.toString()}');
 
