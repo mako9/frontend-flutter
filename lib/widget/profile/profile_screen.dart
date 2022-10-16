@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
 import 'package:frontend_flutter/widget/profile/user_info_cubit.dart';
 
+import '../../model/data_response.dart';
 import '../../model/user.dart';
 import '../element/custom_text_form_field.dart';
 import '../element/loading_overlay.dart';
@@ -14,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => UserInfoCubit(null),
+      create: (_) => UserInfoCubit.ofInitialState(),
       child: LoadingOverlay(child: _ProfileScreenContent()),
     );
   }
@@ -43,38 +44,45 @@ class _ProfileScreenContent extends StatelessWidget {
           children: <Widget>[
             Text(
               AppLocalizations.of(context)!.profileScreen_headline,
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
            Expanded(
-             child: BlocBuilder<UserInfoCubit, User?>(
-              builder: (_, user) {
-                if (user != null) { LoadingOverlay.of(context).hide(); }
+             child: BlocBuilder<UserInfoCubit, DataResponse<User>>(
+              builder: (_, dataResponse) {
+                LoadingOverlay.of(context).hide();
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(children: [
-                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_firstName, initialValue: user?.firstName, controller: _firstNameController),
+                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_firstName, initialValue: dataResponse.data?.firstName, controller: _firstNameController),
                       ]),
                       Row(children: [
-                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_lastName, initialValue: user?.lastName, controller: _lastNameController),
+                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_lastName, initialValue: dataResponse.data?.lastName, controller: _lastNameController),
                       ]),
                       Row(children: [
-                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_mail, initialValue: user?.mail),
+                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_mail, initialValue: dataResponse.data?.mail),
                       ]),
                       Row(
                         children: [
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_street, initialValue: user?.street, controller: _streetController),
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_houseNumber, initialValue: user?.houseNumber, controller: _houseNumberController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_street, initialValue: dataResponse.data?.street, controller: _streetController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_houseNumber, initialValue: dataResponse.data?.houseNumber, controller: _houseNumberController),
                         ],
                       ),
                       Row(
                         children: [
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_postalCode, initialValue: user?.postalCode, controller: _postalCodeController),
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_city, initialValue: user?.city, controller: _cityController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_postalCode, initialValue: dataResponse.data?.postalCode, controller: _postalCodeController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_city, initialValue: dataResponse.data?.city, controller: _cityController),
                         ],
                       ),
                       const SizedBox(height: 30),
+                      if (dataResponse.errorMessage != null) ...[
+                        Text(
+                          AppLocalizations.of(context)!.errorMessage(dataResponse.errorMessage!),
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        const SizedBox(height: 30),
+                      ],
                       CustomButton(AppLocalizations.of(context)!.save, Icons.save, () {
                         final updatedUser = User(
                           firstName: _firstNameController.text,

@@ -74,7 +74,7 @@ class _CommunityScreenContent extends StatelessWidget {
                     ],
                   ),
                   if (dataResponse.errorMessage != null) ...[
-                    Text('${AppLocalizations.of(context)!.errorMessage}${dataResponse.errorMessage!}')]
+                    Text(AppLocalizations.of(context)!.errorMessage(dataResponse.errorMessage!))]
                   else if (page != null && page.content.isNotEmpty) ...[
                     ListView.builder(
                         shrinkWrap: true,

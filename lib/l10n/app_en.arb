@@ -1,6 +1,13 @@
 {
   "save": "Save",
-  "errorMessage": "An error occurred: ",
+  "errorMessage": "An error occurred: {message}",
+  "@errorMessage": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
   "loginScreen_headline": "You are not logged in, login first.",
   "loginScreen_login": "Login",
   "homeScreen_tabSettings": "Settings",
