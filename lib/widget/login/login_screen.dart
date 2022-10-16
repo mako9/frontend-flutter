@@ -27,7 +27,8 @@ class _LoginScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.all(24.0),
         child: BlocListener(
           bloc: BlocProvider.of<LoginCubit>(context),
           listener: (BuildContext context, bool isLoggedIn) {

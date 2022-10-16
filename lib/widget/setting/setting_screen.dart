@@ -32,7 +32,7 @@ class _SettingsScreenContent extends StatelessWidget {
     ];
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.all(60.0),
+          padding: const EdgeInsets.all(24.0),
           alignment: Alignment.topCenter,
           child: BlocListener(
             bloc: BlocProvider.of<LogoutCubit>(context),
