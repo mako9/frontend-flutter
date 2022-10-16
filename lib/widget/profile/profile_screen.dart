@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
 import 'package:frontend_flutter/widget/profile/user_info_cubit.dart';
 
@@ -32,7 +33,7 @@ class _ProfileScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(AppLocalizations.of(context)!.profileScreen_title),
       ),
       body: Container(
         padding: const EdgeInsets.all(30.0),
@@ -40,9 +41,9 @@ class _ProfileScreenContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'User info:',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.profileScreen_headline,
+              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
            Expanded(
@@ -53,28 +54,28 @@ class _ProfileScreenContent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(children: [
-                        CustomTextFormField('First name', initialValue: user?.firstName, controller: _firstNameController),
+                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_firstName, initialValue: user?.firstName, controller: _firstNameController),
                       ]),
                       Row(children: [
-                        CustomTextFormField('Last name', initialValue: user?.lastName, controller: _lastNameController),
+                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_lastName, initialValue: user?.lastName, controller: _lastNameController),
                       ]),
                       Row(children: [
-                        CustomTextFormField('Email', initialValue: user?.mail),
+                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_mail, initialValue: user?.mail),
                       ]),
                       Row(
                         children: [
-                          CustomTextFormField('Street', initialValue: user?.street, controller: _streetController),
-                          CustomTextFormField('House number', initialValue: user?.houseNumber, controller: _houseNumberController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_street, initialValue: user?.street, controller: _streetController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_houseNumber, initialValue: user?.houseNumber, controller: _houseNumberController),
                         ],
                       ),
                       Row(
                         children: [
-                          CustomTextFormField('Postal code', initialValue: user?.postalCode, controller: _postalCodeController),
-                          CustomTextFormField('City', initialValue: user?.city, controller: _cityController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_postalCode, initialValue: user?.postalCode, controller: _postalCodeController),
+                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_city, initialValue: user?.city, controller: _cityController),
                         ],
                       ),
                       const SizedBox(height: 30),
-                      CustomButton('Save', Icons.save, () {
+                      CustomButton(AppLocalizations.of(context)!.save, Icons.save, () {
                         final updatedUser = User(
                           firstName: _firstNameController.text,
                           lastName: _lastNameController.text,

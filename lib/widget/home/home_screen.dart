@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/community/community_screen.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/setting/setting_screen.dart';
@@ -37,27 +38,27 @@ class _HomeScreenContent extends StatelessWidget {
   Widget menu(BuildContext context) {
     return Container(
       color: Theme.of(context).primaryColor,
-      child: const TabBar(
+      child: TabBar(
         labelColor: Colors.white,
         unselectedLabelColor: Colors.white70,
         indicatorSize: TabBarIndicatorSize.tab,
-        indicatorPadding: EdgeInsets.all(5.0),
+        indicatorPadding: const EdgeInsets.all(5.0),
         tabs: [
-          Tab(
+          const Tab(
             text: "Transactions",
             icon: Icon(Icons.euro_symbol),
           ),
-          Tab(
+          const Tab(
             text: "Bills",
             icon: Icon(Icons.assignment),
           ),
           Tab(
-            text: "Communities",
-            icon: Icon(Icons.list),
+            text: AppLocalizations.of(context)!.homeScreen_tabCommunities,
+            icon: const Icon(Icons.list),
           ),
           Tab(
-            text: "Settings",
-            icon: Icon(Icons.settings),
+            text: AppLocalizations.of(context)!.homeScreen_tabSettings,
+            icon: const Icon(Icons.settings),
           ),
         ],
       ),
