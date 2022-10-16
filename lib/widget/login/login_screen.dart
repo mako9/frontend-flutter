@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/home/home_screen.dart';
 import 'package:frontend_flutter/widget/login/login_cubit.dart';
@@ -26,7 +27,8 @@ class _LoginScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.all(24.0),
         child: BlocListener(
           bloc: BlocProvider.of<LoginCubit>(context),
           listener: (BuildContext context, bool isLoggedIn) {
@@ -41,12 +43,11 @@ class _LoginScreenContent extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'You are not logged in, login here:',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              Text(AppLocalizations.of(context)!.loginScreen_headline,
+                style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 60),
-              CustomButton('Login', Icons.login, () {
+              CustomButton(AppLocalizations.of(context)!.loginScreen_login, Icons.login, () {
                 LoadingOverlay.of(context).show();
                 context.read<LoginCubit>().login();
               }),

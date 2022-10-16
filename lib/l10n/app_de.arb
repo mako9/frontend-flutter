@@ -1,0 +1,22 @@
+{
+    "save": "Speichern",
+    "errorMessage": "Ein Fehler ist aufgetreten: {message}",
+    "loginScreen_headline": "Du bist nicht eingeloggt, logge dich erst ein.",
+    "loginScreen_login": "Einloggen",
+    "homeScreen_tabSettings": "Einstellungen",
+    "homeScreen_tabCommunities": "Communities",
+    "profileScreen_title": "Profil",
+    "profileScreen_headline": "Nutzerinformation:",
+    "profileScreen_firstName": "Vorname:",
+    "profileScreen_lastName": "Nachname:",
+    "profileScreen_mail": "E-Mail:",
+    "profileScreen_street": "Straße:",
+    "profileScreen_houseNumber": "Hausnummer:",
+    "profileScreen_postalCode": "PLZ:",
+    "profileScreen_city": "Stadt:",
+    "communityScreen_myCommunities": "Meine Communities",
+    "communityScreen_allCommunities": "Alle Communities",
+    "communityScreen_ofPages": "von {count} Seiten",
+    "settingsScreen_profileSettings": "Profileinstellungen",
+    "settingsScreen_securitySettings": "Sicherheitseinstellung"
+}

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
 import 'package:frontend_flutter/widget/login/login_screen.dart';
 
-import 'logout_cubit.dart';
 import '../profile/profile_screen.dart';
+import 'logout_cubit.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -21,14 +22,17 @@ class SettingScreen extends StatelessWidget {
 class _SettingsScreenContent extends StatelessWidget {
   _SettingsScreenContent();
 
-  final List<String> _listTitles = ['Profile settings', 'Security settings'];
   final List<IconData> _listIcons = [Icons.person, Icons.security];
 
   @override
   Widget build(BuildContext context) {
+    final List<String> listTitles = [
+      AppLocalizations.of(context)!.settingsScreen_profileSettings,
+      AppLocalizations.of(context)!.settingsScreen_securitySettings,
+    ];
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.all(60.0),
+          padding: const EdgeInsets.all(24.0),
           alignment: Alignment.topCenter,
           child: BlocListener(
             bloc: BlocProvider.of<LogoutCubit>(context),
@@ -44,7 +48,7 @@ class _SettingsScreenContent extends StatelessWidget {
                 const SizedBox(height: 30),
                ListView.builder(
                   shrinkWrap: true,
-                  itemCount: _listTitles.length,
+                  itemCount: listTitles.length,
                   itemBuilder: (context, index) {
                 return Card(
                 child: ListTile(
@@ -61,7 +65,7 @@ class _SettingsScreenContent extends StatelessWidget {
                       pageRoute
                   );
                 },
-                title: Text(_listTitles[index]),
+                title: Text(listTitles[index]),
                 leading: Icon(_listIcons[index])));
                 }),
                 const Spacer(),

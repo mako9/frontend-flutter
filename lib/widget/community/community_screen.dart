@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 
 import '../../model/community.dart';
@@ -67,9 +68,13 @@ class _CommunityScreenContent extends StatelessWidget {
                       minWidth: 150.0,
                     ),
                     isSelected: _selectedToggle,
-                    children: const [Text('My communities'), Text('All communities')],
+                    children: [
+                      Text(AppLocalizations.of(context)!.communityScreen_myCommunities),
+                      Text(AppLocalizations.of(context)!.communityScreen_allCommunities),
+                    ],
                   ),
-                  if (dataResponse.errorMessage != null) ...[ Text(dataResponse.errorMessage!) ]
+                  if (dataResponse.errorMessage != null) ...[
+                    Text(AppLocalizations.of(context)!.errorMessage(dataResponse.errorMessage!))]
                   else if (page != null && page.content.isNotEmpty) ...[
                     ListView.builder(
                         shrinkWrap: true,
@@ -110,7 +115,7 @@ class _CommunityScreenContent extends StatelessWidget {
                                             context.read<CommunityCubit>().loadMyCommunities(pageNumber: int.parse(value) - 1);
                                           })),
                                   const SizedBox(width: 12),
-                                  Text('of ${page.totalPages.toString()} pages')
+                                  Text(AppLocalizations.of(context)!.communityScreen_ofPages(page.totalPages))
                                 ],
                               ),
                               ),
