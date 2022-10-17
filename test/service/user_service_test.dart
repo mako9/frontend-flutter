@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
@@ -37,7 +36,8 @@ void main() {
 
     when(mockRequestService.request('user/me')).thenAnswer((_) async =>
     HttpJsonResponse(status: HttpStatus.ok, json: json));
-    final user = await userService.getUser();
+    final dataResponse = await userService.getUser();
+    final user = dataResponse.data;
 
     expect(user?.uuid, json['uuid']);
     expect(user?.firstName, json['firstName']);
@@ -52,8 +52,9 @@ void main() {
   test('when getting invalid response, then user is returned', () async {
     when(mockRequestService.request('user/me')).thenAnswer((_) async =>
         const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null));
-    final user = await userService.getUser();
+    final dataResponse = await userService.getUser();
 
-    expect(user, null);
+    expect(dataResponse.data, null);
+    expect(dataResponse.errorMessage, 'serviceUnavailable');
   });
 }

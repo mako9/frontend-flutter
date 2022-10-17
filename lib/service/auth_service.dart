@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:frontend_flutter/model/credential.dart';
 import 'package:frontend_flutter/service/auth/auth_interface.dart';
 import 'package:frontend_flutter/service/storage_service.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
-import '../di/service_locator.dart';
+import 'package:frontend_flutter/di/service_locator.dart';
 
 class AuthService {
   final _storageService = getIt.get<StorageService>();
@@ -21,6 +24,10 @@ class AuthService {
   Future<String?> refresh() async {
     final refreshToken = await _getStoredToken(TokenType.refreshToken);
     if (refreshToken == null) { return null; }
+    final expireDate = Jwt.getExpiryDate(refreshToken);
+    if (expireDate == null) return null;
+    final isExpired = expireDate.isBefore(DateTime.now().add(const Duration(minutes: 3)));
+    if (isExpired) { return null; }
     Credential? credential = await auth.refresh(refreshToken);
     await _storeTokenFromCredential(credential);
     return credential?.accessToken;
@@ -28,7 +35,14 @@ class AuthService {
 
   Future<bool> isLoggedIn() async {
     final accessToken = await _getStoredToken(TokenType.accessToken);
-    return accessToken != null;
+    if (accessToken == null) return false;
+    final expireDate = Jwt.getExpiryDate(accessToken);
+    if (expireDate == null) return false;
+    final isExpired = expireDate.isBefore(DateTime.now().add(const Duration(minutes: 3)));
+    if (isExpired) {
+      return await refresh() != null;
+    }
+    return true;
   }
 
   Future<void> logout() async {

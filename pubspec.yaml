@@ -46,6 +46,7 @@ dependencies:
   oauth2: ^2.0.0
   http: ^0.13.5
   get_it: ^7.2.0
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   flutter_test:
