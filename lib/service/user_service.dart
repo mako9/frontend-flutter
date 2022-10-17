@@ -22,7 +22,7 @@ class UserService {
   Future<DataResponse<User>> _evaluateResponse(HttpJsonResponse response) async {
     final json = response.getJson();
     User? user;
-    if (json != null) { User.fromJson(json); }
+    if (json != null) { user = User.fromJson(json); }
     return DataResponse.fromHttpResponse(user, response);
   }
 }
