@@ -1,4 +1,6 @@
-class Community {
+import 'package:frontend_flutter/model/listable_model.dart';
+
+class Community implements ListableModel {
   final String? uuid;
   final String? name;
   final String? street;
@@ -6,6 +8,12 @@ class Community {
   final String? postalCode;
   final String? city;
   final int? radius;
+  final double? latitude;
+  final double? longitude;
+  final bool? isAdmin;
+  final String? adminUuid;
+  final String? adminFirstName;
+  final String? adminLastName;
 
   const Community({
     this.uuid,
@@ -15,6 +23,12 @@ class Community {
     this.postalCode,
     this.city,
     this.radius,
+    this.latitude,
+    this.longitude,
+    this.isAdmin,
+    this.adminUuid,
+    this.adminFirstName,
+    this.adminLastName,
   });
 
   factory Community.fromJson(Map<String, dynamic> json) {
@@ -26,14 +40,28 @@ class Community {
       postalCode: json['postalCode'],
       city: json['city'],
       radius: json['radius'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      isAdmin: json['admin'],
+      adminUuid: json['adminUuid'],
+      adminFirstName: json['adminFirstName'],
+      adminLastName: json['adminLastName'],
     );
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => {
     'name': name,
     'street': street,
     'houseNumber': houseNumber,
     'postalCode': postalCode,
     'city': city,
+    'radius': radius,
+    'latitude': latitude,
+    'longitude': longitude,
   };
+
+  @override
+  String title() {
+    return name ?? 'Unknown';
+  }
 }

@@ -41,16 +41,24 @@ class _LoginScreenContent extends StatelessWidget {
                 }
             },
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
+              const SizedBox(height: 60),
+              Image.asset('/image/fox.png', height: 200, width: 200),
+              const SizedBox(height: 24),
+              Text(AppLocalizations.of(context)!.appName,
+                style: const TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
               Text(AppLocalizations.of(context)!.loginScreen_headline,
-                style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 24),
               ),
               const SizedBox(height: 60),
               CustomButton(AppLocalizations.of(context)!.loginScreen_login, Icons.login, () {
                 LoadingOverlay.of(context).show();
                 context.read<LoginCubit>().login();
               }),
+              const SizedBox(height: 60),
             ],
           ),
         ),

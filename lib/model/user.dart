@@ -1,4 +1,6 @@
-class User {
+import 'package:frontend_flutter/model/listable_model.dart';
+
+class User implements ListableModel {
   final String? uuid;
   final String? firstName;
   final String? lastName;
@@ -22,8 +24,8 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
-    List<dynamic> jsonRoles = json['roles'];
-    final List<UserRole> roles = jsonRoles.map((e) => UserRole.fromJson(e)).toList();
+    List<dynamic>? jsonRoles = json['roles'];
+    final List<UserRole>? roles = jsonRoles?.map((e) => UserRole.fromJson(e)).toList();
     return User(
       uuid: json['uuid'],
       firstName: json['firstName'],
@@ -37,7 +39,7 @@ class User {
     );
   }
 
-  Map toJson() => {
+  Map<String, dynamic> toJson() => {
     'firstName': firstName,
     'lastName': lastName,
     'street': street,
@@ -45,6 +47,11 @@ class User {
     'postalCode': postalCode,
     'city': city,
   };
+
+  @override
+  String title() {
+    return '$lastName, $firstName';
+  }
 }
 
 enum UserRole {

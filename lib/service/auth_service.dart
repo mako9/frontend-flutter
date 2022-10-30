@@ -1,11 +1,8 @@
-import 'dart:math';
-
+import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/model/credential.dart';
 import 'package:frontend_flutter/service/auth/auth_interface.dart';
 import 'package:frontend_flutter/service/storage_service.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-
-import 'package:frontend_flutter/di/service_locator.dart';
 
 class AuthService {
   final _storageService = getIt.get<StorageService>();

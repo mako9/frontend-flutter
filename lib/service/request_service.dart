@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:frontend_flutter/model/config.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:frontend_flutter/service/auth_service.dart';
@@ -78,7 +79,7 @@ class RequestService {
           break;
       }
     } catch (error) {
-      print('Error during request: ${error.toString()}');
+      debugPrint('Error during request: ${error.toString()}');
       return HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null, errorMessage: error.toString());
     }
 
@@ -91,7 +92,7 @@ class RequestService {
       convert.jsonDecode(response.body) as Map<String, dynamic>;
       httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse, errorMessage: response.reasonPhrase);
     }
-    print('$path: ${httpJsonResponse.toString()}');
+    debugPrint('$path: ${httpJsonResponse.toString()}');
 
     return httpJsonResponse;
   }

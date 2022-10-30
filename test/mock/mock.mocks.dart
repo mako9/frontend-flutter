@@ -748,4 +748,108 @@ class MockCommunityService extends _i1.Mock implements _i15.CommunityService {
           ),
         )),
       ) as _i7.Future<_i2.DataResponse<_i16.DataPage<_i17.Community>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i17.Community>> getCommunity(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCommunity,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i17.Community>>.value(
+            _FakeDataResponse_0<_i17.Community>(
+          this,
+          Invocation.method(
+            #getCommunity,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.Community>>.value(
+                _FakeDataResponse_0<_i17.Community>(
+          this,
+          Invocation.method(
+            #getCommunity,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.Community>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i17.Community>> createCommunity(
+          _i17.Community? community) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createCommunity,
+          [community],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i17.Community>>.value(
+            _FakeDataResponse_0<_i17.Community>(
+          this,
+          Invocation.method(
+            #createCommunity,
+            [community],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.Community>>.value(
+                _FakeDataResponse_0<_i17.Community>(
+          this,
+          Invocation.method(
+            #createCommunity,
+            [community],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.Community>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i17.Community>> updateCommunity(
+          _i17.Community? community) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateCommunity,
+          [community],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i17.Community>>.value(
+            _FakeDataResponse_0<_i17.Community>(
+          this,
+          Invocation.method(
+            #updateCommunity,
+            [community],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.Community>>.value(
+                _FakeDataResponse_0<_i17.Community>(
+          this,
+          Invocation.method(
+            #updateCommunity,
+            [community],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.Community>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i16.DataPage<_i9.User>>> getCommunityMember(
+          String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCommunityMember,
+          [uuid],
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i16.DataPage<_i9.User>>>.value(
+                _FakeDataResponse_0<_i16.DataPage<_i9.User>>(
+          this,
+          Invocation.method(
+            #getCommunityMember,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i16.DataPage<_i9.User>>>.value(
+                _FakeDataResponse_0<_i16.DataPage<_i9.User>>(
+          this,
+          Invocation.method(
+            #getCommunityMember,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i16.DataPage<_i9.User>>>);
 }
