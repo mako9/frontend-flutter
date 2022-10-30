@@ -1,6 +1,8 @@
 {
+  "appName": "Comshare",
   "save": "Save",
   "errorMessage": "An error occurred: {message}",
+  "emptyList": "No entries found.",
   "@errorMessage": {
     "placeholders": {
       "message": {
@@ -8,6 +10,11 @@
       }
     }
   },
+  "name": "Name",
+  "street": "Street:",
+  "houseNumber": "House number:",
+  "postalCode": "Postal code:",
+  "city": "City:",
   "loginScreen_headline": "You are not logged in, login first.",
   "loginScreen_login": "Login",
   "homeScreen_tabSettings": "Settings",
@@ -17,10 +24,6 @@
   "profileScreen_firstName": "First name:",
   "profileScreen_lastName": "Last name:",
   "profileScreen_mail": "Email:",
-  "profileScreen_street": "Street:",
-  "profileScreen_houseNumber": "House number:",
-  "profileScreen_postalCode": "Postal code:",
-  "profileScreen_city": "City:",
   "communityScreen_myCommunities": "My communities",
   "communityScreen_allCommunities": "All communities",
   "communityScreen_ofPages": "of {count} pages",
@@ -31,6 +34,14 @@
       }
     }
   },
+  "communityScreen_createCommunity": "Create new community",
+  "communityDetailScreen_title": "Community details",
+  "communityDetailScreen_member": "Community members:",
+  "communityDetailScreen_admin": "Admin",
+  "communityEditScreen_title": "Edit community",
+  "communityEditScreen_radius": "Radius:",
+  "communityEditScreen_latitude": "Latitude:",
+  "communityEditScreen_longitude": "Longitude:",
   "settingsScreen_profileSettings": "Profile settings",
   "settingsScreen_securitySettings": "Security settings"
 }

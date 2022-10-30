@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:frontend_flutter/service/auth/auth_interface.dart';
 
 import '../../di/service_locator.dart';
 import '../../model/config.dart';
-import 'package:frontend_flutter/service/auth/auth_interface.dart';
-
 import '../../model/credential.dart';
 
 class AuthIo implements Auth {
@@ -39,9 +38,7 @@ class AuthIo implements Auth {
 
       return _getCredentialFromResponse(response);
     } catch (exception) {
-      if (kDebugMode) {
-        print(exception.toString());
-      }
+      debugPrint(exception.toString());
       return null;
     }
   }

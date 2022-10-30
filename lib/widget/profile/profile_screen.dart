@@ -65,14 +65,14 @@ class _ProfileScreenContent extends StatelessWidget {
                       ]),
                       Row(
                         children: [
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_street, initialValue: dataResponse.data?.street, controller: _streetController),
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_houseNumber, initialValue: dataResponse.data?.houseNumber, controller: _houseNumberController),
+                          CustomTextFormField(AppLocalizations.of(context)!.street, initialValue: dataResponse.data?.street, controller: _streetController),
+                          CustomTextFormField(AppLocalizations.of(context)!.houseNumber, initialValue: dataResponse.data?.houseNumber, controller: _houseNumberController),
                         ],
                       ),
                       Row(
                         children: [
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_postalCode, initialValue: dataResponse.data?.postalCode, controller: _postalCodeController),
-                          CustomTextFormField(AppLocalizations.of(context)!.profileScreen_city, initialValue: dataResponse.data?.city, controller: _cityController),
+                          CustomTextFormField(AppLocalizations.of(context)!.postalCode, initialValue: dataResponse.data?.postalCode, controller: _postalCodeController),
+                          CustomTextFormField(AppLocalizations.of(context)!.city, initialValue: dataResponse.data?.city, controller: _cityController),
                         ],
                       ),
                       const SizedBox(height: 30),

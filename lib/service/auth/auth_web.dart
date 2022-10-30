@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:html' as html;
 
+import 'package:flutter/cupertino.dart';
 import 'package:frontend_flutter/model/config.dart';
 import 'package:frontend_flutter/service/auth/auth_interface.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
@@ -62,13 +63,13 @@ class AuthWeb implements Auth {
   @override
   Future<void> logout(String idToken) async {
     // TODO: implement logout
-    print("Not implemented yet.");
+    debugPrint("Not implemented yet.");
   }
 
   @override
   Future<Credential?> refresh(String refreshToken) async {
     // TODO: implement refresh
-    print("Not implemented yet.");
+    debugPrint("Not implemented yet.");
     return null;
   }
 }
