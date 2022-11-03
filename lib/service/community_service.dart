@@ -6,6 +6,7 @@ import 'package:frontend_flutter/service/request_service.dart';
 
 import '../model/community.dart';
 import '../model/user.dart';
+import '../utils/http_helper.dart';
 
 class CommunityService {
   final RequestService _requestService = getIt.get<RequestService>();

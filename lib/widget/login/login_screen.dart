@@ -28,6 +28,7 @@ class _LoginScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.all(24.0),
         child: BlocListener(
           bloc: BlocProvider.of<LoginCubit>(context),
@@ -41,7 +42,7 @@ class _LoginScreenContent extends StatelessWidget {
                 }
             },
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 60),
               Image.asset('/image/fox.png', height: 200, width: 200),

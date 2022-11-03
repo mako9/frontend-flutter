@@ -14,5 +14,5 @@ abstract class Auth {
 
   Future<Credential?> refresh(String refreshToken);
 
-  Future<void> logout(String idToken);
+  Future<void> logout(String? idToken);
 }

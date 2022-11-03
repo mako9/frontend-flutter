@@ -13,9 +13,12 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48.0,
-      width: double.infinity,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 500.0,
+        maxHeight: 48.0,
+        minHeight: 48.0,
+      ),
       child: Container(
         decoration: const BoxDecoration(
             color: Colors.white,
