@@ -13,4 +13,12 @@ class Credential {
   String toString() {
     return 'Credentials: accessToken: $accessToken, refreshToken: $refreshToken, idToken: $idToken';
   }
+
+  factory Credential.fromJson(Map<String, dynamic> json) {
+    return Credential(
+      accessToken: json['access_token'],
+      refreshToken: json['refresh_token'],
+      idToken: json['id_token'],
+    );
+  }
 }

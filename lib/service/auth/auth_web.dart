@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:html' as html;
 
-import 'package:flutter/cupertino.dart';
 import 'package:frontend_flutter/model/config.dart';
 import 'package:frontend_flutter/service/auth/auth_interface.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 
 import '../../di/service_locator.dart';
 import '../../model/credential.dart';
+import '../../utils/http_helper.dart';
 
 class AuthWeb implements Auth {
   final _config = getIt.get<Config>();
+  final _httpHelper = HttpHelper();
   _WebAuthenticationSession? _authenticationSession;
 
   Uri get redirectUrl => Uri.parse('${_config.baseUrl}/callback.html');
@@ -61,15 +62,25 @@ class AuthWeb implements Auth {
   }
 
   @override
-  Future<void> logout(String idToken) async {
-    // TODO: implement logout
-    debugPrint("Not implemented yet.");
+  Future<void> logout(String? idToken) async {
+    final body = {
+      'client_id': _config.clientId,
+      'client_secret': _config.clientSecret,
+    };
+    await _httpHelper.urlEncodedPostRequest(_config.endSessionEndpoint, body: body);
   }
 
   @override
   Future<Credential?> refresh(String refreshToken) async {
-    // TODO: implement refresh
-    debugPrint("Not implemented yet.");
+    final body = {
+      'client_id': _config.clientId,
+      'client_secret': _config.clientSecret,
+      'grant_type': 'refresh_token',
+      'refresh_token': refreshToken,
+    };
+    final response = await _httpHelper.urlEncodedPostRequest(_config.tokenEndpoint, body: body);
+    final json = response.json;
+    if (json != null) return Credential.fromJson(json);
     return null;
   }
 }
