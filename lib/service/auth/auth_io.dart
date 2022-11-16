@@ -74,7 +74,7 @@ class AuthIo implements Auth {
   }
 
   @override
-  Future<void> logout(String? idToken) async {
+  Future<void> logout({String? idToken, String? refreshToken}) async {
     await _appAuth.endSession(EndSessionRequest(
         idTokenHint: idToken,
         postLogoutRedirectUrl: _config.postLogoutRedirectUrl,

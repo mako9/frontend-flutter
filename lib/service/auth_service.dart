@@ -44,7 +44,8 @@ class AuthService {
 
   Future<void> logout() async {
     String? idToken = await _getStoredToken(TokenType.idToken);
-    await auth.logout(idToken);
+    String? refreshToken = await _getStoredToken(TokenType.refreshToken);
+    await auth.logout(idToken: idToken, refreshToken: refreshToken);
     await _clearSessionInfo();
   }
 

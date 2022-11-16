@@ -30,6 +30,8 @@ class _CommunityScreenContent extends StatelessWidget {
 
   final List<bool> _selectedToggle = <bool>[true, false];
   bool _isInitialized = false;
+  int _index = 0;
+  DataPage<Community>? _page;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class _CommunityScreenContent extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: BlocBuilder<CommunityCubit, DataResponse<DataPage<Community>>>(
               builder: (_, dataResponse) {
-            final page = dataResponse.data;
+            _page = dataResponse.data;
             if (_isInitialized) {
               LoadingOverlay.of(context).hide();
             } else {
@@ -54,6 +56,7 @@ class _CommunityScreenContent extends StatelessWidget {
                 ToggleButtons(
                   direction: Axis.horizontal,
                   onPressed: (int index) {
+                    _index = index;
                     LoadingOverlay.of(context).show();
                     switch (index) {
                       case 0:
@@ -83,13 +86,22 @@ class _CommunityScreenContent extends StatelessWidget {
                 if (dataResponse.errorMessage != null) ...[
                   Text(AppLocalizations.of(context)!
                       .errorMessage(dataResponse.errorMessage!))
-                ] else if (page != null) ...[
-                  CustomPaginatedList(page, onElementTap: (index) {
+                ] else if (_page != null) ...[
+                  CustomPaginatedList(_page!, onElementTap: (index) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => CommunityDetailScreen(
-                                community: page.content[index])));
+                                community: _page!.content[index]))).then((_) {
+                      switch (_index) {
+                        case 0:
+                          context.read<CommunityCubit>().loadMyCommunities();
+                          break;
+                        case 1:
+                          context.read<CommunityCubit>().loadAllCommunities();
+                          break;
+                      }
+                    });
                   }, onPageChangeTap: (index) {
                     context
                         .read<CommunityCubit>()

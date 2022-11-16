@@ -62,10 +62,11 @@ class AuthWeb implements Auth {
   }
 
   @override
-  Future<void> logout(String? idToken) async {
+  Future<void> logout({String? idToken, String? refreshToken}) async {
     final body = {
       'client_id': _config.clientId,
       'client_secret': _config.clientSecret,
+      'refresh_token': refreshToken ?? '',
     };
     await _httpHelper.urlEncodedPostRequest(_config.endSessionEndpoint, body: body);
   }

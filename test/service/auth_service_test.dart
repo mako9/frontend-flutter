@@ -117,17 +117,19 @@ void main() {
 
   test('when calling logout with existing id token, then auth.logout is called', () async {
     when(mockStorageService.readToken(TokenType.idToken)).thenAnswer((_) async => 'id_token');
+    when(mockStorageService.readToken(TokenType.refreshToken)).thenAnswer((_) async => 'refresh_token');
     await authService.logout();
 
-    verify(mockAuth.logout('id_token')).called(1);
+    verify(mockAuth.logout(idToken: 'id_token', refreshToken: 'refresh_token')).called(1);
     verify(mockStorageService.deleteAllSecureData()).called(1);
   });
 
   test('when calling logout with existing id token, then auth.logout is not called', () async {
     when(mockStorageService.readToken(TokenType.idToken)).thenAnswer((_) async => null);
+    when(mockStorageService.readToken(TokenType.refreshToken)).thenAnswer((_) async => 'refresh_token');
     await authService.logout();
 
-    verifyNever(mockAuth.logout('id_token')).called(0);
+    verifyNever(mockAuth.logout(idToken: 'id_token', refreshToken: 'refresh_token')).called(0);
     verify(mockStorageService.deleteAllSecureData()).called(1);
   });
 }

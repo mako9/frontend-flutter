@@ -1,6 +1,6 @@
 class HttpJsonResponse {
   final HttpStatus status;
-  final Map<String, dynamic>? json;
+  final dynamic json;
   final String? errorMessage;
 
   const HttpJsonResponse({
@@ -14,7 +14,7 @@ class HttpJsonResponse {
     return 'Status: ${status.value}, body: $json, errorMessage: $errorMessage';
   }
 
-  Map<String, dynamic>? getJson() {
+  dynamic getJson() {
     if (status.isSuccessful()) {
       return json;
     } else {

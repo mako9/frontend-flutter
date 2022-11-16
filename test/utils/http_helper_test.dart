@@ -60,7 +60,7 @@ void main() {
 
     HttpJsonResponse response = await httpHelper.request(url, accessToken: 'some_token');
 
-    expect(response.status, HttpStatus.serviceUnavailable);
+    expect(response.status, HttpStatus.internalServerError);
     expect(response.json, null);
   });
 

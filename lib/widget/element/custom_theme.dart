@@ -23,4 +23,7 @@ final customTheme = ThemeData(
     color: Colors.brown[300],
   ),
   fontFamily: 'Georgia',
+  checkboxTheme: CheckboxThemeData(
+    fillColor: MaterialStateColor.resolveWith((states) => Colors.brown[300]!),
+  ),
 );

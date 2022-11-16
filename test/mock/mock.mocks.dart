@@ -755,10 +755,18 @@ class MockAuth extends _i1.Mock implements _i5.Auth {
         returnValueForMissingStub: _i7.Future<_i15.Credential?>.value(),
       ) as _i7.Future<_i15.Credential?>);
   @override
-  _i7.Future<void> logout(String? idToken) => (super.noSuchMethod(
+  _i7.Future<void> logout({
+    String? idToken,
+    String? refreshToken,
+  }) =>
+      (super.noSuchMethod(
         Invocation.method(
           #logout,
-          [idToken],
+          [],
+          {
+            #idToken: idToken,
+            #refreshToken: refreshToken,
+          },
         ),
         returnValue: _i7.Future<void>.value(),
         returnValueForMissingStub: _i7.Future<void>.value(),
@@ -907,12 +915,40 @@ class MockCommunityService extends _i1.Mock implements _i16.CommunityService {
         )),
       ) as _i7.Future<_i2.DataResponse<_i18.Community>>);
   @override
+  _i7.Future<_i2.DataResponse<_i18.Community>> deleteCommunity(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteCommunity,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i18.Community>>.value(
+            _FakeDataResponse_0<_i18.Community>(
+          this,
+          Invocation.method(
+            #deleteCommunity,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i18.Community>>.value(
+                _FakeDataResponse_0<_i18.Community>(
+          this,
+          Invocation.method(
+            #deleteCommunity,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i18.Community>>);
+  @override
   _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>> getCommunityMember(
-          String? uuid) =>
+    String? uuid, {
+    int? pageNumber = 0,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCommunityMember,
           [uuid],
+          {#pageNumber: pageNumber},
         ),
         returnValue:
             _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>>.value(
@@ -921,6 +957,7 @@ class MockCommunityService extends _i1.Mock implements _i16.CommunityService {
           Invocation.method(
             #getCommunityMember,
             [uuid],
+            {#pageNumber: pageNumber},
           ),
         )),
         returnValueForMissingStub:
@@ -930,7 +967,164 @@ class MockCommunityService extends _i1.Mock implements _i16.CommunityService {
           Invocation.method(
             #getCommunityMember,
             [uuid],
+            {#pageNumber: pageNumber},
           ),
         )),
       ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>> getRequestingMember(
+    String? uuid, {
+    int? pageNumber = 0,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRequestingMember,
+          [uuid],
+          {#pageNumber: pageNumber},
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i9.User>>(
+          this,
+          Invocation.method(
+            #getRequestingMember,
+            [uuid],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i9.User>>(
+          this,
+          Invocation.method(
+            #getRequestingMember,
+            [uuid],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i9.User>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i18.Community>> joinCommunity(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #joinCommunity,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i18.Community>>.value(
+            _FakeDataResponse_0<_i18.Community>(
+          this,
+          Invocation.method(
+            #joinCommunity,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i18.Community>>.value(
+                _FakeDataResponse_0<_i18.Community>(
+          this,
+          Invocation.method(
+            #joinCommunity,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i18.Community>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i18.Community>> leaveCommunity(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #leaveCommunity,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i18.Community>>.value(
+            _FakeDataResponse_0<_i18.Community>(
+          this,
+          Invocation.method(
+            #leaveCommunity,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i18.Community>>.value(
+                _FakeDataResponse_0<_i18.Community>(
+          this,
+          Invocation.method(
+            #leaveCommunity,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i18.Community>>);
+  @override
+  _i7.Future<_i2.DataResponse<List<_i9.User>>> approveJoinRequests(
+    String? communityUuid,
+    List<String>? userUuids,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #approveJoinRequests,
+          [
+            communityUuid,
+            userUuids,
+          ],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<List<_i9.User>>>.value(
+            _FakeDataResponse_0<List<_i9.User>>(
+          this,
+          Invocation.method(
+            #approveJoinRequests,
+            [
+              communityUuid,
+              userUuids,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<List<_i9.User>>>.value(
+                _FakeDataResponse_0<List<_i9.User>>(
+          this,
+          Invocation.method(
+            #approveJoinRequests,
+            [
+              communityUuid,
+              userUuids,
+            ],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<List<_i9.User>>>);
+  @override
+  _i7.Future<_i2.DataResponse<List<_i9.User>>> declineJoinRequest(
+    String? communityUuid,
+    List<String>? userUuids,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #declineJoinRequest,
+          [
+            communityUuid,
+            userUuids,
+          ],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<List<_i9.User>>>.value(
+            _FakeDataResponse_0<List<_i9.User>>(
+          this,
+          Invocation.method(
+            #declineJoinRequest,
+            [
+              communityUuid,
+              userUuids,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<List<_i9.User>>>.value(
+                _FakeDataResponse_0<List<_i9.User>>(
+          this,
+          Invocation.method(
+            #declineJoinRequest,
+            [
+              communityUuid,
+              userUuids,
+            ],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<List<_i9.User>>>);
 }
