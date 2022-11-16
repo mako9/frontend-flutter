@@ -45,9 +45,15 @@ class CommunityService {
     return _communityFromResponse(response);
   }
 
-  Future<DataResponse<DataPage<User>>> getCommunityMember(String uuid) async {
+  Future<DataResponse<Community>> deleteCommunity(String uuid) async {
+    final response = await _requestService.request('$_communityPath/$uuid', method: HttpMethod.delete);
+    return _communityFromResponse(response);
+  }
+
+  Future<DataResponse<DataPage<User>>> getCommunityMember(String uuid, {int pageNumber = 0}) async {
     final response =
-        await _requestService.request('$_communityPath/$uuid/member');
+        await _requestService.request('$_communityPath/$uuid/member',
+            queryParameters: _paginationParams(pageNumber));
     final json = response.getJson();
     DataPage<User>? responseCommunityMember;
     if (json != null) {
@@ -56,8 +62,40 @@ class CommunityService {
     return DataResponse.fromHttpResponse(responseCommunityMember, response);
   }
 
-  Map<String, String> _paginationParams(int pageNumber) {
-    return {'pageSize': '10', 'pageNumber': pageNumber.toString()};
+  Future<DataResponse<DataPage<User>>> getRequestingMember(String uuid, {int pageNumber = 0}) async {
+    final response =
+    await _requestService.request('$_communityPath/$uuid/requesting-member',
+        queryParameters: _paginationParams(pageNumber, pageSize: 15));
+    final json = response.getJson();
+    DataPage<User>? responseCommunityMember;
+    if (json != null) {
+      responseCommunityMember = DataPage.fromJson(json, User.fromJson);
+    }
+    return DataResponse.fromHttpResponse(responseCommunityMember, response);
+  }
+
+  Future<DataResponse<Community>> joinCommunity(String uuid) async {
+    final response = await _requestService.request('$_communityPath/$uuid/join');
+    return _communityFromResponse(response);
+  }
+
+  Future<DataResponse<Community>> leaveCommunity(String uuid) async {
+    final response = await _requestService.request('$_communityPath/$uuid/leave');
+    return _communityFromResponse(response);
+  }
+
+  Future<DataResponse<List<User>>> approveJoinRequests(String communityUuid, List<String> userUuids) async {
+    final response = await _requestService.request('$_communityPath/$communityUuid/request/approve', method: HttpMethod.post, body: userUuids);
+    return _userListFromResponse(response);
+  }
+
+  Future<DataResponse<List<User>>> declineJoinRequest(String communityUuid, List<String> userUuids) async {
+    final response = await _requestService.request('$_communityPath/$communityUuid/request/decline', method: HttpMethod.post, body: userUuids);
+    return _userListFromResponse(response);
+  }
+
+  Map<String, String> _paginationParams(int pageNumber, {int pageSize = 10}) {
+    return {'pageSize': pageSize.toString(), 'pageNumber': pageNumber.toString()};
   }
 
   DataResponse<DataPage<Community>> _dataPageFromResponse(
@@ -68,6 +106,16 @@ class CommunityService {
       page = DataPage.fromJson(json, Community.fromJson);
     }
     return DataResponse.fromHttpResponse(page, response);
+  }
+
+  DataResponse<List<User>> _userListFromResponse(
+      HttpJsonResponse response) {
+    final json = response.getJson();
+    List<User>? list;
+    if (json != null) {
+      list = List<User>.from(json.map((e) => User.fromJson(e)));
+    }
+    return DataResponse.fromHttpResponse(list, response);
   }
 
   DataResponse<Community> _communityFromResponse(HttpJsonResponse response) {

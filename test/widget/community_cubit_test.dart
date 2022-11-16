@@ -16,7 +16,7 @@ void main() {
 
   late CommunityService mockCommunityService;
   late CommunityCubit communityCubit;
-  const response = DataResponse<DataPage<Community>>(
+  final response = DataResponse<DataPage<Community>>(
       data: DataPage(
         content: [Community(
           uuid: 'uuid',

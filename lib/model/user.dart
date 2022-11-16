@@ -11,7 +11,7 @@ class User implements ListableModel {
   final String? city;
   final List<UserRole>? roles;
 
-  const User({
+  User({
     this.uuid,
     this.firstName,
     this.lastName,
@@ -52,6 +52,9 @@ class User implements ListableModel {
   String title() {
     return '$lastName, $firstName';
   }
+
+  @override
+  bool isSelected = false;
 }
 
 enum UserRole {

@@ -16,7 +16,7 @@ void main() {
   late RequestService mockRequestService;
   late CommunityService communityService;
 
-  const community = Community(
+  final community = Community(
       uuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
       name: 'Test',
       street: 'street',
@@ -73,19 +73,26 @@ void main() {
     'totalElements': 2
   };
 
-  final Map<String, dynamic> memberJsonPage = {
-    'content': [
+  final List<String> userUuids = [
+    'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
+    'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A9',
+  ];
+
+  final List<Map<String, dynamic>> userList = [
       {
-        'uuid': 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
+        'uuid': userUuids[0],
         'firstName': '1',
         'lastName': '1',
       },
-      {
-        'uuid': 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A9',
-        'firstName': '2',
-        'lastName': '2',
+    {
+      'uuid': userUuids[1],
+      'firstName': '2',
+      'lastName': '2',
       }
-    ],
+  ];
+
+  final Map<String, dynamic> memberJsonPage = {
+    'content': userList,
     'pageNumber': 0,
     'pageSize': 10,
     'lastPage': true,
@@ -228,7 +235,7 @@ void main() {
   });
 
   test('when getting a community unsuccessfully, then error is returned', () async {
-    when(mockRequestService.request('user/community/unknown', method: HttpMethod.get)).thenAnswer((_) async =>
+    when(mockRequestService.request('user/community/unknown')).thenAnswer((_) async =>
     const HttpJsonResponse(status: HttpStatus.notFound, json: null));
     final dataResponse = await communityService.getCommunity('unknown');
 
@@ -237,7 +244,7 @@ void main() {
   });
 
   test('when getting community member successfully, then page of user is returned', () async {
-    when(mockRequestService.request('user/community/${community.uuid}/member')).thenAnswer((_) async =>
+    when(mockRequestService.request('user/community/${community.uuid}/member', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
         HttpJsonResponse(status: HttpStatus.ok, json: memberJsonPage));
     final dataResponse = await communityService.getCommunityMember(community.uuid!);
     final page = dataResponse.data!;
@@ -253,11 +260,112 @@ void main() {
   });
 
   test('when getting a community member unsuccessfully, then error is returned', () async {
-    when(mockRequestService.request('user/community/${community.uuid}/member', method: HttpMethod.get)).thenAnswer((_) async =>
+    when(mockRequestService.request('user/community/${community.uuid}/member', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
     const HttpJsonResponse(status: HttpStatus.badRequest, json: null));
     final dataResponse = await communityService.getCommunityMember(community.uuid!);
 
     expect(null, dataResponse.data);
     expect(HttpStatus.badRequest.name, dataResponse.errorMessage);
+  });
+
+  test('when getting requesting member successfully, then page of user is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/requesting-member', queryParameters: {'pageSize': '15', 'pageNumber':'0'})).thenAnswer((_) async =>
+        HttpJsonResponse(status: HttpStatus.ok, json: memberJsonPage));
+    final dataResponse = await communityService.getRequestingMember(community.uuid!);
+    final page = dataResponse.data!;
+
+    expect(dataResponse.errorMessage, null);
+    expect(page.content.length, (jsonPage['content'] as List).length);
+    expect(page.totalElements, jsonPage['totalElements']);
+    expect(page.totalPages, jsonPage['totalPages']);
+    expect(page.isFirstPage, jsonPage['firstPage']);
+    expect(page.isLastPage, jsonPage['lastPage']);
+    expect(page.pageNumber, jsonPage['pageNumber']);
+    expect(page.pageSize, jsonPage['pageSize']);
+  });
+
+  test('when getting a requesting member unsuccessfully, then error is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/requesting-member', queryParameters: {'pageSize': '15', 'pageNumber':'0'})).thenAnswer((_) async =>
+    const HttpJsonResponse(status: HttpStatus.badRequest, json: null));
+    final dataResponse = await communityService.getRequestingMember(community.uuid!);
+
+    expect(null, dataResponse.data);
+    expect(HttpStatus.badRequest.name, dataResponse.errorMessage);
+  });
+
+  test('when joining a community successfully, then status 204 is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/join')).thenAnswer((_) async =>
+        const HttpJsonResponse(status: HttpStatus.noContent, json: null));
+    final dataResponse = await communityService.joinCommunity(community.uuid.toString());
+
+    expect(null, dataResponse.data);
+    expect(null, dataResponse.errorMessage);
+  });
+
+  test('when joining a community unsuccessfully, then status 503 is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/join')).thenAnswer((_) async =>
+    const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null));
+    final dataResponse = await communityService.joinCommunity(community.uuid.toString());
+
+    expect(null, dataResponse.data);
+    expect(HttpStatus.serviceUnavailable.name, dataResponse.errorMessage);
+  });
+
+  test('when leaving a community successfully, then status 204 is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/leave')).thenAnswer((_) async =>
+    const HttpJsonResponse(status: HttpStatus.noContent, json: null));
+    final dataResponse = await communityService.leaveCommunity(community.uuid.toString());
+
+    expect(null, dataResponse.data);
+    expect(null, dataResponse.errorMessage);
+  });
+
+  test('when leaving a community unsuccessfully, then status 503 is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/leave')).thenAnswer((_) async =>
+    const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null));
+    final dataResponse = await communityService.leaveCommunity(community.uuid.toString());
+
+    expect(null, dataResponse.data);
+    expect(HttpStatus.serviceUnavailable.name, dataResponse.errorMessage);
+  });
+
+  test('when approving community join requests successfully, then list of approved members is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/request/approve', method: HttpMethod.post, body: userUuids)).thenAnswer((_) async =>
+        HttpJsonResponse(status: HttpStatus.noContent, json: userList));
+    final dataResponse = await communityService.approveJoinRequests(community.uuid.toString(), userUuids);
+
+    expect(dataResponse.errorMessage, null);
+    expect(dataResponse.data?.length, userUuids.length);
+    expect(dataResponse.data?[0].uuid, userUuids[0]);
+    expect(dataResponse.data?[1].uuid, userUuids[1]);
+  });
+
+  test('when joining a community unsuccessfully, then status 503 is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/request/approve', method: HttpMethod.post, body: userUuids)).thenAnswer((_) async =>
+    const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null));
+    final dataResponse = await communityService.approveJoinRequests(community.uuid.toString(), userUuids);
+
+    expect(null, dataResponse.data);
+    expect(HttpStatus.serviceUnavailable.name, dataResponse.errorMessage);
+  });
+
+  test('when declining community join requests successfully, then list of approved members is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/request/decline', method: HttpMethod.post, body: userUuids)).thenAnswer((_) async =>
+        HttpJsonResponse(status: HttpStatus.noContent, json: userList));
+    final dataResponse = await communityService.declineJoinRequest(community.uuid.toString(), userUuids);
+
+    expect(dataResponse.errorMessage, null);
+    expect(dataResponse.data?.length, userUuids.length);
+    expect(dataResponse.data?[0].uuid, userUuids[0]);
+    expect(dataResponse.data?[1].uuid, userUuids[1]);
+  });
+
+  test('when declining a community unsuccessfully, then status 503 is returned', () async {
+    when(mockRequestService.request('user/community/${community.uuid}/request/decline', method: HttpMethod.post, body: userUuids)).thenAnswer((_) async =>
+    const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null));
+    final dataResponse = await communityService.declineJoinRequest(community.uuid.toString(), userUuids);
+
+    expect(null, dataResponse.data);
+    expect(HttpStatus.serviceUnavailable.name, dataResponse.errorMessage);
   });
 }

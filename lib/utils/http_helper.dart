@@ -74,7 +74,7 @@ class HttpHelper {
       }
     } catch (error) {
       debugPrint('Error during request: ${error.toString()}');
-      return HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null, errorMessage: error.toString());
+      return HttpJsonResponse(status: HttpStatus.internalServerError, json: null, errorMessage: error.toString());
     }
 
     HttpJsonResponse httpJsonResponse = _parseResponse(response);
@@ -100,9 +100,12 @@ class HttpHelper {
     HttpJsonResponse httpJsonResponse = HttpJsonResponse(status: status, json: null, errorMessage: response.reasonPhrase);
 
     if (status.isSuccessful()) {
-      final jsonResponse =
-      convert.jsonDecode(response.body) as Map<String, dynamic>;
-      httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse, errorMessage: response.reasonPhrase);
+      try {
+        final jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
+        httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse, errorMessage: response.reasonPhrase);
+      } catch (exception) {
+        debugPrint('Json not parsed: ${exception.toString()}');
+      }
     }
 
     return httpJsonResponse;

@@ -14,13 +14,13 @@ void main() {
 
   late CommunityService mockCommunityService;
   late CommunityEditCubit communityEditCubit;
-  const community = Community(
+  final community = Community(
       name: 'name',
       radius: 10,
       latitude: 0.4,
       longitude: 2.3,
   );
-  const response = DataResponse<Community>(
+  final response = DataResponse<Community>(
         data: community,
       errorMessage: null
   );

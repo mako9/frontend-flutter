@@ -15,7 +15,7 @@ void main() {
 
   late UserService mockUserService;
   late UserInfoCubit userInfoCubit;
-  User user = const User(
+  User user = User(
     firstName: 'Test',
     lastName: 'Test'
   );

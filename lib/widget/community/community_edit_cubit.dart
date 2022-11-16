@@ -17,17 +17,7 @@ class CommunityEditCubit extends Cubit<DataResponse<Community>> {
     return CommunityEditCubit(DataResponse(data: community, errorMessage: null));
   }
 
-  Future<void> createCommunity(String name, int radius, double latitude, double longitude, {String? street, String? houseNumber, String? postalCode, String? city}) async {
-    final community = Community(
-      name: name,
-      street: street,
-      houseNumber: houseNumber,
-      postalCode: postalCode,
-      city: city,
-      radius: radius,
-      latitude: latitude,
-      longitude: longitude,
-    );
+  Future<void> createCommunity(Community community) async {
     final communityDataResponse = await _communityService.createCommunity(community);
     emit(communityDataResponse);
   }

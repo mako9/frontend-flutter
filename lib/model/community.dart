@@ -14,8 +14,11 @@ class Community implements ListableModel {
   final String? adminUuid;
   final String? adminFirstName;
   final String? adminLastName;
+  final bool? canBeJoined;
+  final bool? isMember;
+  final bool? hasRequestedMembership;
 
-  const Community({
+  Community({
     this.uuid,
     this.name,
     this.street,
@@ -29,6 +32,9 @@ class Community implements ListableModel {
     this.adminUuid,
     this.adminFirstName,
     this.adminLastName,
+    this.canBeJoined,
+    this.isMember,
+    this.hasRequestedMembership,
   });
 
   factory Community.fromJson(Map<String, dynamic> json) {
@@ -46,6 +52,9 @@ class Community implements ListableModel {
       adminUuid: json['adminUuid'],
       adminFirstName: json['adminFirstName'],
       adminLastName: json['adminLastName'],
+      canBeJoined: json['canBeJoined'],
+      isMember: json['member'],
+      hasRequestedMembership: json['hasRequestedMembership'],
     );
   }
 
@@ -58,10 +67,14 @@ class Community implements ListableModel {
     'radius': radius,
     'latitude': latitude,
     'longitude': longitude,
+    'canBeJoined': canBeJoined,
   };
 
   @override
   String title() {
     return name ?? 'Unknown';
   }
+
+  @override
+  bool isSelected = false;
 }
