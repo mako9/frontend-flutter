@@ -4,7 +4,7 @@ import 'package:frontend_flutter/service/storage_service.dart';
 @GenerateNiceMocks([MockSpec<UserService>()])
 import 'package:frontend_flutter/service/user_service.dart';
 @GenerateNiceMocks([MockSpec<HttpHelper>()])
-import 'package:frontend_flutter/utils/http_helper.dart';
+import 'package:frontend_flutter/util/http_helper.dart';
 @GenerateNiceMocks([MockSpec<http.Client>()])
 import 'package:http/http.dart' as http;
 @GenerateNiceMocks([MockSpec<AuthService>()])

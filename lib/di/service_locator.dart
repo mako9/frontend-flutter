@@ -6,6 +6,8 @@ import 'package:frontend_flutter/service/storage_service.dart';
 import 'package:frontend_flutter/service/user_service.dart';
 import 'package:get_it/get_it.dart';
 
+import '../service/item_service.dart';
+
 GetIt getIt = GetIt.instance;
 
 void getServices() {
@@ -15,4 +17,5 @@ void getServices() {
   getIt.registerLazySingleton(() => UserService());
   getIt.registerLazySingleton(() => RequestService());
   getIt.registerLazySingleton(() => CommunityService());
+  getIt.registerLazySingleton(() => ItemService());
 }

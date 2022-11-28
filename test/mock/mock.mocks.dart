@@ -19,7 +19,7 @@ import 'package:frontend_flutter/service/community_service.dart' as _i16;
 import 'package:frontend_flutter/service/request_service.dart' as _i14;
 import 'package:frontend_flutter/service/storage_service.dart' as _i6;
 import 'package:frontend_flutter/service/user_service.dart' as _i8;
-import 'package:frontend_flutter/utils/http_helper.dart' as _i10;
+import 'package:frontend_flutter/util/http_helper.dart' as _i10;
 import 'package:http/http.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 

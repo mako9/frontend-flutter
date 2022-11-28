@@ -4,6 +4,8 @@ import 'package:frontend_flutter/widget/community/community_screen.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/setting/setting_screen.dart';
 
+import '../item/item_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -26,7 +28,7 @@ class _HomeScreenContent extends StatelessWidget {
         body: const TabBarView(
           children: [
             Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
+            ItemScreen(),
             CommunityScreen(),
             SettingScreen()
           ],
@@ -48,9 +50,9 @@ class _HomeScreenContent extends StatelessWidget {
             text: "Transactions",
             icon: Icon(Icons.euro_symbol),
           ),
-          const Tab(
-            text: "Bills",
-            icon: Icon(Icons.assignment),
+          Tab(
+            text: AppLocalizations.of(context)!.homeScreen_tabItems,
+            icon: const Icon(Icons.swap_horiz),
           ),
           Tab(
             text: AppLocalizations.of(context)!.homeScreen_tabCommunities,
