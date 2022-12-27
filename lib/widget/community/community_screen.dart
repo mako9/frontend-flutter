@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:frontend_flutter/widget/community/community_edit_screen.dart';
 import 'package:frontend_flutter/widget/element/custom_paginated_list.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 
 import '../../model/community.dart';
 import '../../model/data_page.dart';
 import '../../model/data_response.dart';
-import '../element/custom_button.dart';
 import 'community_cubit.dart';
 import 'community_detail_screen.dart';
 
@@ -109,15 +107,6 @@ class _CommunityScreenContent extends StatelessWidget {
                   })
                 ],
                 const Spacer(),
-                CustomButton(
-                    AppLocalizations.of(context)!
-                        .communityScreen_createCommunity,
-                    Icons.add_circle, () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CommunityEditScreen()));
-                }),
               ],
             );
           })), // This trailing comma makes auto-formatting nicer for build methods.

@@ -6,7 +6,7 @@ import 'package:frontend_flutter/service/request_service.dart';
 
 import '../model/community.dart';
 import '../model/user.dart';
-import '../utils/http_helper.dart';
+import '../util/http_helper.dart';
 
 class CommunityService {
   final RequestService _requestService = getIt.get<RequestService>();
@@ -22,6 +22,13 @@ class CommunityService {
   Future<DataResponse<DataPage<Community>>> getMyCommunities(
       {int pageNumber = 0}) async {
     final response = await _requestService.request('$_communityPath/my',
+        queryParameters: _paginationParams(pageNumber));
+    return _dataPageFromResponse(response);
+  }
+
+  Future<DataResponse<DataPage<Community>>> getCommunitiesOwnedByMe(
+      {int pageNumber = 0}) async {
+    final response = await _requestService.request('$_communityPath/owned',
         queryParameters: _paginationParams(pageNumber));
     return _dataPageFromResponse(response);
   }

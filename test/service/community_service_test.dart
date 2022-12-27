@@ -5,7 +5,7 @@ import 'package:frontend_flutter/model/community.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:frontend_flutter/service/community_service.dart';
 import 'package:frontend_flutter/service/request_service.dart';
-import 'package:frontend_flutter/utils/http_helper.dart';
+import 'package:frontend_flutter/util/http_helper.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
@@ -138,6 +138,22 @@ void main() {
     when(mockRequestService.request('user/community/my', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
         HttpJsonResponse(status: HttpStatus.ok, json: jsonPage));
     final dataResponse = await communityService.getMyCommunities();
+    final page = dataResponse.data;
+
+    expect(dataResponse.errorMessage, null);
+    expect(page?.content.length, (jsonPage['content'] as List).length);
+    expect(page?.totalElements, jsonPage['totalElements']);
+    expect(page?.totalPages, jsonPage['totalPages']);
+    expect(page?.isFirstPage, jsonPage['firstPage']);
+    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.pageNumber, jsonPage['pageNumber']);
+    expect(page?.pageSize, jsonPage['pageSize']);
+  });
+
+  test('when getting communities owned by me, then a page of communities is returned', () async {
+    when(mockRequestService.request('user/community/owned', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
+        HttpJsonResponse(status: HttpStatus.ok, json: jsonPage));
+    final dataResponse = await communityService.getCommunitiesOwnedByMe();
     final page = dataResponse.data;
 
     expect(dataResponse.errorMessage, null);

@@ -2,7 +2,7 @@ import 'package:frontend_flutter/model/config.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:frontend_flutter/service/auth_service.dart';
 import 'package:frontend_flutter/service/storage_service.dart';
-import 'package:frontend_flutter/utils/http_helper.dart';
+import 'package:frontend_flutter/util/http_helper.dart';
 
 import '../di/service_locator.dart';
 

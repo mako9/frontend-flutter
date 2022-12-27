@@ -12,14 +12,16 @@ import 'package:frontend_flutter/model/credential.dart' as _i15;
 import 'package:frontend_flutter/model/data_page.dart' as _i17;
 import 'package:frontend_flutter/model/data_response.dart' as _i2;
 import 'package:frontend_flutter/model/http_json_response.dart' as _i4;
+import 'package:frontend_flutter/model/item.dart' as _i20;
 import 'package:frontend_flutter/model/user.dart' as _i9;
 import 'package:frontend_flutter/service/auth/auth_interface.dart' as _i5;
 import 'package:frontend_flutter/service/auth_service.dart' as _i13;
 import 'package:frontend_flutter/service/community_service.dart' as _i16;
+import 'package:frontend_flutter/service/item_service.dart' as _i19;
 import 'package:frontend_flutter/service/request_service.dart' as _i14;
 import 'package:frontend_flutter/service/storage_service.dart' as _i6;
 import 'package:frontend_flutter/service/user_service.dart' as _i8;
-import 'package:frontend_flutter/utils/http_helper.dart' as _i10;
+import 'package:frontend_flutter/util/http_helper.dart' as _i10;
 import 'package:http/http.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -838,6 +840,37 @@ class MockCommunityService extends _i1.Mock implements _i16.CommunityService {
         )),
       ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i18.Community>>>);
   @override
+  _i7.Future<
+      _i2.DataResponse<_i17.DataPage<_i18.Community>>> getCommunitiesOwnedByMe(
+          {int? pageNumber = 0}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCommunitiesOwnedByMe,
+          [],
+          {#pageNumber: pageNumber},
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i18.Community>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i18.Community>>(
+          this,
+          Invocation.method(
+            #getCommunitiesOwnedByMe,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i18.Community>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i18.Community>>(
+          this,
+          Invocation.method(
+            #getCommunitiesOwnedByMe,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i18.Community>>>);
+  @override
   _i7.Future<_i2.DataResponse<_i18.Community>> getCommunity(String? uuid) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1127,4 +1160,202 @@ class MockCommunityService extends _i1.Mock implements _i16.CommunityService {
           ),
         )),
       ) as _i7.Future<_i2.DataResponse<List<_i9.User>>>);
+}
+
+/// A class which mocks [ItemService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockItemService extends _i1.Mock implements _i19.ItemService {
+  @override
+  _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>> getAllItemsOfCommunity(
+    String? uuid, {
+    int? pageNumber = 0,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllItemsOfCommunity,
+          [uuid],
+          {#pageNumber: pageNumber},
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i20.Item>>(
+          this,
+          Invocation.method(
+            #getAllItemsOfCommunity,
+            [uuid],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i20.Item>>(
+          this,
+          Invocation.method(
+            #getAllItemsOfCommunity,
+            [uuid],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>> getMyItems(
+          {int? pageNumber = 0}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getMyItems,
+          [],
+          {#pageNumber: pageNumber},
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i20.Item>>(
+          this,
+          Invocation.method(
+            #getMyItems,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i20.Item>>(
+          this,
+          Invocation.method(
+            #getMyItems,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>> getItemsOwnedByMe(
+          {int? pageNumber = 0}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getItemsOwnedByMe,
+          [],
+          {#pageNumber: pageNumber},
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i20.Item>>(
+          this,
+          Invocation.method(
+            #getItemsOwnedByMe,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>.value(
+                _FakeDataResponse_0<_i17.DataPage<_i20.Item>>(
+          this,
+          Invocation.method(
+            #getItemsOwnedByMe,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i17.DataPage<_i20.Item>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i20.Item>> getItem(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getItem,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+            _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #getItem,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+                _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #getItem,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i20.Item>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i20.Item>> createItem(_i20.Item? item) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createItem,
+          [item],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+            _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #createItem,
+            [item],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+                _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #createItem,
+            [item],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i20.Item>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i20.Item>> updateItem(_i20.Item? item) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateItem,
+          [item],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+            _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #updateItem,
+            [item],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+                _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #updateItem,
+            [item],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i20.Item>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i20.Item>> deleteItem(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteItem,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+            _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #deleteItem,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i20.Item>>.value(
+                _FakeDataResponse_0<_i20.Item>(
+          this,
+          Invocation.method(
+            #deleteItem,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i20.Item>>);
 }

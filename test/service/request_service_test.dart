@@ -5,7 +5,7 @@ import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:frontend_flutter/service/auth_service.dart';
 import 'package:frontend_flutter/service/request_service.dart';
 import 'package:frontend_flutter/service/storage_service.dart';
-import 'package:frontend_flutter/utils/http_helper.dart';
+import 'package:frontend_flutter/util/http_helper.dart';
 import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';

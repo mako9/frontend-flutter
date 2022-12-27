@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/community/community_screen.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
+import 'package:frontend_flutter/widget/my_area/my_area_screen.dart';
 import 'package:frontend_flutter/widget/setting/setting_screen.dart';
+
+import '../item/item_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,9 +28,9 @@ class _HomeScreenContent extends StatelessWidget {
         bottomNavigationBar: menu(context),
         body: const TabBarView(
           children: [
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
+            ItemScreen(),
             CommunityScreen(),
+            MyAreaScreen(),
             SettingScreen()
           ],
         ),
@@ -44,17 +47,17 @@ class _HomeScreenContent extends StatelessWidget {
         indicatorSize: TabBarIndicatorSize.tab,
         indicatorPadding: const EdgeInsets.all(5.0),
         tabs: [
-          const Tab(
-            text: "Transactions",
-            icon: Icon(Icons.euro_symbol),
-          ),
-          const Tab(
-            text: "Bills",
-            icon: Icon(Icons.assignment),
+          Tab(
+            text: AppLocalizations.of(context)!.homeScreen_tabItems,
+            icon: const Icon(Icons.swap_horiz),
           ),
           Tab(
             text: AppLocalizations.of(context)!.homeScreen_tabCommunities,
             icon: const Icon(Icons.list),
+          ),
+          Tab(
+            text: AppLocalizations.of(context)!.homeScreen_tabMyArea,
+            icon: const Icon(Icons.dataset),
           ),
           Tab(
             text: AppLocalizations.of(context)!.homeScreen_tabSettings,

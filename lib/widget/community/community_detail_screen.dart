@@ -15,17 +15,17 @@ import '../element/loading_overlay.dart';
 import 'community_edit_screen.dart';
 
 class CommunityDetailScreen extends StatelessWidget {
-  late final Community? initialCommunity;
+  late final Community? _initialCommunity;
 
   CommunityDetailScreen({Key? key, Community? community}) : super(key: key) {
-    initialCommunity = community;
+    _initialCommunity = community;
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          CommunityDetailCubit.ofInitialState(community: initialCommunity),
+          CommunityDetailCubit.ofInitialState(community: _initialCommunity),
       child: const LoadingOverlay(child: _CommunityDetailScreenContent()),
     );
   }
@@ -38,6 +38,7 @@ class _CommunityDetailScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     Community? community;
     DataPage<User>? member;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.communityDetailScreen_title),

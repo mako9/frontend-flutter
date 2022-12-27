@@ -7,7 +7,7 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 
 import '../../di/service_locator.dart';
 import '../../model/credential.dart';
-import '../../utils/http_helper.dart';
+import '../../util/http_helper.dart';
 
 class AuthWeb implements Auth {
   final _config = getIt.get<Config>();

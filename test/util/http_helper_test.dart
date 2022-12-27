@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/model/config.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
-import 'package:frontend_flutter/utils/http_helper.dart';
+import 'package:frontend_flutter/util/http_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 
