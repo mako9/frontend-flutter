@@ -26,10 +26,10 @@ class ItemService {
     return _dataPageFromResponse(response);
   }
 
-  Future<DataResponse<DataPage<Item>>> getItemsOfMyCommunities(
+  Future<DataResponse<DataPage<Item>>> getItemsOwnedByMe(
       {int pageNumber = 0}) async {
-    final response = await _requestService.request('$_itemPath/my-communities',
-        queryParameters: _paginationParams(pageNumber, pageSize: 100));
+    final response = await _requestService.request('$_itemPath/owned',
+        queryParameters: _paginationParams(pageNumber));
     return _dataPageFromResponse(response);
   }
 
@@ -78,5 +78,22 @@ class ItemService {
       responseCommunity = Item.fromJson(json);
     }
     return DataResponse.fromHttpResponse(responseCommunity, response);
+  }
+
+  static Map<ItemCategory, List<Item>>? getGroupedItems(DataPage<Item>? page) {
+    if (page == null || page.content.isEmpty) return null;
+    Map<ItemCategory, List<Item>> map = {};
+    for (var element in ItemCategory.values) {
+      map[element] = List.empty();
+    }
+    for (var element in page.content) {
+      final categories = element.itemCategories;
+      if (categories == null) continue;
+      for (var category in categories)  {
+        map[category] = [...?map[category], element];
+      }
+    }
+    map.removeWhere((key, value) => value.isEmpty);
+    return map;
   }
 }

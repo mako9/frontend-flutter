@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
-import 'package:frontend_flutter/model/listable_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/model/listable_model.dart';
+import 'package:frontend_flutter/util/json_util.dart';
 
 class Item implements ListableModel {
   final String? uuid;
@@ -10,13 +13,13 @@ class Item implements ListableModel {
   final String? houseNumber;
   final String? postalCode;
   final String? city;
-  final double? latitude;
-  final double? longitude;
   final bool? isActive;
   final String? communityUuid;
   final String? userUuid;
   final String? availability;
+  final DateTime? availableUntil;
   final String? description;
+  final bool isOwner;
 
   Item({
     this.uuid,
@@ -26,13 +29,13 @@ class Item implements ListableModel {
     this.houseNumber,
     this.postalCode,
     this.city,
-    this.latitude,
-    this.longitude,
     this.isActive,
     this.communityUuid,
     this.userUuid,
     this.availability,
+    this.availableUntil,
     this.description,
+    this.isOwner = false,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -46,28 +49,27 @@ class Item implements ListableModel {
       houseNumber: json['houseNumber'],
       postalCode: json['postalCode'],
       city: json['city'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
       isActive: json['active'],
       communityUuid: json['communityUuid'],
       userUuid: json['userUuid'],
       availability: json['availability'],
+      availableUntil: JsonUtil.parseDateString(json['availableUntil']),
       description: json['description'],
+      isOwner: json['owner'] ?? false,
     );
   }
 
   Map<String, dynamic> toJson() => {
     'name': name,
-    'itemCategories': itemCategories,
+    'categories': itemCategories?.map((e) => e.name.toUpperCase()).toList(),
     'street': street,
     'houseNumber': houseNumber,
     'postalCode': postalCode,
     'city': city,
-    'latitude': latitude,
-    'longitude': longitude,
     'isActive': isActive,
     'communityUuid': communityUuid,
     'availability': availability,
+    'availableUntil': JsonUtil.parseDateTime(availableUntil),
     'description': description,
   };
 
@@ -106,7 +108,7 @@ enum ItemCategory {
       case ItemCategory.tool:
         return AppLocalizations.of(context)!.itemCategory_tool;
       case ItemCategory.electric_device:
-        return AppLocalizations.of(context)!.itemCategory_electric_device;
+        return AppLocalizations.of(context)!.itemCategory_electricDevice;
       case ItemCategory.other:
         return AppLocalizations.of(context)!.itemCategory_other;
     }

@@ -150,6 +150,22 @@ void main() {
     expect(page?.pageSize, jsonPage['pageSize']);
   });
 
+  test('when getting communities owned by me, then a page of communities is returned', () async {
+    when(mockRequestService.request('user/community/owned', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
+        HttpJsonResponse(status: HttpStatus.ok, json: jsonPage));
+    final dataResponse = await communityService.getCommunitiesOwnedByMe();
+    final page = dataResponse.data;
+
+    expect(dataResponse.errorMessage, null);
+    expect(page?.content.length, (jsonPage['content'] as List).length);
+    expect(page?.totalElements, jsonPage['totalElements']);
+    expect(page?.totalPages, jsonPage['totalPages']);
+    expect(page?.isFirstPage, jsonPage['firstPage']);
+    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.pageNumber, jsonPage['pageNumber']);
+    expect(page?.pageSize, jsonPage['pageSize']);
+  });
+
   test('when getting my communities with error, then null returned', () async {
     when(mockRequestService.request('user/community/my', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
     const HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null));

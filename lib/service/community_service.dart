@@ -26,6 +26,13 @@ class CommunityService {
     return _dataPageFromResponse(response);
   }
 
+  Future<DataResponse<DataPage<Community>>> getCommunitiesOwnedByMe(
+      {int pageNumber = 0}) async {
+    final response = await _requestService.request('$_communityPath/owned',
+        queryParameters: _paginationParams(pageNumber));
+    return _dataPageFromResponse(response);
+  }
+
   Future<DataResponse<Community>> getCommunity(String uuid) async {
     final response = await _requestService.request('$_communityPath/$uuid');
     return _communityFromResponse(response);
