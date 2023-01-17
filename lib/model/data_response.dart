@@ -13,7 +13,7 @@ class DataResponse<E> {
     return const DataResponse(data: null, errorMessage: null);
   }
 
-  factory DataResponse.fromHttpResponse(E? data, HttpJsonResponse response) {
+  factory DataResponse.fromHttpResponse(E? data, HttpDataResponse response) {
     String? message;
     if (!response.status.isSuccessful()) {
       message = response.errorMessage ?? response.status.name;

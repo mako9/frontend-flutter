@@ -17,7 +17,6 @@ void main() {
   const path = 'user/me';
   const body = '{"test": "test"}';
   const bodyObject = {'test': 'test'};
-  const testUrl = 'https://test.com';
 
   late http.Client mockClient;
   late HttpHelper httpHelper;
@@ -32,71 +31,71 @@ void main() {
   });
 
   test('when calling POST URL encoded request with success, then status 200 is returned', () async {
-    when(mockClient.post(Uri.parse(testUrl), headers: {
-      HttpHeaders.acceptHeader: ContentType.json.value,
-      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
+    when(mockClient.post(url, headers: {
+      HttpHeaders.acceptHeader: HttpContentType.json.value,
+      HttpHeaders.contentTypeHeader: HttpContentType.urlEncoded.value,
     }, encoding: Encoding.getByName('utf-8'), body: bodyObject)).thenAnswer((_) async => http.Response(body, 200));
 
-    HttpJsonResponse response = await httpHelper.urlEncodedPostRequest(testUrl, body: bodyObject);
+    HttpDataResponse response = await httpHelper.request(url, method: HttpMethod.post, contentType: HttpContentType.urlEncoded, body: bodyObject);
 
     expect(response.status, HttpStatus.ok);
-    expect(response.json, bodyObject);
+    expect(response.data, bodyObject);
   });
 
-  test('when calling POST URL encoded request without success, then status 503 is returned', () async {
-    when(mockClient.post(Uri.parse(testUrl), headers: {
+  test('when calling POST URL encoded request without success, then status 500 is returned', () async {
+    when(mockClient.post(url, headers: {
       HttpHeaders.acceptHeader: ContentType.json.value,
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
     }, encoding: Encoding.getByName('utf-8'), body: bodyObject)).thenThrow(Error());
 
-    HttpJsonResponse response = await httpHelper.urlEncodedPostRequest(testUrl, body: bodyObject);
+    HttpDataResponse response = await httpHelper.request(url, method: HttpMethod.post, contentType: HttpContentType.urlEncoded, body: bodyObject);
 
-    expect(response.status, HttpStatus.serviceUnavailable);
-    expect(response.json, null);
+    expect(response.status, HttpStatus.internalServerError);
+    expect(response.data, null);
   });
 
   test('when calling GET request with failing request, then status 503 is returned', () async {
-    when(mockClient.get(url, headers: httpHelper.httpHeaders('some_token'))).thenThrow(Error());
+    when(mockClient.get(url, headers: httpHelper.httpHeaders(accessToken: 'some_token'))).thenThrow(Error());
 
-    HttpJsonResponse response = await httpHelper.request(url, accessToken: 'some_token');
+    HttpDataResponse response = await httpHelper.request(url, accessToken: 'some_token');
 
     expect(response.status, HttpStatus.internalServerError);
-    expect(response.json, null);
+    expect(response.data, null);
   });
 
   test('when calling POST request, then status 200 is returned', () async {
-    when(mockClient.post(url, body: json.encode(bodyObject), headers: httpHelper.httpHeaders('some_token'))).thenAnswer((_) async => http.Response(body, 200));
+    when(mockClient.post(url, body: json.encode(bodyObject), headers: httpHelper.httpHeaders(accessToken: 'some_token'), encoding: Encoding.getByName('utf-8'))).thenAnswer((_) async => http.Response(body, 200));
 
     final response = await httpHelper.request(url, method: HttpMethod.post, body: bodyObject, accessToken: 'some_token');
 
     expect(response.status, HttpStatus.ok);
-    expect(response.json, bodyObject);
+    expect(response.data, bodyObject);
   });
 
   test('when calling PATCH request, then status 200 is returned', () async {
-    when(mockClient.patch(url, body: json.encode(bodyObject), headers: httpHelper.httpHeaders('some_token'))).thenAnswer((_) async => http.Response(body, 200));
+    when(mockClient.patch(url, body: json.encode(bodyObject), headers: httpHelper.httpHeaders(accessToken: 'some_token'))).thenAnswer((_) async => http.Response(body, 200));
 
     final response = await httpHelper.request(url, method: HttpMethod.patch, body: bodyObject, accessToken: 'some_token');
 
     expect(response.status, HttpStatus.ok);
-    expect(response.json, bodyObject);
+    expect(response.data, bodyObject);
   });
 
   test('when calling PUT request, then status 200 is returned', () async {
-    when(mockClient.put(url, body: json.encode(bodyObject), headers: httpHelper.httpHeaders('some_token'))).thenAnswer((_) async => http.Response(body, 200));
+    when(mockClient.put(url, body: json.encode(bodyObject), headers: httpHelper.httpHeaders(accessToken: 'some_token'))).thenAnswer((_) async => http.Response(body, 200));
 
     final response = await httpHelper.request(url, method: HttpMethod.put, body: bodyObject, accessToken: 'some_token');
 
     expect(response.status, HttpStatus.ok);
-    expect(response.json, bodyObject);
+    expect(response.data, bodyObject);
   });
 
   test('when calling DELETE request, then status 200 is returned', () async {
-    when(mockClient.delete(url, headers: httpHelper.httpHeaders('some_token'))).thenAnswer((_) async => http.Response('{}', 204));
+    when(mockClient.delete(url, headers: httpHelper.httpHeaders(accessToken: 'some_token'))).thenAnswer((_) async => http.Response('{}', 204));
 
     final response = await httpHelper.request(url, method: HttpMethod.delete, accessToken: 'some_token');
 
     expect(response.status, HttpStatus.noContent);
-    expect(response.json, {});
+    expect(response.data, {});
   });
 }

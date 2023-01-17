@@ -1,10 +1,12 @@
 import 'dart:convert' as convert;
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 enum HttpMethod {
   get,
@@ -14,6 +16,17 @@ enum HttpMethod {
   delete
 }
 
+enum HttpContentType {
+  json('application/json'),
+  urlEncoded('application/x-www-form-urlencoded'),
+  octetStream('application/octet-stream'),
+  multipartFormData('multipart/form-data');
+
+  const HttpContentType(this.value);
+
+  final String value;
+}
+
 class HttpHelper {
   late http.Client client;
 
@@ -21,47 +34,33 @@ class HttpHelper {
     this.client = client ?? http.Client();
   }
 
-  Future<HttpJsonResponse> urlEncodedPostRequest(String url, {Map<String, String>? body}) async {
-    final uri = Uri.parse(url);
-
-    final headers = {
-      HttpHeaders.acceptHeader: ContentType.json.value,
-      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
-    };
-
-    http.Response response;
-    try {
-      response = await client
-          .post(uri, headers: headers, encoding: Encoding.getByName('utf-8'), body: body);
-    } catch (error) {
-      debugPrint('Error during request: ${error.toString()}');
-      return HttpJsonResponse(status: HttpStatus.serviceUnavailable, json: null, errorMessage: error.toString());
+  Future<HttpDataResponse> request(Uri uri, {
+    HttpMethod method = HttpMethod.get,
+    HttpContentType contentType = HttpContentType.json,
+    HttpContentType acceptType = HttpContentType.json,
+    dynamic body,
+    String? accessToken,
+  }) async {
+    final headers = httpHeaders(contentType: contentType, acceptType: acceptType, accessToken: accessToken);
+    var data = body;
+    if (contentType == HttpContentType.json) {
+      data = json.encode(body);
     }
-
-    HttpJsonResponse httpJsonResponse = _parseResponse(response);
-    debugPrint('$url: ${httpJsonResponse.toString()}');
-
-    return httpJsonResponse;
-  }
-
-  Future<HttpJsonResponse> request(Uri uri, {HttpMethod method = HttpMethod.get, Object? body, String? accessToken}) async {
-    final headers = httpHeaders(accessToken);
-    final jsonData = json.encode(body);
 
     http.Response response;
     try {
       switch (method) {
         case HttpMethod.post:
           response = await client
-              .post(uri, headers: headers, body: jsonData);
+              .post(uri, headers: headers, body: data, encoding: Encoding.getByName('utf-8'));
           break;
         case HttpMethod.patch:
           response = await client
-              .patch(uri, headers: headers, body: jsonData);
+              .patch(uri, headers: headers, body: data);
           break;
         case HttpMethod.put:
           response = await client
-              .put(uri, headers: headers, body: jsonData);
+              .put(uri, headers: headers, body: data);
           break;
         case HttpMethod.delete:
           response = await client
@@ -74,19 +73,40 @@ class HttpHelper {
       }
     } catch (error) {
       debugPrint('Error during request: ${error.toString()}');
-      return HttpJsonResponse(status: HttpStatus.internalServerError, json: null, errorMessage: error.toString());
+      return HttpDataResponse(status: HttpStatus.internalServerError, data: null, errorMessage: error.toString());
     }
 
-    HttpJsonResponse httpJsonResponse = _parseResponse(response);
-    debugPrint('$uri: ${httpJsonResponse.toString()}');
+    HttpDataResponse httpDataResponse = _parseResponse(response, acceptType: acceptType);
+    debugPrint('$uri: ${httpDataResponse.toString()}');
 
-    return httpJsonResponse;
+    return httpDataResponse;
   }
 
-  Map<String, String> httpHeaders(String? accessToken) {
+  Future<HttpDataResponse> multipartRequest(Uri uri, Uint8List bytes, String imageExtension, String accessToken) async {
+    var request = http.MultipartRequest('POST', uri);
+    request.headers.addAll(httpHeaders(contentType: HttpContentType.multipartFormData, accessToken: accessToken));
+     request.files.add(http.MultipartFile.fromBytes('file', bytes, contentType: MediaType('image', imageExtension)));
+     try {
+       final response = await request.send();
+       return HttpDataResponse(
+         status: HttpStatus.fromValue(response.statusCode),
+         data: null,
+         errorMessage: response.reasonPhrase,
+       );
+     } catch (error) {
+       debugPrint('Error during request: ${error.toString()}');
+       return HttpDataResponse(status: HttpStatus.internalServerError, data: null, errorMessage: error.toString());
+     }
+  }
+
+  Map<String, String> httpHeaders({
+    HttpContentType contentType = HttpContentType.json,
+    HttpContentType acceptType = HttpContentType.json,
+    String? accessToken,
+  }) {
     var headers = {
-      HttpHeaders.contentTypeHeader: ContentType.json.value,
-      HttpHeaders.acceptHeader: ContentType.json.value,
+      HttpHeaders.contentTypeHeader: contentType.value,
+      HttpHeaders.acceptHeader: acceptType.value,
     };
     if (accessToken != null) {
       headers[HttpHeaders.authorizationHeader] = 'Bearer $accessToken';
@@ -94,20 +114,30 @@ class HttpHelper {
     return headers;
   }
 
-  HttpJsonResponse _parseResponse(http.Response response) {
+  HttpDataResponse _parseResponse(http.Response response, { HttpContentType acceptType = HttpContentType.json }) {
     final status = HttpStatus.fromValue(response.statusCode);
 
-    HttpJsonResponse httpJsonResponse = HttpJsonResponse(status: status, json: null, errorMessage: response.reasonPhrase);
+    HttpDataResponse httpDataResponse = HttpDataResponse(status: status, data: null, errorMessage: response.reasonPhrase);
 
     if (status.isSuccessful()) {
       try {
-        final jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
-        httpJsonResponse = HttpJsonResponse(status: status, json: jsonResponse, errorMessage: response.reasonPhrase);
+        dynamic data;
+        switch (acceptType) {
+          case HttpContentType.json:
+            data = convert.jsonDecode(response.body);
+            break;
+          case HttpContentType.octetStream:
+            data = response.bodyBytes;
+            break;
+          default:
+            data = response.body;
+        }
+        httpDataResponse = HttpDataResponse(status: status, data: data, errorMessage: null);
       } catch (exception) {
-        debugPrint('Json not parsed: ${exception.toString()}');
+        debugPrint('Data not parsed: ${exception.toString()}');
       }
     }
 
-    return httpJsonResponse;
+    return httpDataResponse;
   }
 }

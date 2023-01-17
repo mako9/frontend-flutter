@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
@@ -5,6 +6,7 @@ import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:frontend_flutter/model/item.dart';
 import 'package:frontend_flutter/service/item_service.dart';
 import 'package:frontend_flutter/service/request_service.dart';
+import 'package:frontend_flutter/util/http_helper.dart';
 import 'package:frontend_flutter/util/json_util.dart';
 import 'package:mockito/mockito.dart';
 
@@ -79,7 +81,7 @@ void main() {
 
   test('when getting all items of a community, then a page of items is returned', () async {
     when(mockRequestService.request('user/item/${item.communityUuid}', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        HttpJsonResponse(status: HttpStatus.ok, json: jsonPage));
+        HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
     final dataResponse = await itemService.getAllItemsOfCommunity(item.communityUuid!);
     final page = dataResponse.data;
 
@@ -95,7 +97,7 @@ void main() {
 
   test('when getting all items of a community with error, then a error message is returned', () async {
     when(mockRequestService.request('user/item/${item.communityUuid}', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        const HttpJsonResponse(status: HttpStatus.badRequest, json: null));
+        const HttpDataResponse(status: HttpStatus.badRequest, data: null));
     final dataResponse = await itemService.getAllItemsOfCommunity(item.communityUuid!);
 
     expect(dataResponse.errorMessage, HttpStatus.badRequest.name);
@@ -104,7 +106,7 @@ void main() {
 
   test('when getting my items, then a page of items is returned', () async {
     when(mockRequestService.request('user/item/my', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        HttpJsonResponse(status: HttpStatus.ok, json: jsonPage));
+        HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
     final dataResponse = await itemService.getMyItems();
     final page = dataResponse.data;
 
@@ -120,7 +122,7 @@ void main() {
 
   test('when getting my items with error, then a error message is returned', () async {
     when(mockRequestService.request('user/item/my', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-    const HttpJsonResponse(status: HttpStatus.notFound, json: null));
+    const HttpDataResponse(status: HttpStatus.notFound, data: null));
     final dataResponse = await itemService.getMyItems();
 
     expect(dataResponse.errorMessage, HttpStatus.notFound.name);
@@ -129,7 +131,7 @@ void main() {
 
   test('when getting items owned by me, then a page of items is returned', () async {
     when(mockRequestService.request('user/item/owned', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        HttpJsonResponse(status: HttpStatus.ok, json: jsonPage));
+        HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
     final dataResponse = await itemService.getItemsOwnedByMe();
     final page = dataResponse.data;
 
@@ -145,7 +147,7 @@ void main() {
 
   test('when getting my items with error, then a error message is returned', () async {
     when(mockRequestService.request('user/item/owned', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-    const HttpJsonResponse(status: HttpStatus.unauthorized, json: null));
+    const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
     final dataResponse = await itemService.getItemsOwnedByMe();
 
     expect(dataResponse.errorMessage, HttpStatus.unauthorized.name);
@@ -154,7 +156,7 @@ void main() {
 
   test('when getting item, then a page of items is returned', () async {
     when(mockRequestService.request('user/item/${item.uuid}')).thenAnswer((_) async =>
-        HttpJsonResponse(status: HttpStatus.ok, json: jsonResponse));
+        HttpDataResponse(status: HttpStatus.ok, data: jsonResponse));
     final dataResponse = await itemService.getItem(item.uuid!);
     final data = dataResponse.data;
 
@@ -172,10 +174,39 @@ void main() {
 
   test('when getting item with error, then a error message is returned', () async {
     when(mockRequestService.request('user/item/${item.uuid}')).thenAnswer((_) async =>
-    const HttpJsonResponse(status: HttpStatus.notFound, json: null));
+    const HttpDataResponse(status: HttpStatus.notFound, data: null));
     final dataResponse = await itemService.getItem(item.uuid!);
 
     expect(dataResponse.errorMessage, HttpStatus.notFound.name);
     expect(dataResponse.data, null);
+  });
+
+  test('when uploading item image, then status 201 is returned', () async {
+    when(mockRequestService.multipartRequest('user/item/${item.uuid}/image', Uint8List(10), 'png')).thenAnswer((_) async =>
+        const HttpDataResponse(status: HttpStatus.created, data: null));
+    final dataResponse = await itemService.uploadItemImage(item.uuid!, Uint8List(10), 'png');
+
+    expect(dataResponse.errorMessage, null);
+  });
+
+  test('when retrieving item image, then status 200 and data is returned', () async {
+    const imageUuid = 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A1';
+    when(mockRequestService.request('user/item/${item.uuid}/image')).thenAnswer((_) async =>
+        const HttpDataResponse(status: HttpStatus.ok, data: [imageUuid, 'randomUuid']));
+    when(mockRequestService.request('user/item/image/$imageUuid', acceptType: HttpContentType.octetStream)).thenAnswer((_) async =>
+        HttpDataResponse(status: HttpStatus.ok, data: Uint8List(10)));
+    final dataResponse = await itemService.getItemImage(item.uuid!);
+
+    expect(dataResponse.data, Uint8List(10));
+    expect(dataResponse.errorMessage, null);
+  });
+
+  test('when retrieving item image for item without image, then status 200 and no data is returned', () async {
+    when(mockRequestService.request('user/item/${item.uuid}/image')).thenAnswer((_) async =>
+    const HttpDataResponse(status: HttpStatus.ok, data: []));
+    final dataResponse = await itemService.getItemImage(item.uuid!);
+
+    expect(dataResponse.data, null);
+    expect(dataResponse.errorMessage, null);
   });
 }

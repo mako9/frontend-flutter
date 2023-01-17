@@ -1,22 +1,22 @@
-class HttpJsonResponse {
+class HttpDataResponse {
   final HttpStatus status;
-  final dynamic json;
+  final dynamic data;
   final String? errorMessage;
 
-  const HttpJsonResponse({
+  const HttpDataResponse({
     required this.status,
-    required this.json,
+    required this.data,
     this.errorMessage,
   });
 
   @override
   String toString() {
-    return 'Status: ${status.value}, body: $json, errorMessage: $errorMessage';
+    return 'Status: ${status.value}, body: $data, errorMessage: $errorMessage';
   }
 
-  dynamic getJson() {
+  dynamic getData() {
     if (status.isSuccessful()) {
-      return json;
+      return data;
     } else {
       return null;
     }

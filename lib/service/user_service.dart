@@ -20,8 +20,8 @@ class UserService {
     return _evaluateResponse(response);
   }
 
-  Future<DataResponse<User>> _evaluateResponse(HttpJsonResponse response) async {
-    final json = response.getJson();
+  Future<DataResponse<User>> _evaluateResponse(HttpDataResponse response) async {
+    final json = response.getData();
     User? user;
     if (json != null) { user = User.fromJson(json); }
     return DataResponse.fromHttpResponse(user, response);

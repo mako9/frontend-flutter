@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +13,7 @@ import '../../model/community.dart';
 import '../../model/data_response.dart';
 import '../../model/item.dart';
 import '../../util/date_util.dart';
+import '../element/custom_image.dart';
 import '../element/custom_text_form_field.dart';
 import '../element/loading_overlay.dart';
 import 'item_edit_cubit.dart';
@@ -58,6 +61,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
   final Map<ItemCategory, bool> _selectedCategories = {};
   int _selectedCommunity = 0;
   DateTime? _selectedDate;
+  Uint8List? _imageData;
 
   _ItemEditScreenState() {
     for (var element in ItemCategory.values) {
@@ -86,6 +90,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
               listener: (context, state) {
             setState(() {
               _item = state.data;
+              _imageData = state.data?.imageData;
               if (_item?.description != null) {
                 _descriptionController.text = _item!.description!;
               }
@@ -106,119 +111,152 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
         child: StatefulBuilder(builder: (context, setState) {
           LoadingOverlay.of(context).hide();
           return PlatformScaffold(
-            appBar: PlatformAppBar(
-              title: Text(_item == null
-                  ? AppLocalizations.of(context)!.itemEditScreen_title_create
-                  : AppLocalizations.of(context)!.itemEditScreen_title_edit),
-            ),
-            body: Container(
-              padding: const EdgeInsets.all(30.0),
-              alignment: Alignment.topCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                        Row(children: [
-                          CustomTextFormField(
-                              AppLocalizations.of(context)!.name,
-                              initialValue: _item?.name,
-                              controller: _nameController),
-                        ]),
-                        Row(
-                          children: [
-                            CustomTextFormField(
-                                AppLocalizations.of(context)!.street,
-                                initialValue: _item?.street,
-                                controller: _streetController),
-                            CustomTextFormField(
-                                AppLocalizations.of(context)!.houseNumber,
-                                initialValue: _item?.houseNumber,
-                                controller: _houseNumberController),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            CustomTextFormField(
-                                AppLocalizations.of(context)!.postalCode,
-                                initialValue: _item?.postalCode,
-                                controller: _postalCodeController),
-                            CustomTextFormField(
-                                AppLocalizations.of(context)!.city,
-                                initialValue: _item?.city,
-                                controller: _cityController),
-                          ],
-                        ),
+              appBar: PlatformAppBar(
+                title: PlatformText(_item == null
+                    ? AppLocalizations.of(context)!.itemEditScreen_title_create
+                    : AppLocalizations.of(context)!.itemEditScreen_title_edit),
+              ),
+              body: Container(
+                  padding: const EdgeInsets.all(30.0),
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(child:
+                        SingleChildScrollView(
+                            child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Stack(
+                                        alignment: Alignment.center,
+                                          children: [
+                                            CustomImage(_imageData, showDefault: false),
+                                        PlatformIconButton(
+                                          icon: const Icon(Icons.add_a_photo),
+                                          onPressed: (() async {
+                                            final imageData = await context
+                                                .read<ItemEditCubit>()
+                                                .pickFiles();
+                                            setState(() {
+                                              _imageData = imageData;
+                                            });
+                                          }),
+                                        ),
+                                      ]),
+                              Row(children: [
+                                CustomTextFormField(
+                                    AppLocalizations.of(context)!.name,
+                                    initialValue: _item?.name,
+                                    controller: _nameController),
+                              ]),
+                              Row(
+                                children: [
+                                  CustomTextFormField(
+                                      AppLocalizations.of(context)!.street,
+                                      initialValue: _item?.street,
+                                      controller: _streetController),
+                                  CustomTextFormField(
+                                      AppLocalizations.of(context)!.houseNumber,
+                                      initialValue: _item?.houseNumber,
+                                      controller: _houseNumberController),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  CustomTextFormField(
+                                      AppLocalizations.of(context)!.postalCode,
+                                      initialValue: _item?.postalCode,
+                                      controller: _postalCodeController),
+                                  CustomTextFormField(
+                                      AppLocalizations.of(context)!.city,
+                                      initialValue: _item?.city,
+                                      controller: _cityController),
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+                              for (var category
+                                  in _selectedCategories.keys) ...[
+                                Row(
+                                  children: [
+                                    PlatformText(
+                                      category.getName(context),
+                                      style: const TextStyle(fontSize: 12.0),
+                                    ),
+                                    const Spacer(),
+                                    PlatformSwitch(
+                                        activeColor: Colors.brown[300],
+                                        value: _selectedCategories[category] ??
+                                            false,
+                                        onChanged: (selected) {
+                                          setState(() {
+                                            _selectedCategories[category] =
+                                                selected;
+                                          });
+                                        })
+                                  ],
+                                )
+                              ],
+                              const SizedBox(height: 24),
+                              Row(children: [
+                                PlatformText(
+                                  AppLocalizations.of(context)!
+                                      .itemEditScreen_isActive,
+                                  style: const TextStyle(fontSize: 12.0),
+                                ),
+                                const SizedBox(height: 24),
+                                PlatformSwitch(
+                                    activeColor: Colors.brown[300],
+                                    value: _isActive,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isActive = value;
+                                      });
+                                    }),
+                              ]),
+                              const SizedBox(height: 24),
+                              Row(
+                                children: [
+                                  PlatformText(
+                                    AppLocalizations.of(context)!
+                                        .itemEditScreen_selectedCommunity,
+                                    style: const TextStyle(fontSize: 12.0),
+                                  ),
+                                  const Spacer(),
+                                  if (_communityPage?.content.isNotEmpty ==
+                                      true) ...[
+                                    CustomPicker(
+                                        _communityPage?.content
+                                                .map((e) => e.name!)
+                                                .toList() ??
+                                            List.empty(), (index) {
+                                      _selectedCommunity = index;
+                                    }),
+                                  ],
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+                              PlatformTextFormField(
+                                controller: _descriptionController,
+                                maxLines: 5,
+                                hintText: AppLocalizations.of(context)!
+                                    .itemEditScreen_descriptionHint,
+                              ),
+                              const SizedBox(height: 24),
+                              Row(children: [
+                                PlatformText(AppLocalizations.of(context)!
+                                    .itemEditScreen_availableUntil),
+                                const Spacer(),
+                                PlatformTextButton(
+                                    color: Colors.brown[300],
+                                    onPressed: () => _selectDate(context),
+                                    child: PlatformText(
+                                        DateUtil.toDateString(_selectedDate) ??
+                                            DateUtil.toDateString(
+                                                _item?.availableUntil) ??
+                                            '-')),
+                              ]),
+                            ]))),
                         const SizedBox(height: 24),
-                        for (var category in _selectedCategories.keys) ...[
-                          Row(
-                            children: [
-                              PlatformText(category.getName(context)),
-                              const Spacer(),
-                              Checkbox(
-                                  value: _selectedCategories[category],
-                                  onChanged: (selected) {
-                                    setState(() {
-                                      _selectedCategories[category] = selected!;
-                                    });
-                                  })
-                            ],
-                          )
-                        ],
-                        const SizedBox(height: 24),
-                        Row(children: [
-                          PlatformText(
-                            AppLocalizations.of(context)!
-                                .itemEditScreen_isActive,
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                          const Spacer(),
-                          PlatformSwitch(
-                              activeColor: Colors.brown[300],
-                              value: _isActive,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isActive = value;
-                                });
-                              }),
-                        ]),
-                        const SizedBox(height: 24),
-                        Row(
-                          children: [
-                            PlatformText(AppLocalizations.of(context)!
-                                .itemEditScreen_selectedCommunity),
-                            const Spacer(),
-                            if (_communityPage?.content.isNotEmpty == true) ...[
-                              CustomPicker(
-                                  _communityPage?.content
-                                          .map((e) => e.name!)
-                                          .toList() ??
-                                      List.empty(), (index) {
-                                _selectedCommunity = index;
-                              }),
-                            ],
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        PlatformTextFormField(
-                          controller: _descriptionController,
-                          maxLines: 5,
-                          hintText: AppLocalizations.of(context)!
-                              .itemEditScreen_descriptionHint,
-                        ),
-                            const SizedBox(height: 24),
-                        Row(children: [
-                          PlatformText(AppLocalizations.of(context)!
-                              .itemEditScreen_availableUntil),
-                          const Spacer(),
-                          PlatformTextButton(
-                              color: Colors.brown[300],
-                              onPressed: () => _selectDate(context),
-                              child: PlatformText(DateUtil.toDateString(_selectedDate) ?? DateUtil.toDateString(_item?.availableUntil) ?? '-')
-                          ),
-                        ]),
                         if (_errorMessage != null) ...[
                           PlatformText(
                             AppLocalizations.of(context)!
@@ -227,7 +265,6 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                           ),
                           const SizedBox(height: 24),
                         ],
-                        const Spacer(),
                         CustomButton(
                             AppLocalizations.of(context)!.save, Icons.save,
                             () async {
@@ -279,11 +316,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                             }
                           }),
                         ],
-                      ]))
-                ],
-              ),
-            ), // This trailing comma makes auto-formatting nicer for build methods.
-          );
+                      ])));
         }));
   }
 }

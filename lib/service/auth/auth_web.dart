@@ -68,7 +68,12 @@ class AuthWeb implements Auth {
       'client_secret': _config.clientSecret,
       'refresh_token': refreshToken ?? '',
     };
-    await _httpHelper.urlEncodedPostRequest(_config.endSessionEndpoint, body: body);
+    await _httpHelper.request(
+        Uri.parse(_config.endSessionEndpoint),
+        method: HttpMethod.post,
+        contentType: HttpContentType.urlEncoded,
+        body: body
+    );
   }
 
   @override
@@ -79,8 +84,13 @@ class AuthWeb implements Auth {
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
     };
-    final response = await _httpHelper.urlEncodedPostRequest(_config.tokenEndpoint, body: body);
-    final json = response.json;
+    final response = await _httpHelper.request(
+        Uri.parse(_config.tokenEndpoint),
+        method: HttpMethod.post,
+        contentType: HttpContentType.urlEncoded,
+        body: body
+    );
+    final json = response.data;
     if (json != null) return Credential.fromJson(json);
     return null;
   }
