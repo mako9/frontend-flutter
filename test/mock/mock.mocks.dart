@@ -4,8 +4,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:convert' as _i11;
-import 'dart:typed_data' as _i12;
+import 'dart:convert' as _i12;
+import 'dart:typed_data' as _i11;
 
 import 'package:frontend_flutter/model/community.dart' as _i18;
 import 'package:frontend_flutter/model/credential.dart' as _i15;
@@ -57,9 +57,9 @@ class _FakeClient_1 extends _i1.SmartFake implements _i3.Client {
         );
 }
 
-class _FakeHttpJsonResponse_2 extends _i1.SmartFake
-    implements _i4.HttpJsonResponse {
-  _FakeHttpJsonResponse_2(
+class _FakeHttpDataResponse_2 extends _i1.SmartFake
+    implements _i4.HttpDataResponse {
+  _FakeHttpDataResponse_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -236,40 +236,12 @@ class MockHttpHelper extends _i1.Mock implements _i10.HttpHelper {
         returnValueForMissingStub: null,
       );
   @override
-  _i7.Future<_i4.HttpJsonResponse> urlEncodedPostRequest(
-    String? url, {
-    Map<String, String>? body,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #urlEncodedPostRequest,
-          [url],
-          {#body: body},
-        ),
-        returnValue:
-            _i7.Future<_i4.HttpJsonResponse>.value(_FakeHttpJsonResponse_2(
-          this,
-          Invocation.method(
-            #urlEncodedPostRequest,
-            [url],
-            {#body: body},
-          ),
-        )),
-        returnValueForMissingStub:
-            _i7.Future<_i4.HttpJsonResponse>.value(_FakeHttpJsonResponse_2(
-          this,
-          Invocation.method(
-            #urlEncodedPostRequest,
-            [url],
-            {#body: body},
-          ),
-        )),
-      ) as _i7.Future<_i4.HttpJsonResponse>);
-  @override
-  _i7.Future<_i4.HttpJsonResponse> request(
+  _i7.Future<_i4.HttpDataResponse> request(
     Uri? uri, {
     _i10.HttpMethod? method = _i10.HttpMethod.get,
-    Object? body,
+    _i10.HttpContentType? contentType = _i10.HttpContentType.json,
+    _i10.HttpContentType? acceptType = _i10.HttpContentType.json,
+    dynamic body,
     String? accessToken,
   }) =>
       (super.noSuchMethod(
@@ -278,42 +250,102 @@ class MockHttpHelper extends _i1.Mock implements _i10.HttpHelper {
           [uri],
           {
             #method: method,
+            #contentType: contentType,
+            #acceptType: acceptType,
             #body: body,
             #accessToken: accessToken,
           },
         ),
         returnValue:
-            _i7.Future<_i4.HttpJsonResponse>.value(_FakeHttpJsonResponse_2(
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
           this,
           Invocation.method(
             #request,
             [uri],
             {
               #method: method,
+              #contentType: contentType,
+              #acceptType: acceptType,
               #body: body,
               #accessToken: accessToken,
             },
           ),
         )),
         returnValueForMissingStub:
-            _i7.Future<_i4.HttpJsonResponse>.value(_FakeHttpJsonResponse_2(
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
           this,
           Invocation.method(
             #request,
             [uri],
             {
               #method: method,
+              #contentType: contentType,
+              #acceptType: acceptType,
               #body: body,
               #accessToken: accessToken,
             },
           ),
         )),
-      ) as _i7.Future<_i4.HttpJsonResponse>);
+      ) as _i7.Future<_i4.HttpDataResponse>);
   @override
-  Map<String, String> httpHeaders(String? accessToken) => (super.noSuchMethod(
+  _i7.Future<_i4.HttpDataResponse> multipartRequest(
+    Uri? uri,
+    _i11.Uint8List? bytes,
+    String? imageExtension,
+    String? accessToken,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #multipartRequest,
+          [
+            uri,
+            bytes,
+            imageExtension,
+            accessToken,
+          ],
+        ),
+        returnValue:
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
+          this,
+          Invocation.method(
+            #multipartRequest,
+            [
+              uri,
+              bytes,
+              imageExtension,
+              accessToken,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
+          this,
+          Invocation.method(
+            #multipartRequest,
+            [
+              uri,
+              bytes,
+              imageExtension,
+              accessToken,
+            ],
+          ),
+        )),
+      ) as _i7.Future<_i4.HttpDataResponse>);
+  @override
+  Map<String, String> httpHeaders({
+    _i10.HttpContentType? contentType = _i10.HttpContentType.json,
+    _i10.HttpContentType? acceptType = _i10.HttpContentType.json,
+    String? accessToken,
+  }) =>
+      (super.noSuchMethod(
         Invocation.method(
           #httpHeaders,
-          [accessToken],
+          [],
+          {
+            #contentType: contentType,
+            #acceptType: acceptType,
+            #accessToken: accessToken,
+          },
         ),
         returnValue: <String, String>{},
         returnValueForMissingStub: <String, String>{},
@@ -387,7 +419,7 @@ class MockClient extends _i1.Mock implements _i3.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i11.Encoding? encoding,
+    _i12.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -430,7 +462,7 @@ class MockClient extends _i1.Mock implements _i3.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i11.Encoding? encoding,
+    _i12.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -473,7 +505,7 @@ class MockClient extends _i1.Mock implements _i3.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i11.Encoding? encoding,
+    _i12.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -516,7 +548,7 @@ class MockClient extends _i1.Mock implements _i3.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i11.Encoding? encoding,
+    _i12.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -569,7 +601,7 @@ class MockClient extends _i1.Mock implements _i3.Client {
         returnValueForMissingStub: _i7.Future<String>.value(''),
       ) as _i7.Future<String>);
   @override
-  _i7.Future<_i12.Uint8List> readBytes(
+  _i7.Future<_i11.Uint8List> readBytes(
     Uri? url, {
     Map<String, String>? headers,
   }) =>
@@ -579,10 +611,10 @@ class MockClient extends _i1.Mock implements _i3.Client {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i7.Future<_i12.Uint8List>.value(_i12.Uint8List(0)),
+        returnValue: _i7.Future<_i11.Uint8List>.value(_i11.Uint8List(0)),
         returnValueForMissingStub:
-            _i7.Future<_i12.Uint8List>.value(_i12.Uint8List(0)),
-      ) as _i7.Future<_i12.Uint8List>);
+            _i7.Future<_i11.Uint8List>.value(_i11.Uint8List(0)),
+      ) as _i7.Future<_i11.Uint8List>);
   @override
   _i7.Future<_i3.StreamedResponse> send(_i3.BaseRequest? request) =>
       (super.noSuchMethod(
@@ -684,10 +716,12 @@ class MockAuthService extends _i1.Mock implements _i13.AuthService {
 /// See the documentation for Mockito's code generation for more information.
 class MockRequestService extends _i1.Mock implements _i14.RequestService {
   @override
-  _i7.Future<_i4.HttpJsonResponse> request(
+  _i7.Future<_i4.HttpDataResponse> request(
     String? path, {
     _i10.HttpMethod? method = _i10.HttpMethod.get,
-    Object? body,
+    dynamic body,
+    _i10.HttpContentType? contentType = _i10.HttpContentType.json,
+    _i10.HttpContentType? acceptType = _i10.HttpContentType.json,
     Map<String, String>? queryParameters,
     bool? needsAuth = true,
   }) =>
@@ -698,12 +732,14 @@ class MockRequestService extends _i1.Mock implements _i14.RequestService {
           {
             #method: method,
             #body: body,
+            #contentType: contentType,
+            #acceptType: acceptType,
             #queryParameters: queryParameters,
             #needsAuth: needsAuth,
           },
         ),
         returnValue:
-            _i7.Future<_i4.HttpJsonResponse>.value(_FakeHttpJsonResponse_2(
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
           this,
           Invocation.method(
             #request,
@@ -711,13 +747,15 @@ class MockRequestService extends _i1.Mock implements _i14.RequestService {
             {
               #method: method,
               #body: body,
+              #contentType: contentType,
+              #acceptType: acceptType,
               #queryParameters: queryParameters,
               #needsAuth: needsAuth,
             },
           ),
         )),
         returnValueForMissingStub:
-            _i7.Future<_i4.HttpJsonResponse>.value(_FakeHttpJsonResponse_2(
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
           this,
           Invocation.method(
             #request,
@@ -725,12 +763,54 @@ class MockRequestService extends _i1.Mock implements _i14.RequestService {
             {
               #method: method,
               #body: body,
+              #contentType: contentType,
+              #acceptType: acceptType,
               #queryParameters: queryParameters,
               #needsAuth: needsAuth,
             },
           ),
         )),
-      ) as _i7.Future<_i4.HttpJsonResponse>);
+      ) as _i7.Future<_i4.HttpDataResponse>);
+  @override
+  _i7.Future<_i4.HttpDataResponse> multipartRequest(
+    String? path,
+    _i11.Uint8List? bytes,
+    String? imageExtension,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #multipartRequest,
+          [
+            path,
+            bytes,
+            imageExtension,
+          ],
+        ),
+        returnValue:
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
+          this,
+          Invocation.method(
+            #multipartRequest,
+            [
+              path,
+              bytes,
+              imageExtension,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i4.HttpDataResponse>.value(_FakeHttpDataResponse_2(
+          this,
+          Invocation.method(
+            #multipartRequest,
+            [
+              path,
+              bytes,
+              imageExtension,
+            ],
+          ),
+        )),
+      ) as _i7.Future<_i4.HttpDataResponse>);
 }
 
 /// A class which mocks [Auth].
@@ -1358,4 +1438,70 @@ class MockItemService extends _i1.Mock implements _i19.ItemService {
           ),
         )),
       ) as _i7.Future<_i2.DataResponse<_i20.Item>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i11.Uint8List?>> getItemImage(String? uuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getItemImage,
+          [uuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i11.Uint8List?>>.value(
+            _FakeDataResponse_0<_i11.Uint8List?>(
+          this,
+          Invocation.method(
+            #getItemImage,
+            [uuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i11.Uint8List?>>.value(
+                _FakeDataResponse_0<_i11.Uint8List?>(
+          this,
+          Invocation.method(
+            #getItemImage,
+            [uuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i11.Uint8List?>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i11.Uint8List>> uploadItemImage(
+    String? uuid,
+    _i11.Uint8List? bytes,
+    String? imageExtension,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #uploadItemImage,
+          [
+            uuid,
+            bytes,
+            imageExtension,
+          ],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i11.Uint8List>>.value(
+            _FakeDataResponse_0<_i11.Uint8List>(
+          this,
+          Invocation.method(
+            #uploadItemImage,
+            [
+              uuid,
+              bytes,
+              imageExtension,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i11.Uint8List>>.value(
+                _FakeDataResponse_0<_i11.Uint8List>(
+          this,
+          Invocation.method(
+            #uploadItemImage,
+            [
+              uuid,
+              bytes,
+              imageExtension,
+            ],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i11.Uint8List>>);
 }

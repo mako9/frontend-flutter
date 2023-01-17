@@ -3,6 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../model/item.dart';
+import '../element/custom_image.dart';
 
 typedef CardViewIndexCallback = void Function(int firstIndex, int secondIndex);
 
@@ -100,7 +101,7 @@ class _ItemCardViewState extends State<ItemCardView> {
                 const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                 child: Column(
                   children: [
-                    Image.asset('/image/fox.png', height: 120, width: 300),
+                    CustomImage(item?.imageData, height: 120),
                     const SizedBox(height: 16),
                     Text(item?.name ?? "Unknown")
                   ],

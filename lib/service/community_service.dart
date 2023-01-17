@@ -61,7 +61,7 @@ class CommunityService {
     final response =
         await _requestService.request('$_communityPath/$uuid/member',
             queryParameters: _paginationParams(pageNumber));
-    final json = response.getJson();
+    final json = response.getData();
     DataPage<User>? responseCommunityMember;
     if (json != null) {
       responseCommunityMember = DataPage.fromJson(json, User.fromJson);
@@ -73,7 +73,7 @@ class CommunityService {
     final response =
     await _requestService.request('$_communityPath/$uuid/requesting-member',
         queryParameters: _paginationParams(pageNumber, pageSize: 15));
-    final json = response.getJson();
+    final json = response.getData();
     DataPage<User>? responseCommunityMember;
     if (json != null) {
       responseCommunityMember = DataPage.fromJson(json, User.fromJson);
@@ -106,8 +106,8 @@ class CommunityService {
   }
 
   DataResponse<DataPage<Community>> _dataPageFromResponse(
-      HttpJsonResponse response) {
-    final json = response.getJson();
+      HttpDataResponse response) {
+    final json = response.getData();
     DataPage<Community>? page;
     if (json != null) {
       page = DataPage.fromJson(json, Community.fromJson);
@@ -116,8 +116,8 @@ class CommunityService {
   }
 
   DataResponse<List<User>> _userListFromResponse(
-      HttpJsonResponse response) {
-    final json = response.getJson();
+      HttpDataResponse response) {
+    final json = response.getData();
     List<User>? list;
     if (json != null) {
       list = List<User>.from(json.map((e) => User.fromJson(e)));
@@ -125,8 +125,8 @@ class CommunityService {
     return DataResponse.fromHttpResponse(list, response);
   }
 
-  DataResponse<Community> _communityFromResponse(HttpJsonResponse response) {
-    final json = response.getJson();
+  DataResponse<Community> _communityFromResponse(HttpDataResponse response) {
+    final json = response.getData();
     Community? responseCommunity;
     if (json != null) {
       responseCommunity = Community.fromJson(json);

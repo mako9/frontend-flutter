@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,6 +21,7 @@ class Item implements ListableModel {
   final DateTime? availableUntil;
   final String? description;
   final bool isOwner;
+  Uint8List? imageData;
 
   Item({
     this.uuid,
@@ -36,6 +38,7 @@ class Item implements ListableModel {
     this.availableUntil,
     this.description,
     this.isOwner = false,
+    this.imageData,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {

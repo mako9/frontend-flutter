@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/model/data_page.dart';
 import 'package:frontend_flutter/model/data_response.dart';
@@ -57,13 +59,26 @@ class ItemService {
     return _itemFromResponse(response);
   }
 
+  Future<DataResponse<Uint8List?>> getItemImage(String uuid) async {
+    final imageUuidResponse = await _requestService.request('$_itemPath/$uuid/image');
+    final imageUuids = (imageUuidResponse.getData() as List<dynamic>).cast<String>();
+    if (imageUuids.isEmpty) return DataResponse(data: null, errorMessage: imageUuidResponse.errorMessage);
+    final imageDataResponse = await _requestService.request('$_itemPath/image/${imageUuids.first}', acceptType: HttpContentType.octetStream);
+    return DataResponse.fromHttpResponse(imageDataResponse.getData(), imageDataResponse);
+  }
+
+  Future<DataResponse<Uint8List>> uploadItemImage(String uuid, Uint8List bytes, String imageExtension) async {
+    final response = await _requestService.multipartRequest('$_itemPath/$uuid/image', bytes, imageExtension);
+    return DataResponse.fromHttpResponse(bytes, response);
+  }
+
   Map<String, String> _paginationParams(int pageNumber, {int pageSize = 10}) {
     return {'pageSize': pageSize.toString(), 'pageNumber': pageNumber.toString()};
   }
 
   DataResponse<DataPage<Item>> _dataPageFromResponse(
-      HttpJsonResponse response) {
-    final json = response.getJson();
+      HttpDataResponse response) {
+    final json = response.getData();
     DataPage<Item>? page;
     if (json != null) {
       page = DataPage.fromJson(json, Item.fromJson);
@@ -71,8 +86,8 @@ class ItemService {
     return DataResponse.fromHttpResponse(page, response);
   }
 
-  DataResponse<Item> _itemFromResponse(HttpJsonResponse response) {
-    final json = response.getJson();
+  DataResponse<Item> _itemFromResponse(HttpDataResponse response) {
+    final json = response.getData();
     Item? responseCommunity;
     if (json != null) {
       responseCommunity = Item.fromJson(json);
