@@ -45,7 +45,7 @@ class _LoginScreenContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 60),
-              Image.asset('/image/fox.png', height: 200, width: 200),
+              Image.asset('assets/image/quokka_logo.png', height: 200, width: 200),
               const SizedBox(height: 24),
               Text(AppLocalizations.of(context)!.appName,
                 style: const TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
