@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
                       child: Text(_title,
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
+                              .titleLarge
                               ?.copyWith(color: Colors.black)),
                     )),
                   ],

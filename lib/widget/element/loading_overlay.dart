@@ -14,15 +14,15 @@ class LoadingOverlay extends StatefulWidget {
   final Widget child;
   final Duration delay;
 
-  static _LoadingOverlayState of(BuildContext context) {
-    return context.findAncestorStateOfType<_LoadingOverlayState>()!;
+  static LoadingOverlayState of(BuildContext context) {
+    return context.findAncestorStateOfType<LoadingOverlayState>()!;
   }
 
   @override
-  State<LoadingOverlay> createState() => _LoadingOverlayState();
+  State<LoadingOverlay> createState() => LoadingOverlayState();
 }
 
-class _LoadingOverlayState extends State<LoadingOverlay> {
+class LoadingOverlayState extends State<LoadingOverlay> {
   bool _isLoading = false;
 
   void show() {

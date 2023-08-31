@@ -23,7 +23,7 @@ class JsonUtil {
     } else {
       dateString = "$dateString-${(-offset.inHours).toString().padLeft(2, '0')}:${(offset.inMinutes % (offsetInHours * 60)).toString().padLeft(2, '0')}";
     }
-    print(dateString);
+    debugPrint(dateString);
     return dateString;
   }
 }
