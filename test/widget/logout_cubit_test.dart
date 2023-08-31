@@ -9,7 +9,6 @@ import 'package:frontend_flutter/widget/login/login_screen.dart';
 import 'package:frontend_flutter/widget/setting/logout_cubit.dart';
 import 'package:mockito/mockito.dart';
 
-import '../mock/mock.dart';
 import '../mock/mock.mocks.dart';
 
 
