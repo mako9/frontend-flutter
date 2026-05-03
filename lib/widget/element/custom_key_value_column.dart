@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class CustomKeyValueColumn extends StatelessWidget {
   late final String _keyText;
@@ -21,13 +20,13 @@ class CustomKeyValueColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PlatformText(_keyText, style: const TextStyle(
+          Text(_keyText, style: const TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 4),
-          PlatformText(_valueText, style: const TextStyle(
+          Text(_valueText, style: const TextStyle(
             fontSize: 24,
             ),
           ),

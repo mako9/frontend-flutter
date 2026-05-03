@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/community.dart';
 import 'package:frontend_flutter/widget/community/community_edit_cubit.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';

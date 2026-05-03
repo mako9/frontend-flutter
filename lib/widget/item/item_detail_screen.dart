@@ -1,8 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/item/item_detail_cubit.dart';
 
 import '../../model/data_response.dart';
@@ -35,10 +34,10 @@ class _ItemDetailScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     Item? item;
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title:
-            PlatformText(AppLocalizations.of(context)!.itemDetailScreen_title),
+            Text(AppLocalizations.of(context)!.itemDetailScreen_title),
       ),
       body: Container(
         padding: const EdgeInsets.all(30.0),
@@ -95,11 +94,11 @@ class _ItemDetailScreenContent extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PlatformText(
+                          Text(
                               '${AppLocalizations.of(context)!.description}:'),
                           const SizedBox(width: 32),
                           Expanded(
-                              child: PlatformText(item?.description ?? '-',
+                              child: Text(item?.description ?? '-',
                                   overflow: TextOverflow.visible)),
                         ],
                       ),
@@ -107,7 +106,7 @@ class _ItemDetailScreenContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   if (dataResponse.errorMessage != null) ...[
-                    PlatformText(
+                    Text(
                       AppLocalizations.of(context)!
                           .errorMessage(dataResponse.errorMessage!),
                       style: const TextStyle(color: Colors.red),

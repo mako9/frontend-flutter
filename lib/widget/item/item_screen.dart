@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../model/data_response.dart';
 import '../../model/item.dart';
@@ -28,7 +27,7 @@ class _ItemScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ItemCubit, DataResponse<Map<ItemCategory, List<Item>>>>(
         builder: (_, dataResponse) {
-      return PlatformScaffold(
+      return Scaffold(
         body: ItemCardView(
             dataResponse.data,
             dataResponse.errorMessage,

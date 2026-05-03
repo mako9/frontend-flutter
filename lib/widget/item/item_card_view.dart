@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 
 import '../../model/item.dart';
 import '../element/custom_image.dart';
@@ -49,7 +48,7 @@ class _ItemCardViewState extends State<ItemCardView> {
   Widget _centeredText(BuildContext context, String text) {
     return Column(children: [
       const SizedBox(height: 16),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [PlatformText(text)]),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [Text(text)]),
     ]);
   }
 
@@ -60,7 +59,7 @@ class _ItemCardViewState extends State<ItemCardView> {
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: PlatformText(
+            child: Text(
               widget._groupedItems?.keys.elementAt(carouselIndex).getName(context) ?? "Unknown",
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             )),

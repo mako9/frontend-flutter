@@ -18,13 +18,12 @@ class AuthIo implements Auth {
       // show that we can also explicitly specify the endpoints rather than getting from the details from the discovery document
       AuthorizationTokenResponse? response = await _appAuth
           .authorizeAndExchangeCode(
-        AuthorizationTokenRequest(
+      AuthorizationTokenRequest(
           _config.clientId,
           _config.redirectUrl,
           clientSecret: _config.clientSecret,
           serviceConfiguration: _getAuthorizationServiceConfiguration(),
           scopes: _config.scopes,
-          preferEphemeralSession: false,
         ),
       );
 
@@ -45,7 +44,7 @@ class AuthIo implements Auth {
 
   @override
   Future<Credential?> refresh(String refreshToken) async {
-    final TokenResponse? response = await _appAuth.token(TokenRequest(
+    final TokenResponse response = await _appAuth.token(TokenRequest(
         _config.clientId, _config.redirectUrl,
         refreshToken: refreshToken,
         issuer: _config.issuer,

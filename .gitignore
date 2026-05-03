@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -35,6 +37,10 @@ migrate_working_dir/
 # Web related
 lib/generated_plugin_registrant.dart
 
+# Generated l10n output (arb-dir is lib/l10n, output-dir is lib/gen_l10n)
+lib/l10n/app_localizations*.dart
+lib/gen_l10n/
+
 # Symbolication related
 app.*.symbols
 
@@ -48,3 +54,6 @@ app.*.map.json
 
 # Configuration
 /assets/config/config.yaml
+
+# Tools
+.claude/
