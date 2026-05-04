@@ -10,9 +10,7 @@ enum TokenType {
 class StorageService {
   final _secureStorage = const FlutterSecureStorage();
 
-  AndroidOptions _getAndroidOptions() => const AndroidOptions(
-        encryptedSharedPreferences: true,
-      );
+  AndroidOptions _getAndroidOptions() => const AndroidOptions();
 
   Future<void> storeToken(TokenType tokenType, String value) async {
     debugPrint("Writing new ${tokenType.name}: $value");

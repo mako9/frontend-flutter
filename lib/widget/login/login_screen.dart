@@ -8,7 +8,7 @@ import 'package:frontend_flutter/widget/login/login_cubit.dart';
 import '../element/custom_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   static const route = '/login';
 
@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginScreenContent extends StatelessWidget {
-  const _LoginScreenContent({Key? key}) : super(key: key);
+  const _LoginScreenContent();
 
   @override
   Widget build(BuildContext context) {

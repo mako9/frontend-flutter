@@ -15,7 +15,7 @@ import '../item/item_edit_screen.dart';
 import 'my_area_cubit.dart';
 
 class MyAreaScreen extends StatelessWidget {
-  const MyAreaScreen({Key? key}) : super(key: key);
+  const MyAreaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

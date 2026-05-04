@@ -14,8 +14,9 @@ class CustomImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_imageData != null) {
-      return Image.memory(_imageData!, height: _height, alignment: Alignment.center);
+    final imageData = _imageData;
+    if (imageData != null) {
+      return Image.memory(imageData, height: _height, alignment: Alignment.center);
     } else if (_showDefault) {
       return Container(
         height: _height,

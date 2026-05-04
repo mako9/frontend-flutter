@@ -14,7 +14,7 @@ import '../element/loading_overlay.dart';
 class ItemDetailScreen extends StatelessWidget {
   late final Item? _initialItem;
 
-  ItemDetailScreen({Key? key, Item? item}) : super(key: key) {
+  ItemDetailScreen({super.key, Item? item}) {
     _initialItem = item;
   }
 

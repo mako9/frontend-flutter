@@ -17,7 +17,7 @@ import 'community_edit_screen.dart';
 class CommunityDetailScreen extends StatelessWidget {
   late final Community? _initialCommunity;
 
-  CommunityDetailScreen({Key? key, Community? community}) : super(key: key) {
+  CommunityDetailScreen({super.key, Community? community}) {
     _initialCommunity = community;
   }
 
@@ -188,9 +188,10 @@ class _CommunityDetailScreenContent extends StatelessWidget {
                       await context
                           .read<CommunityDetailCubit>()
                           .deleteCommunity(community!.uuid!);
+                      if (!context.mounted) return;
                       Navigator.pop(context);
                     }
-                    LoadingOverlay.of(context).hide();
+                    if (context.mounted) LoadingOverlay.of(context).hide();
                   }),
                 ] else if (community?.isMember == true) ...[
                   CustomButton(
@@ -201,11 +202,12 @@ class _CommunityDetailScreenContent extends StatelessWidget {
                       await context
                           .read<CommunityDetailCubit>()
                           .leaveCommunity(community!.uuid!);
+                      if (!context.mounted) return;
                       await context
                           .read<CommunityDetailCubit>()
                           .getCommunityWithMember(community!.uuid!);
                     }
-                    LoadingOverlay.of(context).hide();
+                    if (context.mounted) LoadingOverlay.of(context).hide();
                   }),
                 ] else if (community?.hasRequestedMembership == false) ...[
                   CustomButton(
@@ -217,10 +219,11 @@ class _CommunityDetailScreenContent extends StatelessWidget {
                       await context
                           .read<CommunityDetailCubit>()
                           .joinCommunity(community!.uuid!);
+                      if (!context.mounted) return;
                       await context
                           .read<CommunityDetailCubit>()
                           .getCommunityWithMember(community!.uuid!);
-                      LoadingOverlay.of(context).hide();
+                      if (context.mounted) LoadingOverlay.of(context).hide();
                     }
                   }),
                 ],

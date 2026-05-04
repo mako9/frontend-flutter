@@ -10,7 +10,7 @@ import 'package:frontend_flutter/widget/login/login_screen.dart';
 
 import 'di/service_locator.dart';
 
-main() async {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 

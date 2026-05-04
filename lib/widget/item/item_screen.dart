@@ -8,7 +8,7 @@ import 'item_cubit.dart';
 import 'item_detail_screen.dart';
 
 class ItemScreen extends StatelessWidget {
-  const ItemScreen({Key? key}) : super(key: key);
+  const ItemScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

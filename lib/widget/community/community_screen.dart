@@ -11,7 +11,7 @@ import 'community_cubit.dart';
 import 'community_detail_screen.dart';
 
 class CommunityScreen extends StatelessWidget {
-  const CommunityScreen({Key? key}) : super(key: key);
+  const CommunityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +91,7 @@ class _CommunityScreenContent extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => CommunityDetailScreen(
                                 community: _page!.content[index]))).then((_) {
+                      if (!context.mounted) return;
                       switch (_index) {
                         case 0:
                           context.read<CommunityCubit>().loadMyCommunities();

@@ -20,7 +20,7 @@ import 'item_edit_cubit.dart';
 class ItemEditScreen extends StatelessWidget {
   late final Item? _initialItem;
 
-  ItemEditScreen({Key? key, Item? item}) : super(key: key) {
+  ItemEditScreen({super.key, Item? item}) {
     _initialItem = item;
   }
 
@@ -183,7 +183,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                     ),
                                     const Spacer(),
                                     Switch(
-                                        activeColor: Colors.brown[300],
+                                        activeThumbColor: Colors.brown[300],
                                         value: _selectedCategories[category] ??
                                             false,
                                         onChanged: (selected) {
@@ -204,7 +204,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                 ),
                                 const SizedBox(height: 24),
                                 Switch(
-                                    activeColor: Colors.brown[300],
+                                    activeThumbColor: Colors.brown[300],
                                     value: _isActive,
                                     onChanged: (value) {
                                       setState(() {
@@ -294,7 +294,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                 .read<ItemEditCubit>()
                                 .updateItem(updatedItem);
                           }
-                          if (mounted) {
+                          if (context.mounted) {
                             LoadingOverlay.of(context).hide();
                             Navigator.pop(context);
                           }
@@ -309,7 +309,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                             await context
                                 .read<ItemEditCubit>()
                                 .deleteItem(_item!);
-                            if (mounted) {
+                            if (context.mounted) {
                               LoadingOverlay.of(context).hide();
                               Navigator.pop(context);
                             }
