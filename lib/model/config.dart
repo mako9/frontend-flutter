@@ -18,7 +18,7 @@ class Config {
   String tokenEndpoint = '';
   String endSessionEndpoint = '';
 
-  loadConfig(BuildContext context) async {
+  Future<void> loadConfig(BuildContext context) async {
     final yamlString = await DefaultAssetBundle.of(context)
         .loadString('assets/config/config.yaml');
     final dynamic yamlMap = loadYaml(yamlString);

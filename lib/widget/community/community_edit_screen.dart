@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/community.dart';
 import 'package:frontend_flutter/widget/community/community_edit_cubit.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
@@ -12,7 +12,7 @@ import '../element/loading_overlay.dart';
 class CommunityEditScreen extends StatelessWidget {
   late final Community? initialCommunity;
 
-  CommunityEditScreen({Key? key, Community? community}) : super(key: key) {
+  CommunityEditScreen({super.key, Community? community}) {
     initialCommunity = community;
   }
 
@@ -124,7 +124,7 @@ class _CommunityEditScreenState extends State<_CommunityEditScreenStateful> {
                         ),
                         const Spacer(),
                         Switch.adaptive(
-                            activeColor: Colors.brown[300],
+                            activeThumbColor: Colors.brown[300],
                             value: _canCommunityBeJoined,
                             onChanged: (value) {
                               setState(() {
@@ -166,7 +166,7 @@ class _CommunityEditScreenState extends State<_CommunityEditScreenStateful> {
                               .read<CommunityEditCubit>()
                               .updateCommunity(updatedCommunity);
                         }
-                        if (mounted) {
+                        if (context.mounted) {
                           LoadingOverlay.of(context).hide();
                           Navigator.pop(context);
                         }

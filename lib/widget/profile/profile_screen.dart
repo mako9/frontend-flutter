@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
 import 'package:frontend_flutter/widget/profile/user_info_cubit.dart';
 
@@ -10,7 +10,7 @@ import '../element/custom_text_form_field.dart';
 import '../element/loading_overlay.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

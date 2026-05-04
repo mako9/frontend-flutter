@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/community/community_screen.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/my_area/my_area_screen.dart';

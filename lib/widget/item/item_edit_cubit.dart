@@ -48,7 +48,7 @@ class ItemEditCubit extends Cubit<DataResponse<Item>> {
   }
 
   Future<Uint8List?> pickFiles() async {
-    _filePickerResult = await FilePicker.platform.pickFiles(
+    _filePickerResult = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png'],
     );

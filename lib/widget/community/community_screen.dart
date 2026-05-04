@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/element/custom_paginated_list.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 
@@ -11,7 +11,7 @@ import 'community_cubit.dart';
 import 'community_detail_screen.dart';
 
 class CommunityScreen extends StatelessWidget {
-  const CommunityScreen({Key? key}) : super(key: key);
+  const CommunityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +91,7 @@ class _CommunityScreenContent extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => CommunityDetailScreen(
                                 community: _page!.content[index]))).then((_) {
+                      if (!context.mounted) return;
                       switch (_index) {
                         case 0:
                           context.read<CommunityCubit>().loadMyCommunities();

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final customTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.brown[200],
-  indicatorColor: Colors.white,
+  tabBarTheme: const TabBarThemeData(indicatorColor: Colors.white),
   progressIndicatorTheme: const ProgressIndicatorThemeData(
     color: Colors.white,
   ),
@@ -24,6 +24,6 @@ final customTheme = ThemeData(
   ),
   fontFamily: 'Georgia',
   checkboxTheme: CheckboxThemeData(
-    fillColor: MaterialStateColor.resolveWith((states) => Colors.brown[300]!),
+    fillColor: WidgetStateColor.resolveWith((states) => Colors.brown[300]!),
   ),
 );

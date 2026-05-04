@@ -2,8 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/data_page.dart';
 import 'package:frontend_flutter/widget/community/community_cubit.dart';
 import 'package:frontend_flutter/widget/element/custom_button.dart';
@@ -21,7 +20,7 @@ import 'item_edit_cubit.dart';
 class ItemEditScreen extends StatelessWidget {
   late final Item? _initialItem;
 
-  ItemEditScreen({Key? key, Item? item}) : super(key: key) {
+  ItemEditScreen({super.key, Item? item}) {
     _initialItem = item;
   }
 
@@ -110,9 +109,9 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
         ],
         child: StatefulBuilder(builder: (context, setState) {
           LoadingOverlay.of(context).hide();
-          return PlatformScaffold(
-              appBar: PlatformAppBar(
-                title: PlatformText(_item == null
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(_item == null
                     ? AppLocalizations.of(context)!.itemEditScreen_title_create
                     : AppLocalizations.of(context)!.itemEditScreen_title_edit),
               ),
@@ -131,7 +130,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                         alignment: Alignment.center,
                                           children: [
                                             CustomImage(_imageData, showDefault: false),
-                                        PlatformIconButton(
+                                        IconButton(
                                           icon: const Icon(Icons.add_a_photo),
                                           onPressed: (() async {
                                             final imageData = await context
@@ -178,13 +177,13 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                   in _selectedCategories.keys) ...[
                                 Row(
                                   children: [
-                                    PlatformText(
+                                    Text(
                                       category.getName(context),
                                       style: const TextStyle(fontSize: 12.0),
                                     ),
                                     const Spacer(),
-                                    PlatformSwitch(
-                                        activeColor: Colors.brown[300],
+                                    Switch(
+                                        activeThumbColor: Colors.brown[300],
                                         value: _selectedCategories[category] ??
                                             false,
                                         onChanged: (selected) {
@@ -198,14 +197,14 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                               ],
                               const SizedBox(height: 24),
                               Row(children: [
-                                PlatformText(
+                                Text(
                                   AppLocalizations.of(context)!
                                       .itemEditScreen_isActive,
                                   style: const TextStyle(fontSize: 12.0),
                                 ),
                                 const SizedBox(height: 24),
-                                PlatformSwitch(
-                                    activeColor: Colors.brown[300],
+                                Switch(
+                                    activeThumbColor: Colors.brown[300],
                                     value: _isActive,
                                     onChanged: (value) {
                                       setState(() {
@@ -216,7 +215,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                               const SizedBox(height: 24),
                               Row(
                                 children: [
-                                  PlatformText(
+                                  Text(
                                     AppLocalizations.of(context)!
                                         .itemEditScreen_selectedCommunity,
                                     style: const TextStyle(fontSize: 12.0),
@@ -235,21 +234,21 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                 ],
                               ),
                               const SizedBox(height: 24),
-                              PlatformTextFormField(
+                              TextFormField(
                                 controller: _descriptionController,
                                 maxLines: 5,
-                                hintText: AppLocalizations.of(context)!
-                                    .itemEditScreen_descriptionHint,
+                                decoration: InputDecoration(hintText: AppLocalizations.of(context)!
+                                    .itemEditScreen_descriptionHint),
                               ),
                               const SizedBox(height: 24),
                               Row(children: [
-                                PlatformText(AppLocalizations.of(context)!
+                                Text(AppLocalizations.of(context)!
                                     .itemEditScreen_availableUntil),
                                 const Spacer(),
-                                PlatformTextButton(
-                                    color: Colors.brown[300],
+                                TextButton(
+                                    style: TextButton.styleFrom(foregroundColor: Colors.brown[300]),
                                     onPressed: () => _selectDate(context),
-                                    child: PlatformText(
+                                    child: Text(
                                         DateUtil.toDateString(_selectedDate) ??
                                             DateUtil.toDateString(
                                                 _item?.availableUntil) ??
@@ -258,7 +257,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                             ]))),
                         const SizedBox(height: 24),
                         if (_errorMessage != null) ...[
-                          PlatformText(
+                          Text(
                             AppLocalizations.of(context)!
                                 .errorMessage(_errorMessage!),
                             style: const TextStyle(color: Colors.red),
@@ -295,7 +294,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                 .read<ItemEditCubit>()
                                 .updateItem(updatedItem);
                           }
-                          if (mounted) {
+                          if (context.mounted) {
                             LoadingOverlay.of(context).hide();
                             Navigator.pop(context);
                           }
@@ -310,7 +309,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                             await context
                                 .read<ItemEditCubit>()
                                 .deleteItem(_item!);
-                            if (mounted) {
+                            if (context.mounted) {
                               LoadingOverlay.of(context).hide();
                               Navigator.pop(context);
                             }

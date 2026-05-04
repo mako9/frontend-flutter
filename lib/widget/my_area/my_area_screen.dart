@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/item.dart';
 import 'package:frontend_flutter/widget/element/custom_paginated_list.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
@@ -16,7 +15,7 @@ import '../item/item_edit_screen.dart';
 import 'my_area_cubit.dart';
 
 class MyAreaScreen extends StatelessWidget {
-  const MyAreaScreen({Key? key}) : super(key: key);
+  const MyAreaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
+    return Scaffold(
       body: Container(
           padding: const EdgeInsets.all(24.0),
           alignment: Alignment.topCenter,

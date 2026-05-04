@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/listable_model.dart';
 import 'package:frontend_flutter/util/json_util.dart';
 
@@ -63,7 +63,7 @@ class Item implements ListableModel {
 
   Map<String, dynamic> toJson() => {
     'name': name,
-    'categories': itemCategories?.map((e) => e.name.toUpperCase()).toList(),
+    'categories': itemCategories?.map((e) => e.apiName).toList(),
     'street': street,
     'houseNumber': houseNumber,
     'postalCode': postalCode,
@@ -88,13 +88,26 @@ enum ItemCategory {
   housekeeping,
   gardening,
   tool,
-  electric_device,
+  electricDevice,
   other;
 
+  String get apiName {
+    final buffer = StringBuffer();
+    for (var i = 0; i < name.length; i++) {
+      final char = name[i];
+      if (char != char.toLowerCase()) {
+        buffer.write('_');
+      }
+      buffer.write(char.toUpperCase());
+    }
+    return buffer.toString();
+  }
+
   factory ItemCategory.fromJson(dynamic value) {
-    final stringValue = value.toString();
+    final stringValue = value.toString().toLowerCase().replaceAll('_', '');
     try {
-      return ItemCategory.values.firstWhere((element) => element.name == stringValue.toLowerCase());
+      return ItemCategory.values.firstWhere(
+          (element) => element.name.toLowerCase() == stringValue);
     } catch (_) {
       // default category is other
       return ItemCategory.other;
@@ -109,7 +122,7 @@ enum ItemCategory {
         return AppLocalizations.of(context)!.itemCategory_gardening;
       case ItemCategory.tool:
         return AppLocalizations.of(context)!.itemCategory_tool;
-      case ItemCategory.electric_device:
+      case ItemCategory.electricDevice:
         return AppLocalizations.of(context)!.itemCategory_electricDevice;
       case ItemCategory.other:
         return AppLocalizations.of(context)!.itemCategory_other;

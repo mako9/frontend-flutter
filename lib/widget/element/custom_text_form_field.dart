@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class CustomTextFormField extends StatelessWidget {
   late final String? _labelText;
@@ -15,9 +14,9 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: PlatformTextFormField(
+      child: TextFormField(
         controller: _controller,
-        hintText: _labelText,
+        decoration: InputDecoration(hintText: _labelText),
       ),
     );
   }

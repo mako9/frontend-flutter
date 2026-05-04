@@ -6,10 +6,10 @@ class LoadingOverlay extends StatefulWidget {
   static String route = '/loading';
 
   const LoadingOverlay({
-    Key? key,
+    super.key,
     required this.child,
     this.delay = const Duration(milliseconds: 100),
-  }) : super(key: key);
+  });
 
   final Widget child;
   final Duration delay;
