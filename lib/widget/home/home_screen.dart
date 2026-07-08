@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/widget/community/community_screen.dart';
 import 'package:frontend_flutter/widget/element/loading_overlay.dart';
 import 'package:frontend_flutter/widget/my_area/my_area_screen.dart';
+import 'package:frontend_flutter/widget/notification/notification_cubit.dart';
+import 'package:frontend_flutter/widget/notification/notification_screen.dart';
 import 'package:frontend_flutter/widget/setting/setting_screen.dart';
 
 import '../item/item_screen.dart';
@@ -14,17 +17,72 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingOverlay(child: _HomeScreenContent());
+    return BlocProvider(
+      create: (_) => NotificationCubit(),
+      child: LoadingOverlay(child: _HomeScreenContent()),
+    );
   }
 }
 
 class _HomeScreenContent extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        appBar: AppBar(
+          title: BlocBuilder<NotificationCubit, int>(
+            builder: (_, count) => const SizedBox.shrink(),
+          ),
+          actions: [
+            BlocBuilder<NotificationCubit, int>(
+              builder: (_, count) {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.notifications),
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NotificationScreen()),
+                        );
+                        if (context.mounted) {
+                          context.read<NotificationCubit>().loadUnreadCount();
+                        }
+                      },
+                    ),
+                    if (count > 0)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          child: Text(
+                            count > 99 ? '99+' : count.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
         bottomNavigationBar: menu(context),
         body: const TabBarView(
           children: [
