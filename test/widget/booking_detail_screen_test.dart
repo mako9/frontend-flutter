@@ -6,7 +6,6 @@ import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/item_booking.dart';
 import 'package:frontend_flutter/service/booking_service.dart';
 import 'package:frontend_flutter/widget/booking/booking_detail_screen.dart';
-import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
