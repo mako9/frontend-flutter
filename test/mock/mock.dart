@@ -17,6 +17,10 @@ import 'package:frontend_flutter/service/auth/auth_interface.dart';
 import 'package:frontend_flutter/service/community_service.dart';
 @GenerateNiceMocks([MockSpec<ItemService>()])
 import 'package:frontend_flutter/service/item_service.dart';
+@GenerateNiceMocks([MockSpec<BookingService>()])
+import 'package:frontend_flutter/service/booking_service.dart';
+@GenerateNiceMocks([MockSpec<NotificationService>()])
+import 'package:frontend_flutter/service/notification_service.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

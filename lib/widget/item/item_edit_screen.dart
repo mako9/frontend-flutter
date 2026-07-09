@@ -54,6 +54,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
   final _cityController = TextEditingController();
   final _descriptionController = TextEditingController();
   bool _isActive = true;
+  bool _requiresApproval = false;
   Item? _item;
   DataPage<Community>? _communityPage;
   String? _errorMessage;
@@ -96,6 +97,8 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
               for (var element in _item?.itemCategories ?? []) {
                 _selectedCategories[element] = true;
               }
+              _isActive = _item?.isActive ?? true;
+              _requiresApproval = _item?.requiresApproval ?? false;
               _errorMessage = state.errorMessage;
             });
           }),
@@ -212,6 +215,23 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                       });
                                     }),
                               ]),
+                              const SizedBox(height: 12),
+                              Row(children: [
+                                Text(
+                                  AppLocalizations.of(context)!
+                                      .itemEditScreen_requiresApproval,
+                                  style: const TextStyle(fontSize: 12.0),
+                                ),
+                                const Spacer(),
+                                Switch(
+                                    activeThumbColor: Colors.brown[300],
+                                    value: _requiresApproval,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _requiresApproval = value;
+                                      });
+                                    }),
+                              ]),
                               const SizedBox(height: 24),
                               Row(
                                 children: [
@@ -279,6 +299,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                             postalCode: _postalCodeController.text,
                             city: _cityController.text,
                             isActive: _isActive,
+                            requiresApproval: _requiresApproval,
                             communityUuid: _communityPage
                                 ?.content[_selectedCommunity].uuid,
                             availableUntil: _selectedDate,

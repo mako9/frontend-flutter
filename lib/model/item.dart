@@ -20,6 +20,7 @@ class Item implements ListableModel {
   final DateTime? availableUntil;
   final String? description;
   final bool isOwner;
+  final bool requiresApproval;
   Uint8List? imageData;
 
   Item({
@@ -37,6 +38,7 @@ class Item implements ListableModel {
     this.availableUntil,
     this.description,
     this.isOwner = false,
+    this.requiresApproval = false,
     this.imageData,
   });
 
@@ -58,6 +60,7 @@ class Item implements ListableModel {
       availableUntil: JsonUtil.parseDateString(json['availableUntil']),
       description: json['description'],
       isOwner: json['owner'] ?? false,
+      requiresApproval: json['requiresApproval'] ?? false,
     );
   }
 
@@ -73,6 +76,7 @@ class Item implements ListableModel {
     'availability': availability,
     'availableUntil': JsonUtil.parseDateTime(availableUntil),
     'description': description,
+    'requiresApproval': requiresApproval,
   };
 
   @override
