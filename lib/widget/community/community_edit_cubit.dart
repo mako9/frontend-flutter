@@ -14,16 +14,19 @@ class CommunityEditCubit extends Cubit<DataResponse<Community>> {
   }
 
   factory CommunityEditCubit.ofInitialState({Community? community}) {
-    return CommunityEditCubit(DataResponse(data: community, errorMessage: null));
+    return CommunityEditCubit(
+        DataResponse(data: community, errorMessage: null));
   }
 
   Future<void> createCommunity(Community community) async {
-    final communityDataResponse = await _communityService.createCommunity(community);
+    final communityDataResponse =
+        await _communityService.createCommunity(community);
     emit(communityDataResponse);
   }
 
   Future<void> updateCommunity(Community community) async {
-    final communityDataResponse = await _communityService.updateCommunity(community);
+    final communityDataResponse =
+        await _communityService.updateCommunity(community);
     emit(communityDataResponse);
   }
 

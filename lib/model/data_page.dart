@@ -19,23 +19,24 @@ class DataPage<E> {
 
   factory DataPage.emptyPage() {
     return DataPage(
-        content: List<E>.empty(),
-        isFirstPage: true,
-        isLastPage: true,
-        pageNumber: 0,
-        pageSize: 0,
-        totalElements: 0,
-        totalPages: 0,
+      content: List<E>.empty(),
+      isFirstPage: true,
+      isLastPage: true,
+      pageNumber: 0,
+      pageSize: 0,
+      totalElements: 0,
+      totalPages: 0,
     );
   }
 
-  factory DataPage.fromJson(Map<String, dynamic> json, Function(Map<String, dynamic>) convert) {
+  factory DataPage.fromJson(
+      Map<String, dynamic> json, Function(Map<String, dynamic>) convert) {
     final content = json['content'] as List;
     final parsedContent = content.map((e) => convert(e)).toList().cast<E>();
     return DataPage(
       content: parsedContent,
-      isFirstPage: json['firstPage'],
-      isLastPage: json['lastPage'],
+      isFirstPage: json['isFirstPage'],
+      isLastPage: json['isLastPage'],
       pageNumber: json['pageNumber'],
       pageSize: json['pageSize'],
       totalElements: json['totalElements'],

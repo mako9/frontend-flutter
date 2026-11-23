@@ -31,7 +31,7 @@ class AuthWeb implements Auth {
       return null;
     }
 
-    Uri authorizationEndpoint =  Uri.parse(_config.authorizationEndpoint);
+    Uri authorizationEndpoint = Uri.parse(_config.authorizationEndpoint);
     Uri tokenEndpoint = Uri.parse(_config.tokenEndpoint);
     final grant = oauth2.AuthorizationCodeGrant(
       _config.clientId,
@@ -69,12 +69,10 @@ class AuthWeb implements Auth {
       'client_secret': _config.clientSecret,
       'refresh_token': refreshToken ?? '',
     };
-    await _httpHelper.request(
-        Uri.parse(_config.endSessionEndpoint),
+    await _httpHelper.request(Uri.parse(_config.endSessionEndpoint),
         method: HttpMethod.post,
         contentType: HttpContentType.urlEncoded,
-        body: body
-    );
+        body: body);
   }
 
   @override
@@ -85,12 +83,10 @@ class AuthWeb implements Auth {
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
     };
-    final response = await _httpHelper.request(
-        Uri.parse(_config.tokenEndpoint),
+    final response = await _httpHelper.request(Uri.parse(_config.tokenEndpoint),
         method: HttpMethod.post,
         contentType: HttpContentType.urlEncoded,
-        body: body
-    );
+        body: body);
     final json = response.data;
     if (json != null) return Credential.fromJson(json);
     return null;

@@ -12,9 +12,9 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return BlocProvider(
-        create: (_) => LogoutCubit(false),
-     child: _SettingsScreenContent(),
+    return BlocProvider(
+      create: (_) => LogoutCubit(false),
+      child: _SettingsScreenContent(),
     );
   }
 }
@@ -46,36 +46,34 @@ class _SettingsScreenContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(height: 30),
-               ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: listTitles.length,
-                  itemBuilder: (context, index) {
-                return Card(
-                child: ListTile(
-                onTap: () {
-                  MaterialPageRoute pageRoute = MaterialPageRoute(builder: (context) => const ProfileScreen());
-                  switch (index) {
-                    case 1:
-                      return;
-                    default:
-                      break;
-                  }
-                  Navigator.push(
-                    context,
-                      pageRoute
-                  );
-                },
-                title: Text(listTitles[index]),
-                leading: Icon(_listIcons[index])));
-                }),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: listTitles.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                          child: ListTile(
+                              onTap: () {
+                                MaterialPageRoute pageRoute = MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ProfileScreen());
+                                switch (index) {
+                                  case 1:
+                                    return;
+                                  default:
+                                    break;
+                                }
+                                Navigator.push(context, pageRoute);
+                              },
+                              title: Text(listTitles[index]),
+                              leading: Icon(_listIcons[index])));
+                    }),
                 const Spacer(),
                 CustomButton('Logout', Icons.logout, () {
                   context.read<LogoutCubit>().logout();
                 }),
               ],
             ),
-          )
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          )), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

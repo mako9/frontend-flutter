@@ -1,4 +1,5 @@
 import 'package:frontend_flutter/di/service_locator.dart';
+import 'package:frontend_flutter/model/booking_date_range.dart';
 import 'package:frontend_flutter/model/data_page.dart';
 import 'package:frontend_flutter/model/data_response.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
@@ -28,10 +29,7 @@ class BookingService {
       {int pageNumber = 0}) async {
     final response = await _requestService.request(
       '$_itemPath/booking',
-      queryParameters: {
-        'pageSize': '20',
-        'pageNumber': pageNumber.toString()
-      },
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
     );
     return _bookingPageFromResponse(response);
   }
@@ -41,10 +39,7 @@ class BookingService {
       {int pageNumber = 0}) async {
     final response = await _requestService.request(
       '$_itemPath/$itemUuid/booking',
-      queryParameters: {
-        'pageSize': '20',
-        'pageNumber': pageNumber.toString()
-      },
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
     );
     return _bookingPageFromResponse(response);
   }
@@ -77,6 +72,40 @@ class BookingService {
       method: HttpMethod.patch,
     );
     return _bookingFromResponse(response);
+  }
+
+  /// The bookings other neighbours made for my items.
+  Future<DataResponse<DataPage<ItemBooking>>> getReceivedBookings(
+      {int pageNumber = 0}) async {
+    final response = await _requestService.request(
+      '$_itemPath/booking/received',
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
+    );
+    return _bookingPageFromResponse(response);
+  }
+
+  /// Marks the item back with its owner. Either side can do it, which is why there is no owner check
+  /// here: the borrower confirming a handover is as true a statement as the owner doing it.
+  Future<DataResponse<ItemBooking>> returnBooking(String bookingUuid) async {
+    final response = await _requestService.request(
+      '$_itemPath/booking/$bookingUuid/return',
+      method: HttpMethod.patch,
+    );
+    return _bookingFromResponse(response);
+  }
+
+  /// The days of this item that are already booked, so the picker can refuse them.
+  Future<DataResponse<List<BookingDateRange>>> getBookingDates(
+      String itemUuid) async {
+    final response =
+        await _requestService.request('$_itemPath/$itemUuid/booking/dates');
+    final json = response.getData();
+    List<BookingDateRange>? ranges;
+    if (json != null) {
+      ranges = List<BookingDateRange>.from(
+          (json as List).map((e) => BookingDateRange.fromJson(e)));
+    }
+    return DataResponse.fromHttpResponse(ranges, response);
   }
 
   DataResponse<ItemBooking> _bookingFromResponse(HttpDataResponse response) {

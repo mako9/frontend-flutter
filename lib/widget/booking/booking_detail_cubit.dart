@@ -17,20 +17,39 @@ class BookingDetailCubit extends Cubit<DataResponse<ItemBooking>> {
     final uuid = state.data?.uuid;
     if (uuid == null) return;
     final response = await _bookingService.approveBooking(uuid);
-    emit(response);
+    _apply(response);
   }
 
   Future<void> decline() async {
     final uuid = state.data?.uuid;
     if (uuid == null) return;
     final response = await _bookingService.declineBooking(uuid);
-    emit(response);
+    _apply(response);
   }
 
   Future<void> cancel() async {
     final uuid = state.data?.uuid;
     if (uuid == null) return;
     final response = await _bookingService.cancelBooking(uuid);
-    emit(response);
+    _apply(response);
+  }
+
+  /// "It is back with me again." Either party can say it: the borrower confirming they handed it back
+  /// is as true a statement as the owner confirming they got it, which is the rule the backend applies.
+  Future<void> markReturned() async {
+    final uuid = state.data?.uuid;
+    if (uuid == null) return;
+    final response = await _bookingService.returnBooking(uuid);
+    _apply(response);
+  }
+
+  /// A failed call answers with an error and no booking. Keeping the booking we already had is what makes
+  /// the screen usable afterwards: every action reads the uuid out of this state, so replacing it with null
+  /// would turn every later tap into a silent no-op.
+  void _apply(DataResponse<ItemBooking> response) {
+    emit(DataResponse(
+      data: response.data ?? state.data,
+      errorMessage: response.errorMessage,
+    ));
   }
 }

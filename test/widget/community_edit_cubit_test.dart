@@ -8,22 +8,18 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late CommunityService mockCommunityService;
   late CommunityEditCubit communityEditCubit;
   final community = Community(
-      name: 'name',
-      radius: 10,
-      latitude: 0.4,
-      longitude: 2.3,
+    name: 'name',
+    radius: 10,
+    latitude: 0.4,
+    longitude: 2.3,
   );
-  final response = DataResponse<Community>(
-        data: community,
-      errorMessage: null
-  );
+  final response = DataResponse<Community>(data: community, errorMessage: null);
 
   setUpAll(() async {
     getServices();
@@ -33,15 +29,21 @@ void main() {
     communityEditCubit = CommunityEditCubit(DataResponse.empty());
   });
 
-  test('when getting community with success, then state is set to data response', () async {
-    when(mockCommunityService.getCommunity('uuid')).thenAnswer((_) async => response);
+  test(
+      'when getting community with success, then state is set to data response',
+      () async {
+    when(mockCommunityService.getCommunity('uuid'))
+        .thenAnswer((_) async => response);
     await communityEditCubit.getCommunity('uuid');
 
     expect(communityEditCubit.state, response);
   });
 
-  test('when updating community with success, then state is set to data response', () async {
-    when(mockCommunityService.updateCommunity(community)).thenAnswer((_) async => response);
+  test(
+      'when updating community with success, then state is set to data response',
+      () async {
+    when(mockCommunityService.updateCommunity(community))
+        .thenAnswer((_) async => response);
     await communityEditCubit.updateCommunity(community);
 
     expect(communityEditCubit.state, response);

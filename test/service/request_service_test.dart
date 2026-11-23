@@ -35,11 +35,18 @@ void main() {
     getIt.registerLazySingleton<StorageService>(() => mockStorageService);
     requestService = RequestService(httpHelper: mockHttpHelper);
     final config = getIt.get<Config>();
-    url = Uri(scheme: config.backendScheme, host: config.backendHost, port: config.backendPort, path: '${config.backendBasePath}/$path');
+    url = Uri(
+        scheme: config.backendScheme,
+        host: config.backendHost,
+        port: config.backendPort,
+        path: '${config.backendBasePath}/$path');
   });
 
-  test('when calling GET request with needed auth and missing access token, then status 401 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => null);
+  test(
+      'when calling GET request with needed auth and missing access token, then status 401 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => null);
 
     final response = await requestService.request(path);
 
@@ -47,9 +54,13 @@ void main() {
     expect(response.data, null);
   });
 
-  test('when calling GET request with not needed auth and missing access token, then status 200 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => null);
-    when(mockHttpHelper.request(url)).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
+  test(
+      'when calling GET request with not needed auth and missing access token, then status 200 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => null);
+    when(mockHttpHelper.request(url)).thenAnswer(
+        (_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
 
     final response = await requestService.request(path, needsAuth: false);
 
@@ -57,9 +68,13 @@ void main() {
     expect(response.data, json);
   });
 
-  test('when calling GET request with needed auth and existing access token, then status 200 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => 'some_token');
-    when(mockHttpHelper.request(url, accessToken: 'some_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
+  test(
+      'when calling GET request with needed auth and existing access token, then status 200 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => 'some_token');
+    when(mockHttpHelper.request(url, accessToken: 'some_token')).thenAnswer(
+        (_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
 
     final response = await requestService.request(path);
 
@@ -67,11 +82,17 @@ void main() {
     expect(response.data, {'test': 'test'});
   });
 
-  test('when calling GET request with needed auth and invalid access token and succeeding refresh, then status 200 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => 'some_token');
+  test(
+      'when calling GET request with needed auth and invalid access token and succeeding refresh, then status 200 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => 'some_token');
     when(mockAuthService.refresh()).thenAnswer((_) async => 'new_token');
-    when(mockHttpHelper.request(url, accessToken: 'some_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
-    when(mockHttpHelper.request(url, accessToken: 'new_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
+    when(mockHttpHelper.request(url, accessToken: 'some_token')).thenAnswer(
+        (_) async => const HttpDataResponse(
+            status: HttpStatus.unauthorized, data: null));
+    when(mockHttpHelper.request(url, accessToken: 'new_token')).thenAnswer(
+        (_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
 
     HttpDataResponse response = await requestService.request(path);
 
@@ -79,10 +100,15 @@ void main() {
     expect(response.data, json);
   });
 
-  test('when calling GET request with needed auth and missing access token and failing refresh, then status 401 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => 'some_token');
+  test(
+      'when calling GET request with needed auth and missing access token and failing refresh, then status 401 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => 'some_token');
     when(mockAuthService.refresh()).thenAnswer((_) async => null);
-    when(mockHttpHelper.request(url, accessToken: 'some_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
+    when(mockHttpHelper.request(url, accessToken: 'some_token')).thenAnswer(
+        (_) async => const HttpDataResponse(
+            status: HttpStatus.unauthorized, data: null));
 
     HttpDataResponse response = await requestService.request(path);
 
@@ -90,33 +116,57 @@ void main() {
     expect(response.data, null);
   });
 
-  test('when making multipart request with existing access token, then status 200 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => 'some_token');
-    when(mockHttpHelper.multipartRequest(url, Uint8List(10), 'png', 'some_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
+  test(
+      'when making multipart request with existing access token, then status 200 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => 'some_token');
+    when(mockHttpHelper.multipartRequest(
+            url, Uint8List(10), 'png', 'some_token'))
+        .thenAnswer((_) async =>
+            const HttpDataResponse(status: HttpStatus.ok, data: json));
 
-    final response = await requestService.multipartRequest(path, Uint8List(10), 'png');
+    final response =
+        await requestService.multipartRequest(path, Uint8List(10), 'png');
 
     expect(response.status, HttpStatus.ok);
   });
 
-  test('when making multipart request with invalid access token and succeeding refresh, then status 200 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => 'some_token');
+  test(
+      'when making multipart request with invalid access token and succeeding refresh, then status 200 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => 'some_token');
     when(mockAuthService.refresh()).thenAnswer((_) async => 'new_token');
-    when(mockHttpHelper.multipartRequest(url, Uint8List(10), 'png', 'some_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
-    when(mockHttpHelper.multipartRequest(url, Uint8List(10), 'png', 'new_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.ok, data: json));
+    when(mockHttpHelper.multipartRequest(
+            url, Uint8List(10), 'png', 'some_token'))
+        .thenAnswer((_) async => const HttpDataResponse(
+            status: HttpStatus.unauthorized, data: null));
+    when(mockHttpHelper.multipartRequest(
+            url, Uint8List(10), 'png', 'new_token'))
+        .thenAnswer((_) async =>
+            const HttpDataResponse(status: HttpStatus.ok, data: json));
 
-    HttpDataResponse response = await requestService.multipartRequest(path, Uint8List(10), 'png');
+    HttpDataResponse response =
+        await requestService.multipartRequest(path, Uint8List(10), 'png');
 
     expect(response.status, HttpStatus.ok);
     expect(response.data, json);
   });
 
-  test('when calling GET request with missing access token and failing refresh, then status 401 is returned', () async {
-    when(mockStorageService.readToken(TokenType.accessToken)).thenAnswer((_) async => 'some_token');
+  test(
+      'when calling GET request with missing access token and failing refresh, then status 401 is returned',
+      () async {
+    when(mockStorageService.readToken(TokenType.accessToken))
+        .thenAnswer((_) async => 'some_token');
     when(mockAuthService.refresh()).thenAnswer((_) async => null);
-    when(mockHttpHelper.multipartRequest(url, Uint8List(10), 'png', 'some_token')).thenAnswer((_) async => const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
+    when(mockHttpHelper.multipartRequest(
+            url, Uint8List(10), 'png', 'some_token'))
+        .thenAnswer((_) async => const HttpDataResponse(
+            status: HttpStatus.unauthorized, data: null));
 
-    HttpDataResponse response = await requestService.multipartRequest(path, Uint8List(10), 'png');
+    HttpDataResponse response =
+        await requestService.multipartRequest(path, Uint8List(10), 'png');
 
     expect(response.status, HttpStatus.unauthorized);
     expect(response.data, null);

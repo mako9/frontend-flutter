@@ -20,7 +20,8 @@ class BookingDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => BookingDetailCubit.ofInitialState(booking: booking),
-      child: LoadingOverlay(child: _BookingDetailScreenContent(isOwner: isOwner)),
+      child:
+          LoadingOverlay(child: _BookingDetailScreenContent(isOwner: isOwner)),
     );
   }
 }
@@ -63,27 +64,36 @@ class _BookingDetailScreenContent extends StatelessWidget {
                       style: const TextStyle(color: Colors.red)),
                 ],
                 const Spacer(),
-                if (isOwner &&
-                    booking?.status == BookingStatus.pending) ...[
+                if (isOwner && booking?.status == BookingStatus.pending) ...[
                   CustomButton(
                       AppLocalizations.of(context)!.bookingDetailScreen_approve,
                       Icons.check, () async {
+                    final cubit = context.read<BookingDetailCubit>();
                     LoadingOverlay.of(context).show();
-                    await context.read<BookingDetailCubit>().approve();
+                    await cubit.approve();
                     if (context.mounted) {
                       LoadingOverlay.of(context).hide();
-                      Navigator.pop(context);
+                      // a failed action stays on screen - popping would throw away the message that
+                      // says it failed, and the person reading the screen is the one who has to retry
+                      if (cubit.state.errorMessage == null) {
+                        Navigator.pop(context);
+                      }
                     }
                   }),
                   const SizedBox(height: 8),
                   CustomButton(
                       AppLocalizations.of(context)!.bookingDetailScreen_decline,
                       Icons.close, () async {
+                    final cubit = context.read<BookingDetailCubit>();
                     LoadingOverlay.of(context).show();
-                    await context.read<BookingDetailCubit>().decline();
+                    await cubit.decline();
                     if (context.mounted) {
                       LoadingOverlay.of(context).hide();
-                      Navigator.pop(context);
+                      // a failed action stays on screen - popping would throw away the message that
+                      // says it failed, and the person reading the screen is the one who has to retry
+                      if (cubit.state.errorMessage == null) {
+                        Navigator.pop(context);
+                      }
                     }
                   }),
                 ],
@@ -95,11 +105,34 @@ class _BookingDetailScreenContent extends StatelessWidget {
                   CustomButton(
                       AppLocalizations.of(context)!.bookingDetailScreen_cancel,
                       Icons.cancel, () async {
+                    final cubit = context.read<BookingDetailCubit>();
                     LoadingOverlay.of(context).show();
-                    await context.read<BookingDetailCubit>().cancel();
+                    await cubit.cancel();
                     if (context.mounted) {
                       LoadingOverlay.of(context).hide();
-                      Navigator.pop(context);
+                      // a failed action stays on screen - popping would throw away the message that
+                      // says it failed, and the person reading the screen is the one who has to retry
+                      if (cubit.state.errorMessage == null) {
+                        Navigator.pop(context);
+                      }
+                    }
+                  }),
+                ],
+                if (booking?.status == BookingStatus.confirmed) ...[
+                  const SizedBox(height: 8),
+                  CustomButton(
+                      AppLocalizations.of(context)!.bookingDetailScreen_return,
+                      Icons.assignment_return, () async {
+                    final cubit = context.read<BookingDetailCubit>();
+                    LoadingOverlay.of(context).show();
+                    await cubit.markReturned();
+                    if (context.mounted) {
+                      LoadingOverlay.of(context).hide();
+                      // a failed action stays on screen - popping would throw away the message that
+                      // says it failed, and the person reading the screen is the one who has to retry
+                      if (cubit.state.errorMessage == null) {
+                        Navigator.pop(context);
+                      }
                     }
                   }),
                 ],
@@ -121,6 +154,8 @@ class _BookingDetailScreenContent extends StatelessWidget {
         AppLocalizations.of(context)!.bookingStatus_declined,
       BookingStatus.cancelled =>
         AppLocalizations.of(context)!.bookingStatus_cancelled,
+      BookingStatus.returned =>
+        AppLocalizations.of(context)!.bookingStatus_returned,
       null => '-',
     };
     final color = switch (status) {
@@ -128,6 +163,7 @@ class _BookingDetailScreenContent extends StatelessWidget {
       BookingStatus.confirmed => Colors.green,
       BookingStatus.declined => Colors.red,
       BookingStatus.cancelled => Colors.grey,
+      BookingStatus.returned => Colors.blue,
       null => Colors.grey,
     };
     return Chip(

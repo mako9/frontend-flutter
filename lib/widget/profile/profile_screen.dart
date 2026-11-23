@@ -47,59 +47,75 @@ class _ProfileScreenContent extends StatelessWidget {
               style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
-           Expanded(
-             child: BlocBuilder<UserInfoCubit, DataResponse<User>>(
-              builder: (_, dataResponse) {
-                LoadingOverlay.of(context).hide();
-                return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(children: [
-                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_firstName, initialValue: dataResponse.data?.firstName, controller: _firstNameController),
-                      ]),
-                      Row(children: [
-                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_lastName, initialValue: dataResponse.data?.lastName, controller: _lastNameController),
-                      ]),
-                      Row(children: [
-                        CustomTextFormField(AppLocalizations.of(context)!.profileScreen_mail, initialValue: dataResponse.data?.mail),
-                      ]),
-                      Row(
-                        children: [
-                          CustomTextFormField(AppLocalizations.of(context)!.street, initialValue: dataResponse.data?.street, controller: _streetController),
-                          CustomTextFormField(AppLocalizations.of(context)!.houseNumber, initialValue: dataResponse.data?.houseNumber, controller: _houseNumberController),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          CustomTextFormField(AppLocalizations.of(context)!.postalCode, initialValue: dataResponse.data?.postalCode, controller: _postalCodeController),
-                          CustomTextFormField(AppLocalizations.of(context)!.city, initialValue: dataResponse.data?.city, controller: _cityController),
-                        ],
+            Expanded(child: BlocBuilder<UserInfoCubit, DataResponse<User>>(
+                builder: (_, dataResponse) {
+              LoadingOverlay.of(context).hide();
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(children: [
+                      CustomTextFormField(
+                          AppLocalizations.of(context)!.profileScreen_firstName,
+                          initialValue: dataResponse.data?.firstName,
+                          controller: _firstNameController),
+                    ]),
+                    Row(children: [
+                      CustomTextFormField(
+                          AppLocalizations.of(context)!.profileScreen_lastName,
+                          initialValue: dataResponse.data?.lastName,
+                          controller: _lastNameController),
+                    ]),
+                    Row(children: [
+                      CustomTextFormField(
+                          AppLocalizations.of(context)!.profileScreen_mail,
+                          initialValue: dataResponse.data?.mail),
+                    ]),
+                    Row(
+                      children: [
+                        CustomTextFormField(
+                            AppLocalizations.of(context)!.street,
+                            initialValue: dataResponse.data?.street,
+                            controller: _streetController),
+                        CustomTextFormField(
+                            AppLocalizations.of(context)!.houseNumber,
+                            initialValue: dataResponse.data?.houseNumber,
+                            controller: _houseNumberController),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        CustomTextFormField(
+                            AppLocalizations.of(context)!.postalCode,
+                            initialValue: dataResponse.data?.postalCode,
+                            controller: _postalCodeController),
+                        CustomTextFormField(AppLocalizations.of(context)!.city,
+                            initialValue: dataResponse.data?.city,
+                            controller: _cityController),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    if (dataResponse.errorMessage != null) ...[
+                      Text(
+                        AppLocalizations.of(context)!
+                            .errorMessage(dataResponse.errorMessage!),
+                        style: const TextStyle(color: Colors.red),
                       ),
                       const SizedBox(height: 30),
-                      if (dataResponse.errorMessage != null) ...[
-                        Text(
-                          AppLocalizations.of(context)!.errorMessage(dataResponse.errorMessage!),
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                        const SizedBox(height: 30),
-                      ],
-                      CustomButton(AppLocalizations.of(context)!.save, Icons.save, () {
-                        final updatedUser = User(
+                    ],
+                    CustomButton(AppLocalizations.of(context)!.save, Icons.save,
+                        () {
+                      final updatedUser = User(
                           firstName: _firstNameController.text,
                           lastName: _lastNameController.text,
                           street: _streetController.text,
                           houseNumber: _houseNumberController.text,
                           postalCode: _postalCodeController.text,
-                          city: _cityController.text
-                        );
-                        LoadingOverlay.of(context).show();
-                        context.read<UserInfoCubit>().updateUser(updatedUser);
-                      }),
-                    ]
-                );
-              }
-             )
-            ),
+                          city: _cityController.text);
+                      LoadingOverlay.of(context).show();
+                      context.read<UserInfoCubit>().updateUser(updatedUser);
+                    }),
+                  ]);
+            })),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

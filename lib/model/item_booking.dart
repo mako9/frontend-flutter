@@ -4,7 +4,8 @@ enum BookingStatus {
   pending,
   confirmed,
   declined,
-  cancelled;
+  cancelled,
+  returned;
 
   factory BookingStatus.fromJson(String? value) {
     switch (value?.toLowerCase()) {
@@ -16,6 +17,8 @@ enum BookingStatus {
         return BookingStatus.declined;
       case 'cancelled':
         return BookingStatus.cancelled;
+      case 'returned':
+        return BookingStatus.returned;
       default:
         return BookingStatus.confirmed;
     }
@@ -48,6 +51,12 @@ class ItemBooking {
   final BookingStatus status;
   final CancelledBy? cancelledBy;
   final DateTime? cancelledAt;
+  final CancelledBy? returnedBy;
+  final DateTime? returnedAt;
+
+  /// Which side of this booking the caller is on, as the server says it. `false` when unknown, because
+  /// the flag only ever unlocks the owner's own controls.
+  final bool isItemOwner;
 
   ItemBooking({
     this.uuid,
@@ -59,6 +68,9 @@ class ItemBooking {
     this.status = BookingStatus.confirmed,
     this.cancelledBy,
     this.cancelledAt,
+    this.returnedBy,
+    this.returnedAt,
+    this.isItemOwner = false,
   });
 
   factory ItemBooking.fromJson(Map<String, dynamic> json) {
@@ -74,6 +86,11 @@ class ItemBooking {
           ? CancelledBy.fromJson(json['cancelledBy'])
           : null,
       cancelledAt: JsonUtil.parseDateString(json['cancelledAt']),
+      returnedBy: json['returnedBy'] != null
+          ? CancelledBy.fromJson(json['returnedBy'])
+          : null,
+      returnedAt: JsonUtil.parseDateString(json['returnedAt']),
+      isItemOwner: json['isItemOwner'] ?? false,
     );
   }
 }

@@ -30,8 +30,7 @@ class ItemDetailCubit extends Cubit<DataResponse<Item>> {
     state.data?.imageData = itemImageDataResponse.data;
     final newState = DataResponse(
         data: state.data,
-        errorMessage: state.errorMessage ?? itemImageDataResponse.errorMessage
-    );
+        errorMessage: state.errorMessage ?? itemImageDataResponse.errorMessage);
     emit(newState);
   }
 }

@@ -13,10 +13,7 @@ class NotificationService {
       {int pageNumber = 0}) async {
     final response = await _requestService.request(
       '$_path/',
-      queryParameters: {
-        'pageSize': '20',
-        'pageNumber': pageNumber.toString()
-      },
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
     );
     final json = response.getData();
     DataPage<AppNotification>? page;
@@ -25,8 +22,7 @@ class NotificationService {
   }
 
   Future<int> getUnreadCount() async {
-    final response =
-        await _requestService.request('$_path/unread-count');
+    final response = await _requestService.request('$_path/unread-count');
     final json = response.getData();
     if (json == null) return 0;
     return (json['count'] as int?) ?? 0;

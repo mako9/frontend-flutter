@@ -25,7 +25,6 @@ class Config {
 
     YamlList test = yamlMap['scopes'];
 
-
     baseUrl = yamlMap['baseUrl'] as String;
     backendHost = yamlMap['backendHost'] as String;
     backendScheme = yamlMap['backendScheme'] as String;

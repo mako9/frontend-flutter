@@ -9,7 +9,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -41,32 +40,47 @@ void main() {
     mockCommunityService = MockCommunityService();
     await getIt.unregister<CommunityService>();
     getIt.registerLazySingleton<CommunityService>(() => mockCommunityService);
-    communityRequestingMemberCubit = CommunityRequestingMemberCubit.ofInitialState(uuid);
+    communityRequestingMemberCubit =
+        CommunityRequestingMemberCubit.ofInitialState(uuid);
   });
 
-  test('when loading requesting member with success, then state is set to data response', () async {
-    when(mockCommunityService.getRequestingMember(uuid)).thenAnswer((_) async => DataResponse(data: userPage, errorMessage: null));
+  test(
+      'when loading requesting member with success, then state is set to data response',
+      () async {
+    when(mockCommunityService.getRequestingMember(uuid)).thenAnswer(
+        (_) async => DataResponse(data: userPage, errorMessage: null));
     await communityRequestingMemberCubit.loadRequestingMember(uuid);
 
-    expect(communityRequestingMemberCubit.state.data?.content, userPage.content);
+    expect(
+        communityRequestingMemberCubit.state.data?.content, userPage.content);
     expect(communityRequestingMemberCubit.state.errorMessage, null);
   });
 
-  test('when approving requesting member with success, then state is set to data response', () async {
-    when(mockCommunityService.approveJoinRequests(uuid, userUuids)).thenAnswer((_) async => DataResponse(data: userList, errorMessage: null));
-    when(mockCommunityService.getRequestingMember(uuid)).thenAnswer((_) async => DataResponse(data: userPage, errorMessage: null));
+  test(
+      'when approving requesting member with success, then state is set to data response',
+      () async {
+    when(mockCommunityService.approveJoinRequests(uuid, userUuids)).thenAnswer(
+        (_) async => DataResponse(data: userList, errorMessage: null));
+    when(mockCommunityService.getRequestingMember(uuid)).thenAnswer(
+        (_) async => DataResponse(data: userPage, errorMessage: null));
     await communityRequestingMemberCubit.approveRequests(uuid, userUuids);
 
-    expect(communityRequestingMemberCubit.state.data?.content, userPage.content);
+    expect(
+        communityRequestingMemberCubit.state.data?.content, userPage.content);
     expect(communityRequestingMemberCubit.state.errorMessage, null);
   });
 
-  test('when declining requesting member with success, then state is set to data response', () async {
-    when(mockCommunityService.declineJoinRequest(uuid, userUuids)).thenAnswer((_) async => DataResponse(data: userList, errorMessage: null));
-    when(mockCommunityService.getRequestingMember(uuid)).thenAnswer((_) async => DataResponse(data: userPage, errorMessage: null));
+  test(
+      'when declining requesting member with success, then state is set to data response',
+      () async {
+    when(mockCommunityService.declineJoinRequest(uuid, userUuids)).thenAnswer(
+        (_) async => DataResponse(data: userList, errorMessage: null));
+    when(mockCommunityService.getRequestingMember(uuid)).thenAnswer(
+        (_) async => DataResponse(data: userPage, errorMessage: null));
     await communityRequestingMemberCubit.declineRequests(uuid, userUuids);
 
-    expect(communityRequestingMemberCubit.state.data?.content, userPage.content);
+    expect(
+        communityRequestingMemberCubit.state.data?.content, userPage.content);
     expect(communityRequestingMemberCubit.state.errorMessage, null);
   });
 }

@@ -20,11 +20,16 @@ class AuthService {
 
   Future<String?> refresh() async {
     final refreshToken = await _getStoredToken(TokenType.refreshToken);
-    if (refreshToken == null) { return null; }
+    if (refreshToken == null) {
+      return null;
+    }
     final expireDate = Jwt.getExpiryDate(refreshToken);
     if (expireDate == null) return null;
-    final isExpired = expireDate.isBefore(DateTime.now().add(const Duration(minutes: 3)));
-    if (isExpired) { return null; }
+    final isExpired =
+        expireDate.isBefore(DateTime.now().add(const Duration(minutes: 3)));
+    if (isExpired) {
+      return null;
+    }
     Credential? credential = await auth.refresh(refreshToken);
     await _storeTokenFromCredential(credential);
     return credential?.accessToken;
@@ -35,7 +40,8 @@ class AuthService {
     if (accessToken == null) return false;
     final expireDate = Jwt.getExpiryDate(accessToken);
     if (expireDate == null) return false;
-    final isExpired = expireDate.isBefore(DateTime.now().add(const Duration(minutes: 3)));
+    final isExpired =
+        expireDate.isBefore(DateTime.now().add(const Duration(minutes: 3)));
     if (isExpired) {
       return await refresh() != null;
     }
@@ -58,9 +64,13 @@ class AuthService {
   }
 
   Future<void> _storeTokenFromCredential(Credential? credential) async {
-    if (credential == null) { return; }
-    await _storageService.storeToken(TokenType.accessToken, credential.accessToken);
-    await _storageService.storeToken(TokenType.refreshToken, credential.refreshToken);
+    if (credential == null) {
+      return;
+    }
+    await _storageService.storeToken(
+        TokenType.accessToken, credential.accessToken);
+    await _storageService.storeToken(
+        TokenType.refreshToken, credential.refreshToken);
     await _storageService.storeToken(TokenType.idToken, credential.idToken);
   }
 }

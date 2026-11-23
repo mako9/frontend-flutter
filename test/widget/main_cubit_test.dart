@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
@@ -10,7 +9,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.dart';
 import '../mock/mock.mocks.dart';
-
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

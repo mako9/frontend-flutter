@@ -36,13 +36,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title:
-              Text(AppLocalizations.of(context)!.notificationScreen_title)),
+          title: Text(AppLocalizations.of(context)!.notificationScreen_title)),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _notifications.isEmpty
-              ? Center(
-                  child: Text(AppLocalizations.of(context)!.emptyList))
+              ? Center(child: Text(AppLocalizations.of(context)!.emptyList))
               : ListView.builder(
                   itemCount: _notifications.length,
                   itemBuilder: (context, index) {
@@ -72,6 +70,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
         return AppLocalizations.of(context)!.notification_bookingDeclined;
       case 'BOOKING_CANCELLED':
         return AppLocalizations.of(context)!.notification_bookingCancelled;
+      case 'BOOKING_RETURNED':
+        return AppLocalizations.of(context)!.notification_bookingReturned;
+      case 'ITEM_BOOKED':
+        return AppLocalizations.of(context)!.notification_itemBooked;
       default:
         return type ?? '-';
     }

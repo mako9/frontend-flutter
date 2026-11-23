@@ -34,8 +34,8 @@ void main() {
       'roles': ['USER'],
     };
 
-    when(mockRequestService.request('user/me')).thenAnswer((_) async =>
-    HttpDataResponse(status: HttpStatus.ok, data: json));
+    when(mockRequestService.request('user/me')).thenAnswer(
+        (_) async => HttpDataResponse(status: HttpStatus.ok, data: json));
     final dataResponse = await userService.getUser();
     final user = dataResponse.data;
 
@@ -51,7 +51,8 @@ void main() {
 
   test('when getting invalid response, then user is returned', () async {
     when(mockRequestService.request('user/me')).thenAnswer((_) async =>
-        const HttpDataResponse(status: HttpStatus.serviceUnavailable, data: null));
+        const HttpDataResponse(
+            status: HttpStatus.serviceUnavailable, data: null));
     final dataResponse = await userService.getUser();
 
     expect(dataResponse.data, null);

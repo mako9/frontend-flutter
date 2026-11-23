@@ -26,8 +26,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => MainCubit(null, context),
-    child: const _MainScreenContent()
-    );
+        child: const _MainScreenContent());
   }
 }
 
@@ -36,8 +35,7 @@ class _MainScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainCubit, String?>(
-    builder: (_, route) {
+    return BlocBuilder<MainCubit, String?>(builder: (_, route) {
       if (route == null) {
         return const SizedBox.shrink();
       }
@@ -61,7 +59,6 @@ class _MainScreenContent extends StatelessWidget {
           HomeScreen.route: (context) => const HomeScreen(key: Key('Home')),
         },
       );
-    }
-    );
+    });
   }
 }

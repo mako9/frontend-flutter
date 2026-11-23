@@ -18,6 +18,7 @@ class BookingCubit extends Cubit<DataResponse<BookingState>> {
 
   BookingCubit(super.initialState) {
     loadMyBookings();
+    loadLenderBookings();
   }
 
   factory BookingCubit.ofInitialState() {
@@ -31,6 +32,19 @@ class BookingCubit extends Cubit<DataResponse<BookingState>> {
       data: BookingState(
           myBookings: response.data,
           lenderBookings: state.data?.lenderBookings),
+      errorMessage: response.errorMessage,
+    ));
+  }
+
+  /// The requests other neighbours made for my items. Kept in the same state as my own bookings and
+  /// merged field-by-field, because whichever of the two loads answers last is the one that writes the
+  /// state - a whole-state replace would blank out the page that answered first.
+  Future<void> loadLenderBookings({int pageNumber = 0}) async {
+    final response =
+        await _bookingService.getReceivedBookings(pageNumber: pageNumber);
+    emit(DataResponse(
+      data: BookingState(
+          myBookings: state.data?.myBookings, lenderBookings: response.data),
       errorMessage: response.errorMessage,
     ));
   }

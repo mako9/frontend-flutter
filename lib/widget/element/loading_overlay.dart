@@ -26,8 +26,7 @@ class LoadingOverlayState extends State<LoadingOverlay> {
   bool _isLoading = false;
 
   void show() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _isLoading = true;
       });
@@ -35,8 +34,7 @@ class LoadingOverlayState extends State<LoadingOverlay> {
   }
 
   void hide() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _isLoading = false;
       });

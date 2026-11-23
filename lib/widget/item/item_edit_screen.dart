@@ -54,7 +54,9 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
   final _cityController = TextEditingController();
   final _descriptionController = TextEditingController();
   bool _isActive = true;
-  bool _requiresApproval = false;
+
+  /// On unless the owner switches it off - see Item.requiresApproval.
+  bool _requiresApproval = true;
   Item? _item;
   DataPage<Community>? _communityPage;
   String? _errorMessage;
@@ -98,7 +100,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                 _selectedCategories[element] = true;
               }
               _isActive = _item?.isActive ?? true;
-              _requiresApproval = _item?.requiresApproval ?? false;
+              _requiresApproval = _item?.requiresApproval ?? true;
               _errorMessage = state.errorMessage;
             });
           }),
@@ -124,27 +126,25 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Expanded(child:
-                        SingleChildScrollView(
-                            child: Column(
+                        Expanded(
+                            child: SingleChildScrollView(
+                                child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Stack(
-                                        alignment: Alignment.center,
-                                          children: [
-                                            CustomImage(_imageData, showDefault: false),
-                                        IconButton(
-                                          icon: const Icon(Icons.add_a_photo),
-                                          onPressed: (() async {
-                                            final imageData = await context
-                                                .read<ItemEditCubit>()
-                                                .pickFiles();
-                                            setState(() {
-                                              _imageData = imageData;
-                                            });
-                                          }),
-                                        ),
-                                      ]),
+                              Stack(alignment: Alignment.center, children: [
+                                CustomImage(_imageData, showDefault: false),
+                                IconButton(
+                                  icon: const Icon(Icons.add_a_photo),
+                                  onPressed: (() async {
+                                    final imageData = await context
+                                        .read<ItemEditCubit>()
+                                        .pickFiles();
+                                    setState(() {
+                                      _imageData = imageData;
+                                    });
+                                  }),
+                                ),
+                              ]),
                               Row(children: [
                                 CustomTextFormField(
                                     AppLocalizations.of(context)!.name,
@@ -257,8 +257,9 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                               TextFormField(
                                 controller: _descriptionController,
                                 maxLines: 5,
-                                decoration: InputDecoration(hintText: AppLocalizations.of(context)!
-                                    .itemEditScreen_descriptionHint),
+                                decoration: InputDecoration(
+                                    hintText: AppLocalizations.of(context)!
+                                        .itemEditScreen_descriptionHint),
                               ),
                               const SizedBox(height: 24),
                               Row(children: [
@@ -266,7 +267,8 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                                     .itemEditScreen_availableUntil),
                                 const Spacer(),
                                 TextButton(
-                                    style: TextButton.styleFrom(foregroundColor: Colors.brown[300]),
+                                    style: TextButton.styleFrom(
+                                        foregroundColor: Colors.brown[300]),
                                     onPressed: () => _selectDate(context),
                                     child: Text(
                                         DateUtil.toDateString(_selectedDate) ??

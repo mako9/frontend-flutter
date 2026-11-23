@@ -22,24 +22,37 @@ jobs:
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
+      # Both toolchains are pinned, and they have to stay in step: Flutter ships its own Dart, and
+      # `flutter analyze` decides whether an `info` fails the build. With `channel: stable` and no version,
+      # CI moved to Flutter 3.50.1 (released 2026-11-20) on its own and reported 51 `deprecated_member_use`
+      # infos - `package:flutter/material.dart` is deprecated in favour of `package:material_ui` since
+      # v3.47 - and exited 1 on code that analyzes clean on 3.41.9. Measured on PR run 45211139568.
+      # 3.41.9 bundles Dart 3.11.5, which is what this baseline was formatted, analyzed and tested with.
+      # Moving to a newer stable is a real task (the material_ui migration), not a side effect of a PR.
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+        with:
+          sdk: '3.11.5'
       - uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          flutter-version: '3.41.9'
 
       - name: Install dependencies
         run: flutter pub get
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
+      # lib/gen_l10n/ is generated from lib/l10n/*.arb and is gitignored, and neither `flutter analyze` nor
+      # `flutter test` runs the generator: without this step the checkout has no AppLocalizations at all and
+      # analysis reports 162 errors, 27 test files fail to compile. Measured on 2026-11-23 with the directory
+      # deleted; `flutter gen-l10n` recreates it byte-for-byte.
+      - name: Generate localizations
+        run: flutter gen-l10n
 
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      # flutter analyze, not dart analyze: it applies the Flutter-specific lints from analysis_options.yaml
+      # that `dart analyze` does not.
       - name: Analyze project source
-        run: dart analyze
+        run: flutter analyze
 
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
       - name: Run tests
         run: flutter test

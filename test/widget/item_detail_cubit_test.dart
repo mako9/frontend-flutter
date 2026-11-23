@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -18,10 +17,7 @@ void main() {
     uuid: 'uuid',
     name: 'name',
   );
-  final response = DataResponse<Item>(
-      data: item,
-      errorMessage: null
-  );
+  final response = DataResponse<Item>(data: item, errorMessage: null);
 
   setUpAll(() async {
     getServices();
@@ -31,19 +27,22 @@ void main() {
     itemDetailCubit = ItemDetailCubit(DataResponse.empty());
   });
 
-  test('when getting item with success, then state is set to data response', () async {
+  test('when getting item with success, then state is set to data response',
+      () async {
     when(mockItemService.getItem(item.uuid!)).thenAnswer((_) async => response);
     await itemDetailCubit.getItem(item.uuid!);
 
     expect(itemDetailCubit.state, response);
   });
 
-  test('when getting item with failure, then state is set to error message', () async {
+  test('when getting item with failure, then state is set to error message',
+      () async {
     const errorResponse = DataResponse<Item>(
       data: null,
       errorMessage: 'some error',
     );
-    when(mockItemService.getItem(item.uuid!)).thenAnswer((_) async => errorResponse);
+    when(mockItemService.getItem(item.uuid!))
+        .thenAnswer((_) async => errorResponse);
     await itemDetailCubit.getItem(item.uuid!);
 
     expect(itemDetailCubit.state, errorResponse);

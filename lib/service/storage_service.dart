@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-enum TokenType {
-  accessToken,
-  refreshToken,
-  idToken
-}
+enum TokenType { accessToken, refreshToken, idToken }
 
 class StorageService {
   final _secureStorage = const FlutterSecureStorage();
@@ -20,14 +16,15 @@ class StorageService {
 
   Future<String?> readToken(TokenType tokenType) async {
     debugPrint("Reading token of type:  ${tokenType.name}");
-    var readData =
-        await _secureStorage.read(key: tokenType.name, aOptions: _getAndroidOptions());
+    var readData = await _secureStorage.read(
+        key: tokenType.name, aOptions: _getAndroidOptions());
     return readData;
   }
 
   Future<void> deleteToken(TokenType tokenType) async {
     debugPrint("Deleting token of type: ${tokenType.name}");
-    await _secureStorage.delete(key: tokenType.name, aOptions: _getAndroidOptions());
+    await _secureStorage.delete(
+        key: tokenType.name, aOptions: _getAndroidOptions());
   }
 
   Future<void> deleteAllSecureData() async {

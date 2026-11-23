@@ -25,7 +25,8 @@ class User implements ListableModel {
 
   factory User.fromJson(Map<String, dynamic> json) {
     List<dynamic>? jsonRoles = json['roles'];
-    final List<UserRole>? roles = jsonRoles?.map((e) => UserRole.fromJson(e)).toList();
+    final List<UserRole>? roles =
+        jsonRoles?.map((e) => UserRole.fromJson(e)).toList();
     return User(
       uuid: json['uuid'],
       firstName: json['firstName'],
@@ -40,13 +41,13 @@ class User implements ListableModel {
   }
 
   Map<String, dynamic> toJson() => {
-    'firstName': firstName,
-    'lastName': lastName,
-    'street': street,
-    'houseNumber': houseNumber,
-    'postalCode': postalCode,
-    'city': city,
-  };
+        'firstName': firstName,
+        'lastName': lastName,
+        'street': street,
+        'houseNumber': houseNumber,
+        'postalCode': postalCode,
+        'city': city,
+      };
 
   @override
   String title() {
@@ -64,7 +65,8 @@ enum UserRole {
   factory UserRole.fromJson(dynamic value) {
     final stringValue = value.toString();
     try {
-      return UserRole.values.firstWhere((element) => element.name == stringValue.toLowerCase());
+      return UserRole.values
+          .firstWhere((element) => element.name == stringValue.toLowerCase());
     } catch (_) {
       // default role is user
       return UserRole.user;

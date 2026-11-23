@@ -20,6 +20,9 @@ class Item implements ListableModel {
   final DateTime? availableUntil;
   final String? description;
   final bool isOwner;
+
+  /// Lending here is a favour the owner says yes to, so an item that says nothing about approval
+  /// requires it. The server defaults agree (ItemRequestDto / ItemModel / changelog-3.1.sql).
   final bool requiresApproval;
   Uint8List? imageData;
 
@@ -38,13 +41,14 @@ class Item implements ListableModel {
     this.availableUntil,
     this.description,
     this.isOwner = false,
-    this.requiresApproval = false,
+    this.requiresApproval = true,
     this.imageData,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
     List<dynamic>? jsonCategories = json['categories'];
-    final List<ItemCategory>? categories = jsonCategories?.map((e) => ItemCategory.fromJson(e)).toList();
+    final List<ItemCategory>? categories =
+        jsonCategories?.map((e) => ItemCategory.fromJson(e)).toList();
     return Item(
       uuid: json['uuid'],
       name: json['name'],
@@ -53,31 +57,31 @@ class Item implements ListableModel {
       houseNumber: json['houseNumber'],
       postalCode: json['postalCode'],
       city: json['city'],
-      isActive: json['active'],
+      isActive: json['isActive'],
       communityUuid: json['communityUuid'],
       userUuid: json['userUuid'],
       availability: json['availability'],
       availableUntil: JsonUtil.parseDateString(json['availableUntil']),
       description: json['description'],
-      isOwner: json['owner'] ?? false,
-      requiresApproval: json['requiresApproval'] ?? false,
+      isOwner: json['isOwner'] ?? false,
+      requiresApproval: json['requiresApproval'] ?? true,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'categories': itemCategories?.map((e) => e.apiName).toList(),
-    'street': street,
-    'houseNumber': houseNumber,
-    'postalCode': postalCode,
-    'city': city,
-    'isActive': isActive,
-    'communityUuid': communityUuid,
-    'availability': availability,
-    'availableUntil': JsonUtil.parseDateTime(availableUntil),
-    'description': description,
-    'requiresApproval': requiresApproval,
-  };
+        'name': name,
+        'categories': itemCategories?.map((e) => e.apiName).toList(),
+        'street': street,
+        'houseNumber': houseNumber,
+        'postalCode': postalCode,
+        'city': city,
+        'isActive': isActive,
+        'communityUuid': communityUuid,
+        'availability': availability,
+        'availableUntil': JsonUtil.parseDateTime(availableUntil),
+        'description': description,
+        'requiresApproval': requiresApproval,
+      };
 
   @override
   String title() {
@@ -110,8 +114,8 @@ enum ItemCategory {
   factory ItemCategory.fromJson(dynamic value) {
     final stringValue = value.toString().toLowerCase().replaceAll('_', '');
     try {
-      return ItemCategory.values.firstWhere(
-          (element) => element.name.toLowerCase() == stringValue);
+      return ItemCategory.values
+          .firstWhere((element) => element.name.toLowerCase() == stringValue);
     } catch (_) {
       // default category is other
       return ItemCategory.other;
@@ -119,7 +123,7 @@ enum ItemCategory {
   }
 
   String getName(BuildContext context) {
-    switch(this) {
+    switch (this) {
       case ItemCategory.housekeeping:
         return AppLocalizations.of(context)!.itemCategory_housekeeping;
       case ItemCategory.gardening:

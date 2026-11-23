@@ -18,9 +18,6 @@ class DataResponse<E> {
     if (!response.status.isSuccessful()) {
       message = response.errorMessage ?? response.status.name;
     }
-    return DataResponse(
-        data: data,
-        errorMessage: message
-    );
+    return DataResponse(data: data, errorMessage: message);
   }
 }

@@ -18,12 +18,14 @@ class CommunityCubit extends Cubit<DataResponse<DataPage<Community>>> {
   }
 
   Future<void> loadAllCommunities({int pageNumber = 0}) async {
-    final communityDataResponse = await _communityService.getAllCommunities(pageNumber: pageNumber);
+    final communityDataResponse =
+        await _communityService.getAllCommunities(pageNumber: pageNumber);
     emit(communityDataResponse);
   }
 
   Future<void> loadMyCommunities({int pageNumber = 0}) async {
-    final communityDataResponse = await _communityService.getMyCommunities(pageNumber: pageNumber);
+    final communityDataResponse =
+        await _communityService.getMyCommunities(pageNumber: pageNumber);
     emit(communityDataResponse);
   }
 }

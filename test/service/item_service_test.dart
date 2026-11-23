@@ -19,18 +19,18 @@ void main() {
   late ItemService itemService;
 
   final item = Item(
-      uuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
-      name: 'Test',
-      street: 'street',
-      houseNumber: '9',
-      postalCode: '10001',
-      city: 'city',
-      isActive: true,
-      communityUuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
-      userUuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
-      availability: null,
-      availableUntil: DateTime.now(),
-      description: 'test',
+    uuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
+    name: 'Test',
+    street: 'street',
+    houseNumber: '9',
+    postalCode: '10001',
+    city: 'city',
+    isActive: true,
+    communityUuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
+    userUuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
+    availability: null,
+    availableUntil: DateTime.now(),
+    description: 'test',
   );
 
   final jsonResponse = {
@@ -40,7 +40,7 @@ void main() {
     'houseNumber': item.houseNumber,
     'postalCode': item.postalCode,
     'city': item.city,
-    'active': item.isActive,
+    'isActive': item.isActive,
     'communityUuid': item.communityUuid,
     'availability': item.availability,
     'availableUntil': JsonUtil.parseDateTime(item.availableUntil),
@@ -65,8 +65,8 @@ void main() {
     ],
     'pageNumber': 0,
     'pageSize': 10,
-    'lastPage': true,
-    'firstPage': true,
+    'isLastPage': true,
+    'isFirstPage': true,
     'totalPages': 1,
     'totalElements': 2
   };
@@ -79,34 +79,46 @@ void main() {
     itemService = ItemService();
   });
 
-  test('when getting all items of a community, then a page of items is returned', () async {
-    when(mockRequestService.request('user/item/${item.communityUuid}', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
-    final dataResponse = await itemService.getAllItemsOfCommunity(item.communityUuid!);
+  test(
+      'when getting all items of a community, then a page of items is returned',
+      () async {
+    when(mockRequestService
+        .request('user/item/${item.communityUuid}',
+            queryParameters: {'pageSize': '10', 'pageNumber': '0'})).thenAnswer(
+        (_) async => HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
+    final dataResponse =
+        await itemService.getAllItemsOfCommunity(item.communityUuid!);
     final page = dataResponse.data;
 
     expect(dataResponse.errorMessage, null);
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
 
-  test('when getting all items of a community with error, then a error message is returned', () async {
-    when(mockRequestService.request('user/item/${item.communityUuid}', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        const HttpDataResponse(status: HttpStatus.badRequest, data: null));
-    final dataResponse = await itemService.getAllItemsOfCommunity(item.communityUuid!);
+  test(
+      'when getting all items of a community with error, then a error message is returned',
+      () async {
+    when(mockRequestService.request('user/item/${item.communityUuid}',
+            queryParameters: {'pageSize': '10', 'pageNumber': '0'}))
+        .thenAnswer((_) async =>
+            const HttpDataResponse(status: HttpStatus.badRequest, data: null));
+    final dataResponse =
+        await itemService.getAllItemsOfCommunity(item.communityUuid!);
 
     expect(dataResponse.errorMessage, HttpStatus.badRequest.name);
     expect(dataResponse.data, null);
   });
 
   test('when getting my items, then a page of items is returned', () async {
-    when(mockRequestService.request('user/item/my', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
+    when(mockRequestService
+        .request('user/item/my',
+            queryParameters: {'pageSize': '10', 'pageNumber': '0'})).thenAnswer(
+        (_) async => HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
     final dataResponse = await itemService.getMyItems();
     final page = dataResponse.data;
 
@@ -114,24 +126,30 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
 
-  test('when getting my items with error, then a error message is returned', () async {
-    when(mockRequestService.request('user/item/my', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-    const HttpDataResponse(status: HttpStatus.notFound, data: null));
+  test('when getting my items with error, then a error message is returned',
+      () async {
+    when(mockRequestService.request('user/item/my',
+            queryParameters: {'pageSize': '10', 'pageNumber': '0'}))
+        .thenAnswer((_) async =>
+            const HttpDataResponse(status: HttpStatus.notFound, data: null));
     final dataResponse = await itemService.getMyItems();
 
     expect(dataResponse.errorMessage, HttpStatus.notFound.name);
     expect(dataResponse.data, null);
   });
 
-  test('when getting items owned by me, then a page of items is returned', () async {
-    when(mockRequestService.request('user/item/owned', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-        HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
+  test('when getting items owned by me, then a page of items is returned',
+      () async {
+    when(mockRequestService
+        .request('user/item/owned',
+            queryParameters: {'pageSize': '10', 'pageNumber': '0'})).thenAnswer(
+        (_) async => HttpDataResponse(status: HttpStatus.ok, data: jsonPage));
     final dataResponse = await itemService.getItemsOwnedByMe();
     final page = dataResponse.data;
 
@@ -139,15 +157,19 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
 
-  test('when getting my items with error, then a error message is returned', () async {
-    when(mockRequestService.request('user/item/owned', queryParameters: {'pageSize': '10', 'pageNumber':'0'})).thenAnswer((_) async =>
-    const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
+  test('when getting my items with error, then a error message is returned',
+      () async {
+    when(mockRequestService.request('user/item/owned', queryParameters: {
+      'pageSize': '10',
+      'pageNumber': '0'
+    })).thenAnswer((_) async =>
+        const HttpDataResponse(status: HttpStatus.unauthorized, data: null));
     final dataResponse = await itemService.getItemsOwnedByMe();
 
     expect(dataResponse.errorMessage, HttpStatus.unauthorized.name);
@@ -155,8 +177,9 @@ void main() {
   });
 
   test('when getting item, then a page of items is returned', () async {
-    when(mockRequestService.request('user/item/${item.uuid}')).thenAnswer((_) async =>
-        HttpDataResponse(status: HttpStatus.ok, data: jsonResponse));
+    when(mockRequestService.request('user/item/${item.uuid}')).thenAnswer(
+        (_) async =>
+            HttpDataResponse(status: HttpStatus.ok, data: jsonResponse));
     final dataResponse = await itemService.getItem(item.uuid!);
     final data = dataResponse.data;
 
@@ -172,9 +195,11 @@ void main() {
     expect(data?.isOwner, item.isOwner);
   });
 
-  test('when getting item with error, then a error message is returned', () async {
-    when(mockRequestService.request('user/item/${item.uuid}')).thenAnswer((_) async =>
-    const HttpDataResponse(status: HttpStatus.notFound, data: null));
+  test('when getting item with error, then a error message is returned',
+      () async {
+    when(mockRequestService.request('user/item/${item.uuid}')).thenAnswer(
+        (_) async =>
+            const HttpDataResponse(status: HttpStatus.notFound, data: null));
     final dataResponse = await itemService.getItem(item.uuid!);
 
     expect(dataResponse.errorMessage, HttpStatus.notFound.name);
@@ -182,31 +207,66 @@ void main() {
   });
 
   test('when uploading item image, then status 201 is returned', () async {
-    when(mockRequestService.multipartRequest('user/item/${item.uuid}/image', Uint8List(10), 'png')).thenAnswer((_) async =>
-        const HttpDataResponse(status: HttpStatus.created, data: null));
-    final dataResponse = await itemService.uploadItemImage(item.uuid!, Uint8List(10), 'png');
+    when(mockRequestService.multipartRequest(
+            'user/item/${item.uuid}/image', Uint8List(10), 'png'))
+        .thenAnswer((_) async =>
+            const HttpDataResponse(status: HttpStatus.created, data: null));
+    final dataResponse =
+        await itemService.uploadItemImage(item.uuid!, Uint8List(10), 'png');
 
     expect(dataResponse.errorMessage, null);
   });
 
-  test('when retrieving item image, then status 200 and data is returned', () async {
+  test('when retrieving item image, then status 200 and data is returned',
+      () async {
     const imageUuid = 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A1';
-    when(mockRequestService.request('user/item/${item.uuid}/image')).thenAnswer((_) async =>
-        const HttpDataResponse(status: HttpStatus.ok, data: [imageUuid, 'randomUuid']));
-    when(mockRequestService.request('user/item/image/$imageUuid', acceptType: HttpContentType.octetStream)).thenAnswer((_) async =>
-        HttpDataResponse(status: HttpStatus.ok, data: Uint8List(10)));
+    when(mockRequestService.request('user/item/${item.uuid}/image')).thenAnswer(
+        (_) async => const HttpDataResponse(
+            status: HttpStatus.ok, data: [imageUuid, 'randomUuid']));
+    when(mockRequestService.request('user/item/image/$imageUuid',
+            acceptType: HttpContentType.octetStream))
+        .thenAnswer((_) async =>
+            HttpDataResponse(status: HttpStatus.ok, data: Uint8List(10)));
     final dataResponse = await itemService.getItemImage(item.uuid!);
 
     expect(dataResponse.data, Uint8List(10));
     expect(dataResponse.errorMessage, null);
   });
 
-  test('when retrieving item image for item without image, then status 200 and no data is returned', () async {
-    when(mockRequestService.request('user/item/${item.uuid}/image')).thenAnswer((_) async =>
-    const HttpDataResponse(status: HttpStatus.ok, data: []));
+  test(
+      'when retrieving item image for item without image, then status 200 and no data is returned',
+      () async {
+    when(mockRequestService.request('user/item/${item.uuid}/image')).thenAnswer(
+        (_) async => const HttpDataResponse(status: HttpStatus.ok, data: []));
     final dataResponse = await itemService.getItemImage(item.uuid!);
 
     expect(dataResponse.data, null);
     expect(dataResponse.errorMessage, null);
+  });
+
+  // The write half of Item already used the is-prefixed names and the read half did not, so a
+  // mobile-created item reached the backend with the flag it never sent back. Nothing tested that the two
+  // directions agree, which is how it survived.
+  test(
+      'an item written by toJson is read back by fromJson with isActive preserved',
+      () {
+    final roundTripped = Item.fromJson(item.toJson());
+
+    expect(roundTripped.isActive, isTrue);
+    expect(roundTripped.name, item.name);
+  });
+
+  test('fromJson reads the is-prefixed fields the backend sends', () {
+    final parsed = Item.fromJson({
+      'uuid': item.uuid,
+      'name': 'Test',
+      'isActive': true,
+      'isOwner': true,
+      'communityUuid': item.communityUuid,
+      'userUuid': item.userUuid,
+    });
+
+    expect(parsed.isActive, isTrue);
+    expect(parsed.isOwner, isTrue);
   });
 }

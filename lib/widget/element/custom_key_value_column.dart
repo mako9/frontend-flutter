@@ -16,22 +16,25 @@ class CustomKeyValueColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FittedBox(
-      alignment: Alignment.topLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(_keyText, style: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
+        alignment: Alignment.topLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _keyText,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(_valueText, style: const TextStyle(
-            fontSize: 24,
+            const SizedBox(height: 4),
+            Text(
+              _valueText,
+              style: const TextStyle(
+                fontSize: 24,
+              ),
             ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 }

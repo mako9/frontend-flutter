@@ -59,7 +59,7 @@ class CustomButton extends StatelessWidget {
                     )),
                   ],
                 ),
-                if (_isEnabled) ... [
+                if (_isEnabled) ...[
                   SizedBox.expand(
                     child: Material(
                       type: MaterialType.transparency,

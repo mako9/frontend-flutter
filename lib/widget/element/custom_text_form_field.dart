@@ -4,12 +4,12 @@ class CustomTextFormField extends StatelessWidget {
   late final String? _labelText;
   late final TextEditingController _controller;
 
-  CustomTextFormField(String? labelText, {super.key, String? initialValue, TextEditingController? controller}) {
+  CustomTextFormField(String? labelText,
+      {super.key, String? initialValue, TextEditingController? controller}) {
     _labelText = labelText;
     _controller = controller ?? TextEditingController();
-     if (initialValue != null) _controller.text = initialValue;
+    if (initialValue != null) _controller.text = initialValue;
   }
-
 
   @override
   Widget build(BuildContext context) {
