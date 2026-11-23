@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/model/booking_date_range.dart';
 import 'package:frontend_flutter/model/data_response.dart';
 import 'package:frontend_flutter/model/item.dart';
 import 'package:frontend_flutter/service/booking_service.dart';
@@ -40,10 +41,27 @@ class _ItemDetailScreenContent extends StatefulWidget {
 
 class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
   final BookingService _bookingService = getIt.get<BookingService>();
+
+  /// The days of this item other neighbours already have, so a request is not made for a day the item
+  /// is not free on. Only ever shown to the borrower - the owner has the same list in My area.
+  List<BookingDateRange> _bookedRanges = [];
+  String? _bookedRangesLoadedFor;
   DateTime? _startDate;
   DateTime? _endDate;
   String? _bookingError;
   bool _bookingSuccess = false;
+
+  Future<void> _loadBookedRanges(String itemUuid) async {
+    final response = await _bookingService.getBookingDates(itemUuid);
+    if (!mounted) return;
+    setState(() {
+      // a range the client cannot read both ends of is not worth showing - and neither end can be
+      // displayed with a format call, which needs a value
+      _bookedRanges = (response.data ?? [])
+          .where((range) => range.startAt != null && range.endAt != null)
+          .toList();
+    });
+  }
 
   Future<void> _selectStartDate(BuildContext context) async {
     final picked = await showDatePicker(
@@ -110,6 +128,11 @@ class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
             builder: (_, dataResponse) {
           if (dataResponse.data != null) {
             item = dataResponse.data;
+          }
+          final itemUuid = item?.uuid;
+          if (itemUuid != null && itemUuid != _bookedRangesLoadedFor) {
+            _bookedRangesLoadedFor = itemUuid;
+            _loadBookedRanges(itemUuid);
           }
           LoadingOverlay.of(context).hide();
           return Column(children: [
@@ -178,6 +201,35 @@ class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
                     const SizedBox(height: 30),
                   ],
                   if (item != null && !item!.isOwner) ...[
+                    if (_bookedRanges.isNotEmpty) ...[
+                      Row(
+                        children: [
+                          const Icon(Icons.event_busy,
+                              size: 16, color: Colors.brown),
+                          const SizedBox(width: 8),
+                          Text(
+                            AppLocalizations.of(context)!
+                                .itemDetailScreen_alreadyBooked,
+                            style: const TextStyle(color: Colors.brown),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      for (final range in _bookedRanges)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${DateFormat('dd.MM.yyyy').format(range.startAt!)}'
+                              ' – '
+                              '${DateFormat('dd.MM.yyyy').format(range.endAt!)}',
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.brown),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 12),
+                    ],
                     if (item!.requiresApproval) ...[
                       Row(
                         children: [

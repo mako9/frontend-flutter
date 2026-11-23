@@ -20,6 +20,9 @@ class Item implements ListableModel {
   final DateTime? availableUntil;
   final String? description;
   final bool isOwner;
+
+  /// Lending here is a favour the owner says yes to, so an item that says nothing about approval
+  /// requires it. The server defaults agree (ItemRequestDto / ItemModel / changelog-3.1.sql).
   final bool requiresApproval;
   Uint8List? imageData;
 
@@ -38,7 +41,7 @@ class Item implements ListableModel {
     this.availableUntil,
     this.description,
     this.isOwner = false,
-    this.requiresApproval = false,
+    this.requiresApproval = true,
     this.imageData,
   });
 
@@ -60,7 +63,7 @@ class Item implements ListableModel {
       availableUntil: JsonUtil.parseDateString(json['availableUntil']),
       description: json['description'],
       isOwner: json['owner'] ?? false,
-      requiresApproval: json['requiresApproval'] ?? false,
+      requiresApproval: json['requiresApproval'] ?? true,
     );
   }
 

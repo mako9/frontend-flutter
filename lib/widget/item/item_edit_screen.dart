@@ -54,7 +54,9 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
   final _cityController = TextEditingController();
   final _descriptionController = TextEditingController();
   bool _isActive = true;
-  bool _requiresApproval = false;
+
+  /// On unless the owner switches it off - see Item.requiresApproval.
+  bool _requiresApproval = true;
   Item? _item;
   DataPage<Community>? _communityPage;
   String? _errorMessage;
@@ -98,7 +100,7 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                 _selectedCategories[element] = true;
               }
               _isActive = _item?.isActive ?? true;
-              _requiresApproval = _item?.requiresApproval ?? false;
+              _requiresApproval = _item?.requiresApproval ?? true;
               _errorMessage = state.errorMessage;
             });
           }),
