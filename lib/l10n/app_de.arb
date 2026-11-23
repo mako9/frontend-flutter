@@ -70,6 +70,7 @@
     "bookingStatus_confirmed": "Bestätigt",
     "bookingStatus_declined": "Abgelehnt",
     "bookingStatus_cancelled": "Storniert",
+    "bookingStatus_returned": "Zurückgegeben",
     "itemDetailScreen_approvalRequired": "Genehmigung erforderlich",
     "itemDetailScreen_bookingStartDate": "Startdatum:",
     "itemDetailScreen_bookingEndDate": "Enddatum:",

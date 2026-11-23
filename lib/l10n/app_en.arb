@@ -84,6 +84,7 @@
   "bookingStatus_confirmed": "Confirmed",
   "bookingStatus_declined": "Declined",
   "bookingStatus_cancelled": "Cancelled",
+  "bookingStatus_returned": "Returned",
   "itemDetailScreen_approvalRequired": "Approval required",
   "itemDetailScreen_bookingStartDate": "Start date:",
   "itemDetailScreen_bookingEndDate": "End date:",

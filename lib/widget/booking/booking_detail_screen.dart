@@ -121,6 +121,8 @@ class _BookingDetailScreenContent extends StatelessWidget {
         AppLocalizations.of(context)!.bookingStatus_declined,
       BookingStatus.cancelled =>
         AppLocalizations.of(context)!.bookingStatus_cancelled,
+      BookingStatus.returned =>
+        AppLocalizations.of(context)!.bookingStatus_returned,
       null => '-',
     };
     final color = switch (status) {
@@ -128,6 +130,7 @@ class _BookingDetailScreenContent extends StatelessWidget {
       BookingStatus.confirmed => Colors.green,
       BookingStatus.declined => Colors.red,
       BookingStatus.cancelled => Colors.grey,
+      BookingStatus.returned => Colors.blue,
       null => Colors.grey,
     };
     return Chip(

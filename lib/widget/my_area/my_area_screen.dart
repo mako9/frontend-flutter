@@ -205,6 +205,8 @@ class _BookingsList extends StatelessWidget {
         return AppLocalizations.of(context)!.bookingStatus_declined;
       case BookingStatus.cancelled:
         return AppLocalizations.of(context)!.bookingStatus_cancelled;
+      case BookingStatus.returned:
+        return AppLocalizations.of(context)!.bookingStatus_returned;
     }
   }
 }
