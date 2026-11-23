@@ -33,4 +33,13 @@ class BookingDetailCubit extends Cubit<DataResponse<ItemBooking>> {
     final response = await _bookingService.cancelBooking(uuid);
     emit(response);
   }
+
+  /// "It is back with me again." Either party can say it: the borrower confirming they handed it back
+  /// is as true a statement as the owner confirming they got it, which is the rule the backend applies.
+  Future<void> markReturned() async {
+    final uuid = state.data?.uuid;
+    if (uuid == null) return;
+    final response = await _bookingService.returnBooking(uuid);
+    emit(response);
+  }
 }

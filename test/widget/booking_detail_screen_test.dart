@@ -108,4 +108,37 @@ void main() {
 
     expect(find.text('Cancel booking'), findsOneWidget);
   });
+
+  final returnedBooking = ItemBooking(
+    uuid: 'b3',
+    status: BookingStatus.returned,
+    startAt: DateTime.now().subtract(const Duration(days: 10)),
+    endAt: DateTime.now().subtract(const Duration(days: 5)),
+    returnedAt: DateTime.now(),
+  );
+
+  // the item is back with its owner; either of them can say so, which is why this is not owner-gated
+  testWidgets('a confirmed booking offers the return button to the requester',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_wrap(
+      BookingDetailScreen(booking: confirmedBooking),
+    ));
+    await tester.pump();
+
+    expect(find.text('Mark as returned'), findsOneWidget);
+  });
+
+  testWidgets('a returned booking shows the returned label and no actions',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_wrap(
+      BookingDetailScreen(booking: returnedBooking, isOwner: true),
+    ));
+    await tester.pump();
+
+    expect(find.text('Returned'), findsOneWidget);
+    expect(find.text('Approve'), findsNothing);
+    expect(find.text('Decline'), findsNothing);
+    expect(find.text('Cancel booking'), findsNothing);
+    expect(find.text('Mark as returned'), findsNothing);
+  });
 }

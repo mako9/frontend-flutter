@@ -72,6 +72,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
         return AppLocalizations.of(context)!.notification_bookingDeclined;
       case 'BOOKING_CANCELLED':
         return AppLocalizations.of(context)!.notification_bookingCancelled;
+      case 'BOOKING_RETURNED':
+        return AppLocalizations.of(context)!.notification_bookingReturned;
+      case 'ITEM_BOOKED':
+        return AppLocalizations.of(context)!.notification_itemBooked;
       default:
         return type ?? '-';
     }

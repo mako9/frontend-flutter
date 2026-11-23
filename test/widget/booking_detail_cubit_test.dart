@@ -62,4 +62,25 @@ void main() {
     await bookingDetailCubit.cancel();
     expect(bookingDetailCubit.state.data?.status, BookingStatus.cancelled);
   });
+
+  test('when marking returned with success, then state is RETURNED', () async {
+    final returned = ItemBooking(uuid: 'b1', status: BookingStatus.returned);
+    when(mockBookingService.returnBooking(pending.uuid!))
+        .thenAnswer((_) async =>
+            DataResponse<ItemBooking>(data: returned, errorMessage: null));
+
+    await bookingDetailCubit.markReturned();
+
+    expect(bookingDetailCubit.state.data?.status, BookingStatus.returned);
+  });
+
+  test('when marking returned fails, then state has error', () async {
+    when(mockBookingService.returnBooking(pending.uuid!))
+        .thenAnswer((_) async => DataResponse<ItemBooking>(
+            data: null, errorMessage: 'error'));
+
+    await bookingDetailCubit.markReturned();
+
+    expect(bookingDetailCubit.state.errorMessage, 'error');
+  });
 }

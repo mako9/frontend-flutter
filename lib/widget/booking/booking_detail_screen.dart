@@ -103,6 +103,19 @@ class _BookingDetailScreenContent extends StatelessWidget {
                     }
                   }),
                 ],
+                if (booking?.status == BookingStatus.confirmed) ...[
+                  const SizedBox(height: 8),
+                  CustomButton(
+                      AppLocalizations.of(context)!.bookingDetailScreen_return,
+                      Icons.assignment_return, () async {
+                    LoadingOverlay.of(context).show();
+                    await context.read<BookingDetailCubit>().markReturned();
+                    if (context.mounted) {
+                      LoadingOverlay.of(context).hide();
+                      Navigator.pop(context);
+                    }
+                  }),
+                ],
               ],
             ),
           );
