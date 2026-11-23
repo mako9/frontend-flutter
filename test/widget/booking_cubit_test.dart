@@ -90,8 +90,11 @@ void main() {
                 totalPages: 1),
             errorMessage: null));
 
-    await bookingCubit.loadMyBookings();
-    await bookingCubit.loadLenderBookings();
+    // both are fired from the constructor and can answer in either order, so the test lets them overlap
+    await Future.wait([
+      bookingCubit.loadMyBookings(),
+      bookingCubit.loadLenderBookings(),
+    ]);
 
     expect(bookingCubit.state.data?.lenderBookings?.content, [lenderBooking]);
     expect(bookingCubit.state.data?.myBookings?.content, [booking]);
