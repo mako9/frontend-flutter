@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,6 @@ class CustomPicker extends StatelessWidget {
         return _CustomMaterialPicker(_values, _onSelect);
     }
   }
-
 }
 
 class _CustomCupertinoPicker extends StatefulWidget {
@@ -46,70 +44,70 @@ class _CustomCupertinoPickerState extends State<_CustomCupertinoPicker> {
     showCupertinoModalPopup<void>(
         context: context,
         builder: (BuildContext context) => Container(
-          height: 216,
-          padding: const EdgeInsets.only(top: 6.0),
-          // The Bottom margin is provided to align the popup above the system navigation bar.
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          // Provide a background color for the popup.
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          // Use a SafeArea widget to avoid system overlaps.
-          child: SafeArea(
-            top: false,
-            child: child,
-          ),
-        ));
+              height: 216,
+              padding: const EdgeInsets.only(top: 6.0),
+              // The Bottom margin is provided to align the popup above the system navigation bar.
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              // Provide a background color for the popup.
+              color: CupertinoColors.systemBackground.resolveFrom(context),
+              // Use a SafeArea widget to avoid system overlaps.
+              child: SafeArea(
+                top: false,
+                child: child,
+              ),
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-        style: TextStyle(
-          color: CupertinoColors.label.resolveFrom(context),
-          fontSize: 22.0,
-        ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                // Display a CupertinoPicker with list of fruits.
-                onPressed: () => _showDialog(
-                  CupertinoPicker(
-                    magnification: 1.22,
-                    squeeze: 1.2,
-                    useMagnifier: true,
-                    itemExtent: 32.0,
-                    // This is called when selected item is changed.
-                    onSelectedItemChanged: (int selectedItem) {
-                      setState(() {
-                        _selectedIndex = selectedItem;
-                        widget._onSelect(selectedItem);
-                      });
-                    },
-                    children:
-                    List<Widget>.generate(widget._values.length, (int index) {
-                      return Center(
-                        child: Text(
-                          widget._values[index],
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-                // This displays the selected fruit name.
-                child: Text(
-                  widget._values[_selectedIndex],
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
+      style: TextStyle(
+        color: CupertinoColors.label.resolveFrom(context),
+        fontSize: 22.0,
+      ),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              // Display a CupertinoPicker with list of fruits.
+              onPressed: () => _showDialog(
+                CupertinoPicker(
+                  magnification: 1.22,
+                  squeeze: 1.2,
+                  useMagnifier: true,
+                  itemExtent: 32.0,
+                  // This is called when selected item is changed.
+                  onSelectedItemChanged: (int selectedItem) {
+                    setState(() {
+                      _selectedIndex = selectedItem;
+                      widget._onSelect(selectedItem);
+                    });
+                  },
+                  children:
+                      List<Widget>.generate(widget._values.length, (int index) {
+                    return Center(
+                      child: Text(
+                        widget._values[index],
+                      ),
+                    );
+                  }),
                 ),
               ),
-            ],
-          ),
+              // This displays the selected fruit name.
+              child: Text(
+                widget._values[_selectedIndex],
+                style: const TextStyle(
+                  fontSize: 22.0,
+                ),
+              ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

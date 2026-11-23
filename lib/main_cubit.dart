@@ -8,7 +8,6 @@ import '../service/auth_service.dart';
 import 'model/config.dart';
 
 class MainCubit extends Cubit<String?> {
-
   MainCubit(super.initialState, BuildContext context) {
     getInitialRoute(context);
   }

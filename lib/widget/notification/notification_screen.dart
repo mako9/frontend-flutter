@@ -36,13 +36,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title:
-              Text(AppLocalizations.of(context)!.notificationScreen_title)),
+          title: Text(AppLocalizations.of(context)!.notificationScreen_title)),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _notifications.isEmpty
-              ? Center(
-                  child: Text(AppLocalizations.of(context)!.emptyList))
+              ? Center(child: Text(AppLocalizations.of(context)!.emptyList))
               : ListView.builder(
                   itemCount: _notifications.length,
                   itemBuilder: (context, index) {

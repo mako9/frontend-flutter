@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/model/data_response.dart';
@@ -9,16 +8,12 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late UserService mockUserService;
   late UserInfoCubit userInfoCubit;
-  User user = User(
-    firstName: 'Test',
-    lastName: 'Test'
-  );
+  User user = User(firstName: 'Test', lastName: 'Test');
 
   setUpAll(() async {
     getServices();
@@ -28,8 +23,10 @@ void main() {
     userInfoCubit = UserInfoCubit.ofInitialState();
   });
 
-  test('when loading user without success, then data response has errorMessage', () async {
-    when(mockUserService.getUser()).thenAnswer((_) async => const DataResponse(data: null, errorMessage: 'some error'));
+  test('when loading user without success, then data response has errorMessage',
+      () async {
+    when(mockUserService.getUser()).thenAnswer((_) async =>
+        const DataResponse(data: null, errorMessage: 'some error'));
     await userInfoCubit.loadUser();
 
     expect(userInfoCubit.state.data, null);
@@ -37,7 +34,8 @@ void main() {
   });
 
   test('when loading user with success, then state contains user', () async {
-    when(mockUserService.getUser()).thenAnswer((_) async => DataResponse(data: user, errorMessage: null));
+    when(mockUserService.getUser())
+        .thenAnswer((_) async => DataResponse(data: user, errorMessage: null));
     await userInfoCubit.loadUser();
 
     expect(userInfoCubit.state.data, user);
@@ -45,7 +43,8 @@ void main() {
   });
 
   test('when updating user without success, then state is null', () async {
-    when(mockUserService.updateUser(user)).thenAnswer((_) async => const DataResponse(data: null, errorMessage: 'some error'));
+    when(mockUserService.updateUser(user)).thenAnswer((_) async =>
+        const DataResponse(data: null, errorMessage: 'some error'));
     await userInfoCubit.updateUser(user);
 
     expect(userInfoCubit.state.data, null);
@@ -53,7 +52,8 @@ void main() {
   });
 
   test('when updating user with success, then state contains user', () async {
-    when(mockUserService.updateUser(user)).thenAnswer((_) async => DataResponse(data: user, errorMessage: null));
+    when(mockUserService.updateUser(user))
+        .thenAnswer((_) async => DataResponse(data: user, errorMessage: null));
     await userInfoCubit.updateUser(user);
 
     expect(userInfoCubit.state.data, user);

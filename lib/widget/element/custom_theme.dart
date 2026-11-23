@@ -12,9 +12,7 @@ final customTheme = ThemeData(
       backgroundColor: Colors.brown[200],
     ),
   ),
-  textSelectionTheme: TextSelectionThemeData(
-      selectionColor: Colors.brown[200]
-  ),
+  textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.brown[200]),
   toggleButtonsTheme: ToggleButtonsThemeData(
     borderRadius: const BorderRadius.all(Radius.circular(8)),
     selectedBorderColor: Colors.brown[700],

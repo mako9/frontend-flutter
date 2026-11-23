@@ -47,7 +47,8 @@ class Item implements ListableModel {
 
   factory Item.fromJson(Map<String, dynamic> json) {
     List<dynamic>? jsonCategories = json['categories'];
-    final List<ItemCategory>? categories = jsonCategories?.map((e) => ItemCategory.fromJson(e)).toList();
+    final List<ItemCategory>? categories =
+        jsonCategories?.map((e) => ItemCategory.fromJson(e)).toList();
     return Item(
       uuid: json['uuid'],
       name: json['name'],
@@ -68,19 +69,19 @@ class Item implements ListableModel {
   }
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'categories': itemCategories?.map((e) => e.apiName).toList(),
-    'street': street,
-    'houseNumber': houseNumber,
-    'postalCode': postalCode,
-    'city': city,
-    'isActive': isActive,
-    'communityUuid': communityUuid,
-    'availability': availability,
-    'availableUntil': JsonUtil.parseDateTime(availableUntil),
-    'description': description,
-    'requiresApproval': requiresApproval,
-  };
+        'name': name,
+        'categories': itemCategories?.map((e) => e.apiName).toList(),
+        'street': street,
+        'houseNumber': houseNumber,
+        'postalCode': postalCode,
+        'city': city,
+        'isActive': isActive,
+        'communityUuid': communityUuid,
+        'availability': availability,
+        'availableUntil': JsonUtil.parseDateTime(availableUntil),
+        'description': description,
+        'requiresApproval': requiresApproval,
+      };
 
   @override
   String title() {
@@ -113,8 +114,8 @@ enum ItemCategory {
   factory ItemCategory.fromJson(dynamic value) {
     final stringValue = value.toString().toLowerCase().replaceAll('_', '');
     try {
-      return ItemCategory.values.firstWhere(
-          (element) => element.name.toLowerCase() == stringValue);
+      return ItemCategory.values
+          .firstWhere((element) => element.name.toLowerCase() == stringValue);
     } catch (_) {
       // default category is other
       return ItemCategory.other;
@@ -122,7 +123,7 @@ enum ItemCategory {
   }
 
   String getName(BuildContext context) {
-    switch(this) {
+    switch (this) {
       case ItemCategory.housekeeping:
         return AppLocalizations.of(context)!.itemCategory_housekeeping;
       case ItemCategory.gardening:

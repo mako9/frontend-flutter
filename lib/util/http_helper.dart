@@ -8,13 +8,7 @@ import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-enum HttpMethod {
-  get,
-  post,
-  patch,
-  put,
-  delete
-}
+enum HttpMethod { get, post, patch, put, delete }
 
 enum HttpContentType {
   json('application/json'),
@@ -34,14 +28,18 @@ class HttpHelper {
     this.client = client ?? http.Client();
   }
 
-  Future<HttpDataResponse> request(Uri uri, {
+  Future<HttpDataResponse> request(
+    Uri uri, {
     HttpMethod method = HttpMethod.get,
     HttpContentType contentType = HttpContentType.json,
     HttpContentType acceptType = HttpContentType.json,
     dynamic body,
     String? accessToken,
   }) async {
-    final headers = httpHeaders(contentType: contentType, acceptType: acceptType, accessToken: accessToken);
+    final headers = httpHeaders(
+        contentType: contentType,
+        acceptType: acceptType,
+        accessToken: accessToken);
     var data = body;
     if (contentType == HttpContentType.json) {
       data = json.encode(body);
@@ -51,52 +49,61 @@ class HttpHelper {
     try {
       switch (method) {
         case HttpMethod.post:
-          response = await client
-              .post(uri, headers: headers, body: data, encoding: Encoding.getByName('utf-8'));
+          response = await client.post(uri,
+              headers: headers,
+              body: data,
+              encoding: Encoding.getByName('utf-8'));
           break;
         case HttpMethod.patch:
-          response = await client
-              .patch(uri, headers: headers, body: data);
+          response = await client.patch(uri, headers: headers, body: data);
           break;
         case HttpMethod.put:
-          response = await client
-              .put(uri, headers: headers, body: data);
+          response = await client.put(uri, headers: headers, body: data);
           break;
         case HttpMethod.delete:
-          response = await client
-              .delete(uri, headers: headers);
+          response = await client.delete(uri, headers: headers);
           break;
         default:
-          response = await client
-              .get(uri, headers: headers);
+          response = await client.get(uri, headers: headers);
           break;
       }
     } catch (error) {
       debugPrint('Error during request: ${error.toString()}');
-      return HttpDataResponse(status: HttpStatus.internalServerError, data: null, errorMessage: error.toString());
+      return HttpDataResponse(
+          status: HttpStatus.internalServerError,
+          data: null,
+          errorMessage: error.toString());
     }
 
-    HttpDataResponse httpDataResponse = _parseResponse(response, acceptType: acceptType);
+    HttpDataResponse httpDataResponse =
+        _parseResponse(response, acceptType: acceptType);
     debugPrint('$uri: ${httpDataResponse.toString()}');
 
     return httpDataResponse;
   }
 
-  Future<HttpDataResponse> multipartRequest(Uri uri, Uint8List bytes, String imageExtension, String accessToken) async {
+  Future<HttpDataResponse> multipartRequest(Uri uri, Uint8List bytes,
+      String imageExtension, String accessToken) async {
     var request = http.MultipartRequest('POST', uri);
-    request.headers.addAll(httpHeaders(contentType: HttpContentType.multipartFormData, accessToken: accessToken));
-     request.files.add(http.MultipartFile.fromBytes('file', bytes, contentType: MediaType('image', imageExtension)));
-     try {
-       final response = await request.send();
-       return HttpDataResponse(
-         status: HttpStatus.fromValue(response.statusCode),
-         data: null,
-         errorMessage: response.reasonPhrase,
-       );
-     } catch (error) {
-       debugPrint('Error during request: ${error.toString()}');
-       return HttpDataResponse(status: HttpStatus.internalServerError, data: null, errorMessage: error.toString());
-     }
+    request.headers.addAll(httpHeaders(
+        contentType: HttpContentType.multipartFormData,
+        accessToken: accessToken));
+    request.files.add(http.MultipartFile.fromBytes('file', bytes,
+        contentType: MediaType('image', imageExtension)));
+    try {
+      final response = await request.send();
+      return HttpDataResponse(
+        status: HttpStatus.fromValue(response.statusCode),
+        data: null,
+        errorMessage: response.reasonPhrase,
+      );
+    } catch (error) {
+      debugPrint('Error during request: ${error.toString()}');
+      return HttpDataResponse(
+          status: HttpStatus.internalServerError,
+          data: null,
+          errorMessage: error.toString());
+    }
   }
 
   Map<String, String> httpHeaders({
@@ -114,10 +121,12 @@ class HttpHelper {
     return headers;
   }
 
-  HttpDataResponse _parseResponse(http.Response response, { HttpContentType acceptType = HttpContentType.json }) {
+  HttpDataResponse _parseResponse(http.Response response,
+      {HttpContentType acceptType = HttpContentType.json}) {
     final status = HttpStatus.fromValue(response.statusCode);
 
-    HttpDataResponse httpDataResponse = HttpDataResponse(status: status, data: null, errorMessage: response.reasonPhrase);
+    HttpDataResponse httpDataResponse = HttpDataResponse(
+        status: status, data: null, errorMessage: response.reasonPhrase);
 
     if (status.isSuccessful()) {
       try {
@@ -132,7 +141,8 @@ class HttpHelper {
           default:
             data = response.body;
         }
-        httpDataResponse = HttpDataResponse(status: status, data: data, errorMessage: null);
+        httpDataResponse =
+            HttpDataResponse(status: status, data: data, errorMessage: null);
       } catch (exception) {
         debugPrint('Data not parsed: ${exception.toString()}');
       }

@@ -41,7 +41,8 @@ void main() {
   });
 
   group('approve', () {
-    test('when approving with success, then status becomes CONFIRMED', () async {
+    test('when approving with success, then status becomes CONFIRMED',
+        () async {
       when(mockBookingService.approveBooking(pending.uuid!))
           .thenAnswer((_) async => confirmedResponse);
 
@@ -51,9 +52,9 @@ void main() {
     });
 
     test('when approving with error, then state has error', () async {
-      when(mockBookingService.approveBooking(pending.uuid!))
-          .thenAnswer((_) async => DataResponse<ItemBooking>(
-              data: null, errorMessage: 'error'));
+      when(mockBookingService.approveBooking(pending.uuid!)).thenAnswer(
+          (_) async =>
+              DataResponse<ItemBooking>(data: null, errorMessage: 'error'));
 
       await bookingDetailCubit.approve();
 
@@ -73,7 +74,8 @@ void main() {
   });
 
   group('cancel', () {
-    test('when cancelling with success, then status becomes CANCELLED', () async {
+    test('when cancelling with success, then status becomes CANCELLED',
+        () async {
       when(mockBookingService.cancelBooking(pending.uuid!))
           .thenAnswer((_) async => cancelledResponse);
 
@@ -85,8 +87,8 @@ void main() {
 
   test('when marking returned with success, then state is RETURNED', () async {
     final returned = ItemBooking(uuid: 'b1', status: BookingStatus.returned);
-    when(mockBookingService.returnBooking(pending.uuid!))
-        .thenAnswer((_) async =>
+    when(mockBookingService.returnBooking(pending.uuid!)).thenAnswer(
+        (_) async =>
             DataResponse<ItemBooking>(data: returned, errorMessage: null));
 
     await bookingDetailCubit.markReturned();
@@ -98,7 +100,8 @@ void main() {
   // action starts by reading the uuid out of the state, which would leave the screen able to do nothing at
   // all for the rest of its life. The retry is what proves the difference: had the booking been wiped, the
   // second tap would be a silent no-op.
-  test('a failed action keeps the booking and a retry still reaches the server', () async {
+  test('a failed action keeps the booking and a retry still reaches the server',
+      () async {
     final returned = ItemBooking(uuid: 'b1', status: BookingStatus.returned);
     final answers = [
       DataResponse<ItemBooking>(data: null, errorMessage: 'error'),

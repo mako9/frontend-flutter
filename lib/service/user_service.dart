@@ -16,14 +16,18 @@ class UserService {
   }
 
   Future<DataResponse<User>> updateUser(User user) async {
-    final response = await _requestService.request(_userPath, method: HttpMethod.patch, body: user);
+    final response = await _requestService.request(_userPath,
+        method: HttpMethod.patch, body: user);
     return _evaluateResponse(response);
   }
 
-  Future<DataResponse<User>> _evaluateResponse(HttpDataResponse response) async {
+  Future<DataResponse<User>> _evaluateResponse(
+      HttpDataResponse response) async {
     final json = response.getData();
     User? user;
-    if (json != null) { user = User.fromJson(json); }
+    if (json != null) {
+      user = User.fromJson(json);
+    }
     return DataResponse.fromHttpResponse(user, response);
   }
 }

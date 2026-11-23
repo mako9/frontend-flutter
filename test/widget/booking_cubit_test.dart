@@ -55,13 +55,15 @@ void main() {
     bookingCubit = BookingCubit(DataResponse.empty());
   });
 
-  test('when loading my bookings with success, then state contains bookings', () async {
+  test('when loading my bookings with success, then state contains bookings',
+      () async {
     await bookingCubit.loadMyBookings();
     expect(bookingCubit.state.data?.myBookings?.content, [booking]);
   });
 
   test('when loading my bookings fails, then state has error', () async {
-    when(mockBookingService.getMyBookings()).thenAnswer((_) async => errorResponse);
+    when(mockBookingService.getMyBookings())
+        .thenAnswer((_) async => errorResponse);
     await bookingCubit.loadMyBookings();
     expect(bookingCubit.state.errorMessage, 'error');
   });

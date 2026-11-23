@@ -45,23 +45,21 @@ void main() {
     await getIt.unregister<ItemService>();
     getIt.registerLazySingleton<ItemService>(() => mockItemService);
 
-    when(mockItemService.getItem('i1')).thenAnswer((_) async =>
-        DataResponse<Item>(data: item, errorMessage: null));
-    when(mockItemService.getItemImage('i1')).thenAnswer((_) async =>
-        DataResponse<Uint8List?>(data: null, errorMessage: null));
+    when(mockItemService.getItem('i1')).thenAnswer(
+        (_) async => DataResponse<Item>(data: item, errorMessage: null));
+    when(mockItemService.getItemImage('i1')).thenAnswer(
+        (_) async => DataResponse<Uint8List?>(data: null, errorMessage: null));
   });
 
   testWidgets('the dates other neighbours already have are listed',
       (WidgetTester tester) async {
-    when(mockBookingService.getBookingDates('i1')).thenAnswer((_) async =>
-        DataResponse<List<BookingDateRange>>(
-            data: [
+    when(mockBookingService.getBookingDates('i1'))
+        .thenAnswer((_) async => DataResponse<List<BookingDateRange>>(data: [
               BookingDateRange(
                 startAt: DateTime(2026, 6, 4),
                 endAt: DateTime(2026, 6, 6),
               )
-            ],
-            errorMessage: null));
+            ], errorMessage: null));
 
     await tester.pumpWidget(_wrap(ItemDetailScreen(item: item)));
     await tester.pumpAndSettle();
@@ -72,8 +70,8 @@ void main() {
 
   testWidgets('an item nobody has booked says nothing about booked dates',
       (WidgetTester tester) async {
-    when(mockBookingService.getBookingDates('i1'))
-        .thenAnswer((_) async => DataResponse<List<BookingDateRange>>(
+    when(mockBookingService.getBookingDates('i1')).thenAnswer((_) async =>
+        DataResponse<List<BookingDateRange>>(
             data: <BookingDateRange>[], errorMessage: null));
 
     await tester.pumpWidget(_wrap(ItemDetailScreen(item: item)));
@@ -84,8 +82,8 @@ void main() {
 
   testWidgets('a failed booked-dates lookup leaves the booking form usable',
       (WidgetTester tester) async {
-    when(mockBookingService.getBookingDates('i1'))
-        .thenAnswer((_) async => DataResponse<List<BookingDateRange>>(
+    when(mockBookingService.getBookingDates('i1')).thenAnswer((_) async =>
+        DataResponse<List<BookingDateRange>>(
             data: null, errorMessage: 'error'));
 
     await tester.pumpWidget(_wrap(ItemDetailScreen(item: item)));

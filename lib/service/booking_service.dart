@@ -29,10 +29,7 @@ class BookingService {
       {int pageNumber = 0}) async {
     final response = await _requestService.request(
       '$_itemPath/booking',
-      queryParameters: {
-        'pageSize': '20',
-        'pageNumber': pageNumber.toString()
-      },
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
     );
     return _bookingPageFromResponse(response);
   }
@@ -42,10 +39,7 @@ class BookingService {
       {int pageNumber = 0}) async {
     final response = await _requestService.request(
       '$_itemPath/$itemUuid/booking',
-      queryParameters: {
-        'pageSize': '20',
-        'pageNumber': pageNumber.toString()
-      },
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
     );
     return _bookingPageFromResponse(response);
   }
@@ -85,10 +79,7 @@ class BookingService {
       {int pageNumber = 0}) async {
     final response = await _requestService.request(
       '$_itemPath/booking/received',
-      queryParameters: {
-        'pageSize': '20',
-        'pageNumber': pageNumber.toString()
-      },
+      queryParameters: {'pageSize': '20', 'pageNumber': pageNumber.toString()},
     );
     return _bookingPageFromResponse(response);
   }
@@ -117,7 +108,7 @@ class BookingService {
     return DataResponse.fromHttpResponse(ranges, response);
   }
 
-    DataResponse<ItemBooking> _bookingFromResponse(HttpDataResponse response) {
+  DataResponse<ItemBooking> _bookingFromResponse(HttpDataResponse response) {
     final json = response.getData();
     ItemBooking? booking;
     if (json != null) booking = ItemBooking.fromJson(json);

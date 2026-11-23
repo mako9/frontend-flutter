@@ -6,7 +6,8 @@ class CustomImage extends StatelessWidget {
   late final double _height;
   late final bool _showDefault;
 
-  CustomImage(Uint8List? imageData, {super.key, double height = 200.0, bool showDefault = true}) {
+  CustomImage(Uint8List? imageData,
+      {super.key, double height = 200.0, bool showDefault = true}) {
     _imageData = imageData;
     _height = height;
     _showDefault = showDefault;
@@ -16,7 +17,8 @@ class CustomImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageData = _imageData;
     if (imageData != null) {
-      return Image.memory(imageData, height: _height, alignment: Alignment.center);
+      return Image.memory(imageData,
+          height: _height, alignment: Alignment.center);
     } else if (_showDefault) {
       return Container(
         height: _height,

@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -18,10 +17,7 @@ void main() {
     uuid: 'uuid',
     name: 'name',
   );
-  final response = DataResponse<Item>(
-      data: item,
-      errorMessage: null
-  );
+  final response = DataResponse<Item>(data: item, errorMessage: null);
 
   setUpAll(() async {
     getServices();
@@ -31,40 +27,48 @@ void main() {
     itemEditCubit = ItemEditCubit(DataResponse.empty());
   });
 
-  test('when creating item with success, then state is set to data response', () async {
+  test('when creating item with success, then state is set to data response',
+      () async {
     when(mockItemService.createItem(item)).thenAnswer((_) async => response);
     await itemEditCubit.createItem(item);
 
     expect(itemEditCubit.state, response);
   });
 
-  test('when creating item with failure, then state is set to error message', () async {
+  test('when creating item with failure, then state is set to error message',
+      () async {
     const errorResponse = DataResponse<Item>(
       data: null,
       errorMessage: 'some error',
     );
-    when(mockItemService.createItem(item)).thenAnswer((_) async => errorResponse);
+    when(mockItemService.createItem(item))
+        .thenAnswer((_) async => errorResponse);
     await itemEditCubit.createItem(item);
 
     expect(itemEditCubit.state, errorResponse);
   });
 
-  test('when getting item with success, then state is set to data response', () async {
+  test('when getting item with success, then state is set to data response',
+      () async {
     when(mockItemService.getItem('uuid')).thenAnswer((_) async => response);
     await itemEditCubit.getItem('uuid');
 
     expect(itemEditCubit.state, response);
   });
 
-  test('when updating community with success, then state is set to data response', () async {
+  test(
+      'when updating community with success, then state is set to data response',
+      () async {
     when(mockItemService.updateItem(item)).thenAnswer((_) async => response);
     await itemEditCubit.updateItem(item);
 
     expect(itemEditCubit.state, response);
   });
 
-  test('when deleting item with success, then state is set to data response', () async {
-    when(mockItemService.deleteItem(item.uuid!)).thenAnswer((_) async => response);
+  test('when deleting item with success, then state is set to data response',
+      () async {
+    when(mockItemService.deleteItem(item.uuid!))
+        .thenAnswer((_) async => response);
     await itemEditCubit.deleteItem(item);
 
     expect(itemEditCubit.state, response);

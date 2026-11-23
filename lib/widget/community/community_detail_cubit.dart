@@ -25,16 +25,18 @@ class CommunityDetailCubit extends Cubit<DataResponse<CommunityDetailState>> {
   Future<void> getCommunityWithMember(String uuid) async {
     final communityDataResponse = await _communityService.getCommunity(uuid);
     final isAdmin = communityDataResponse.data?.isAdmin == true;
-    final communityMemberDataResponse = isAdmin ? await _communityService.getCommunityMember(uuid) : null;
-    final requestingMemberResponse = isAdmin ? await _communityService.getRequestingMember(uuid) : null;
+    final communityMemberDataResponse =
+        isAdmin ? await _communityService.getCommunityMember(uuid) : null;
+    final requestingMemberResponse =
+        isAdmin ? await _communityService.getRequestingMember(uuid) : null;
     final newState = DataResponse(
         data: CommunityDetailState(
             community: communityDataResponse.data,
             communityMember: communityMemberDataResponse?.data,
             requestingMember: requestingMemberResponse?.data),
-        errorMessage: communityDataResponse.errorMessage
-            ?? communityMemberDataResponse?.errorMessage
-            ?? requestingMemberResponse?.errorMessage);
+        errorMessage: communityDataResponse.errorMessage ??
+            communityMemberDataResponse?.errorMessage ??
+            requestingMemberResponse?.errorMessage);
     emit(newState);
   }
 
@@ -59,5 +61,6 @@ class CommunityDetailState {
   DataPage<User>? communityMember;
   DataPage<User>? requestingMember;
 
-  CommunityDetailState({this.community, this.communityMember, this.requestingMember});
+  CommunityDetailState(
+      {this.community, this.communityMember, this.requestingMember});
 }

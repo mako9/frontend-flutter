@@ -10,7 +10,6 @@ import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/main.dart';
 
 void main() {
-
   setUpAll(() async {
     getServices();
   });

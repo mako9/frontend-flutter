@@ -12,7 +12,9 @@ class ItemCardView extends StatefulWidget {
   late final String? _errorMessage;
   late final CardViewIndexCallback? _onTap;
 
-  ItemCardView(Map<ItemCategory, List<Item>>? groupedItems, String? errorMessage, CardViewIndexCallback? onTap, {super.key}) {
+  ItemCardView(Map<ItemCategory, List<Item>>? groupedItems,
+      String? errorMessage, CardViewIndexCallback? onTap,
+      {super.key}) {
     _groupedItems = groupedItems;
     _indices = List.filled(_groupedItems?.keys.length ?? 0, 0);
     _errorMessage = errorMessage;
@@ -26,12 +28,13 @@ class ItemCardView extends StatefulWidget {
 }
 
 class _ItemCardViewState extends State<ItemCardView> {
-
   @override
   Widget build(BuildContext context) {
     if (widget._errorMessage != null) {
-      return _centeredText(context, AppLocalizations.of(context)!
-          .errorMessage(widget._errorMessage ?? "Unknown"));
+      return _centeredText(
+          context,
+          AppLocalizations.of(context)!
+              .errorMessage(widget._errorMessage ?? "Unknown"));
     } else if (widget._groupedItems == null) {
       return _centeredText(context, AppLocalizations.of(context)!.emptyList);
     }
@@ -60,7 +63,10 @@ class _ItemCardViewState extends State<ItemCardView> {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              widget._groupedItems?.keys.elementAt(carouselIndex).getName(context) ?? "Unknown",
+              widget._groupedItems?.keys
+                      .elementAt(carouselIndex)
+                      .getName(context) ??
+                  "Unknown",
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             )),
         SizedBox(
@@ -71,7 +77,8 @@ class _ItemCardViewState extends State<ItemCardView> {
             controller: PageController(viewportFraction: 0.8),
             onPageChanged: (int index) =>
                 setState(() => widget._indices[carouselIndex] = index),
-            itemCount: widget._groupedItems?.values.elementAt(carouselIndex).length,
+            itemCount:
+                widget._groupedItems?.values.elementAt(carouselIndex).length,
             itemBuilder: (BuildContext context, int itemIndex) {
               return _buildCarouselItem(context, carouselIndex, itemIndex);
             },
@@ -93,21 +100,21 @@ class _ItemCardViewState extends State<ItemCardView> {
         child: Card(
           elevation: 6,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: InkWell(
             child: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                 child: Column(
                   children: [
                     CustomImage(item?.imageData, height: 120),
                     const SizedBox(height: 16),
                     Text(item?.name ?? "Unknown")
                   ],
-                )
-            ),
+                )),
             onTap: () => {
-              if (widget._onTap != null) widget._onTap!(carouselIndex, itemIndex)
+              if (widget._onTap != null)
+                widget._onTap!(carouselIndex, itemIndex)
             },
           ),
         ),

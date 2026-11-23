@@ -36,7 +36,8 @@ class _ItemScreenContent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ItemDetailScreen(
-                              item: dataResponse.data?.values.elementAt(firstIndex)
+                              item: dataResponse.data?.values
+                                  .elementAt(firstIndex)
                                   .elementAt(secondIndex))))
                 })),
       );

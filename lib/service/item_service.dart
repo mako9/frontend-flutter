@@ -13,16 +13,14 @@ class ItemService {
   final RequestService _requestService = getIt.get<RequestService>();
   final String _itemPath = 'user/item';
 
-  Future<DataResponse<DataPage<Item>>> getAllItemsOfCommunity(
-      String uuid,
+  Future<DataResponse<DataPage<Item>>> getAllItemsOfCommunity(String uuid,
       {int pageNumber = 0}) async {
     final response = await _requestService.request('$_itemPath/$uuid',
         queryParameters: _paginationParams(pageNumber));
     return _dataPageFromResponse(response);
   }
 
-  Future<DataResponse<DataPage<Item>>> getMyItems(
-      {int pageNumber = 0}) async {
+  Future<DataResponse<DataPage<Item>>> getMyItems({int pageNumber = 0}) async {
     final response = await _requestService.request('$_itemPath/my',
         queryParameters: _paginationParams(pageNumber));
     return _dataPageFromResponse(response);
@@ -47,33 +45,44 @@ class ItemService {
   }
 
   Future<DataResponse<Item>> updateItem(Item item) async {
-    final response = await _requestService.request(
-        '$_itemPath/${item.uuid}',
-        method: HttpMethod.patch,
-        body: item);
+    final response = await _requestService.request('$_itemPath/${item.uuid}',
+        method: HttpMethod.patch, body: item);
     return _itemFromResponse(response);
   }
 
   Future<DataResponse<Item>> deleteItem(String uuid) async {
-    final response = await _requestService.request('$_itemPath/$uuid', method: HttpMethod.delete);
+    final response = await _requestService.request('$_itemPath/$uuid',
+        method: HttpMethod.delete);
     return _itemFromResponse(response);
   }
 
   Future<DataResponse<Uint8List?>> getItemImage(String uuid) async {
-    final imageUuidResponse = await _requestService.request('$_itemPath/$uuid/image');
-    final imageUuids = (imageUuidResponse.getData() as List<dynamic>).cast<String>();
-    if (imageUuids.isEmpty) return DataResponse(data: null, errorMessage: imageUuidResponse.errorMessage);
-    final imageDataResponse = await _requestService.request('$_itemPath/image/${imageUuids.first}', acceptType: HttpContentType.octetStream);
-    return DataResponse.fromHttpResponse(imageDataResponse.getData(), imageDataResponse);
+    final imageUuidResponse =
+        await _requestService.request('$_itemPath/$uuid/image');
+    final imageUuids =
+        (imageUuidResponse.getData() as List<dynamic>).cast<String>();
+    if (imageUuids.isEmpty)
+      return DataResponse(
+          data: null, errorMessage: imageUuidResponse.errorMessage);
+    final imageDataResponse = await _requestService.request(
+        '$_itemPath/image/${imageUuids.first}',
+        acceptType: HttpContentType.octetStream);
+    return DataResponse.fromHttpResponse(
+        imageDataResponse.getData(), imageDataResponse);
   }
 
-  Future<DataResponse<Uint8List>> uploadItemImage(String uuid, Uint8List bytes, String imageExtension) async {
-    final response = await _requestService.multipartRequest('$_itemPath/$uuid/image', bytes, imageExtension);
+  Future<DataResponse<Uint8List>> uploadItemImage(
+      String uuid, Uint8List bytes, String imageExtension) async {
+    final response = await _requestService.multipartRequest(
+        '$_itemPath/$uuid/image', bytes, imageExtension);
     return DataResponse.fromHttpResponse(bytes, response);
   }
 
   Map<String, String> _paginationParams(int pageNumber, {int pageSize = 10}) {
-    return {'pageSize': pageSize.toString(), 'pageNumber': pageNumber.toString()};
+    return {
+      'pageSize': pageSize.toString(),
+      'pageNumber': pageNumber.toString()
+    };
   }
 
   DataResponse<DataPage<Item>> _dataPageFromResponse(
@@ -104,7 +113,7 @@ class ItemService {
     for (var element in page.content) {
       final categories = element.itemCategories;
       if (categories == null) continue;
-      for (var category in categories)  {
+      for (var category in categories) {
         map[category] = [...?map[category], element];
       }
     }

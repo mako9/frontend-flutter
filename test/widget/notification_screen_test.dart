@@ -38,9 +38,9 @@ void main() {
         () => mockNotificationService);
   });
 
-  testWidgets('notification screen renders without crashing', (WidgetTester tester) async {
-    when(mockNotificationService.markAllRead())
-        .thenAnswer((_) async {});
+  testWidgets('notification screen renders without crashing',
+      (WidgetTester tester) async {
+    when(mockNotificationService.markAllRead()).thenAnswer((_) async {});
     when(mockNotificationService.getNotifications())
         .thenAnswer((_) async => DataResponse<DataPage<AppNotification>>(
               data: DataPage<AppNotification>.emptyPage(),
@@ -55,8 +55,7 @@ void main() {
 
   testWidgets('notification screen shows empty state when no notifications',
       (WidgetTester tester) async {
-    when(mockNotificationService.markAllRead())
-        .thenAnswer((_) async {});
+    when(mockNotificationService.markAllRead()).thenAnswer((_) async {});
     when(mockNotificationService.getNotifications())
         .thenAnswer((_) async => DataResponse<DataPage<AppNotification>>(
               data: DataPage<AppNotification>.emptyPage(),
@@ -69,7 +68,8 @@ void main() {
     expect(find.text('No entries found.'), findsOneWidget);
   });
 
-  testWidgets('notification screen shows notification items when data is present',
+  testWidgets(
+      'notification screen shows notification items when data is present',
       (WidgetTester tester) async {
     final notification = AppNotification(
       uuid: 'n1',
@@ -87,8 +87,7 @@ void main() {
       totalPages: 1,
     );
 
-    when(mockNotificationService.markAllRead())
-        .thenAnswer((_) async {});
+    when(mockNotificationService.markAllRead()).thenAnswer((_) async {});
     when(mockNotificationService.getNotifications())
         .thenAnswer((_) async => DataResponse(data: page, errorMessage: null));
 

@@ -59,9 +59,8 @@ class ItemEditCubit extends Cubit<DataResponse<Item>> {
     final itemImageDataResponse = await _itemService.getItemImage(uuid);
     state.data?.imageData = itemImageDataResponse.data;
     final newState = DataResponse(
-      data: state.data,
-      errorMessage: state.errorMessage ?? itemImageDataResponse.errorMessage
-    );
+        data: state.data,
+        errorMessage: state.errorMessage ?? itemImageDataResponse.errorMessage);
     emit(newState);
   }
 
@@ -72,7 +71,8 @@ class ItemEditCubit extends Cubit<DataResponse<Item>> {
     final bytes = files.first.bytes;
     final imageExtension = files.first.extension;
     if (bytes == null || imageExtension == null) return null;
-    final response = await _itemService.uploadItemImage(uuid, bytes, imageExtension);
+    final response =
+        await _itemService.uploadItemImage(uuid, bytes, imageExtension);
     return response.data;
   }
 }

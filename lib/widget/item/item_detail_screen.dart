@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
@@ -191,8 +190,7 @@ class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                              '${AppLocalizations.of(context)!.description}:'),
+                          Text('${AppLocalizations.of(context)!.description}:'),
                           const SizedBox(width: 32),
                           Expanded(
                               child: Text(item?.description ?? '-',

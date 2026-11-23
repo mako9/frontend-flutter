@@ -51,7 +51,8 @@ void main() {
     getIt.registerLazySingleton<BookingService>(() => mockBookingService);
   });
 
-  testWidgets('booking detail screen renders without crashing', (WidgetTester tester) async {
+  testWidgets('booking detail screen renders without crashing',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_wrap(
       BookingDetailScreen(booking: confirmedBooking),
     ));
@@ -60,7 +61,8 @@ void main() {
     expect(find.byType(BookingDetailScreen), findsOneWidget);
   });
 
-  testWidgets('booking detail screen shows confirmed status chip', (WidgetTester tester) async {
+  testWidgets('booking detail screen shows confirmed status chip',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_wrap(
       BookingDetailScreen(booking: confirmedBooking),
     ));
@@ -70,7 +72,8 @@ void main() {
     expect(find.text('Confirmed'), findsOneWidget);
   });
 
-  testWidgets('booking detail screen shows pending status chip', (WidgetTester tester) async {
+  testWidgets('booking detail screen shows pending status chip',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_wrap(
       BookingDetailScreen(booking: pendingBooking),
     ));
@@ -80,7 +83,8 @@ void main() {
     expect(find.text('Awaiting approval'), findsOneWidget);
   });
 
-  testWidgets('booking detail screen shows approve and decline buttons for owner on pending booking',
+  testWidgets(
+      'booking detail screen shows approve and decline buttons for owner on pending booking',
       (WidgetTester tester) async {
     await tester.pumpWidget(_wrap(
       BookingDetailScreen(booking: pendingBooking, isOwner: true),
@@ -91,7 +95,8 @@ void main() {
     expect(find.text('Decline'), findsOneWidget);
   });
 
-  testWidgets('booking detail screen does not show approve/decline buttons for non-owner',
+  testWidgets(
+      'booking detail screen does not show approve/decline buttons for non-owner',
       (WidgetTester tester) async {
     await tester.pumpWidget(_wrap(
       BookingDetailScreen(booking: pendingBooking),
@@ -102,7 +107,8 @@ void main() {
     expect(find.text('Decline'), findsNothing);
   });
 
-  testWidgets('booking detail screen shows cancel button for future confirmed booking',
+  testWidgets(
+      'booking detail screen shows cancel button for future confirmed booking',
       (WidgetTester tester) async {
     await tester.pumpWidget(_wrap(
       BookingDetailScreen(booking: confirmedBooking),
@@ -161,16 +167,18 @@ void main() {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en', '')],
-      home: Builder(builder: (context) => Scaffold(
-        body: TextButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => LoadingOverlay(
-                      child: BookingDetailScreen(booking: confirmedBooking)))),
-          child: const Text('open'),
-        ),
-      )),
+      home: Builder(
+          builder: (context) => Scaffold(
+                body: TextButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => LoadingOverlay(
+                              child: BookingDetailScreen(
+                                  booking: confirmedBooking)))),
+                  child: const Text('open'),
+                ),
+              )),
     ));
     await tester.pump();
 

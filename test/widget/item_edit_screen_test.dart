@@ -34,7 +34,8 @@ Widget _wrap(Widget child) {
 bool _switchValue(WidgetTester tester, String label) {
   final row = find.ancestor(
       of: find.text(label),
-      matching: find.ancestor(of: find.byType(Switch), matching: find.byType(Row)));
+      matching:
+          find.ancestor(of: find.byType(Switch), matching: find.byType(Row)));
   final switches = find.descendant(of: row, matching: find.byType(Switch));
   expect(switches, findsOneWidget, reason: 'no switch next to "$label"');
   return tester.widget<Switch>(switches).value;
@@ -65,12 +66,12 @@ void main() {
     await getIt.unregister<CommunityService>();
     getIt.registerLazySingleton<CommunityService>(() => mockCommunityService);
 
-    when(mockCommunityService.getMyCommunities())
-        .thenAnswer((_) async => DataResponse<DataPage<Community>>(
+    when(mockCommunityService.getMyCommunities()).thenAnswer((_) async =>
+        DataResponse<DataPage<Community>>(
             data: communityPage, errorMessage: null));
     // the cubit loads the picture unasked in edit mode; without a stub mockito hands back a Fake
-    when(mockItemService.getItemImage('i2')).thenAnswer((_) async =>
-        DataResponse<Uint8List?>(data: null, errorMessage: null));
+    when(mockItemService.getItemImage('i2')).thenAnswer(
+        (_) async => DataResponse<Uint8List?>(data: null, errorMessage: null));
   });
 
   // the switch is easy to leave alone, so what an untouched form shows is the real default

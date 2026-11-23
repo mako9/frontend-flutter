@@ -44,8 +44,7 @@ class BookingCubit extends Cubit<DataResponse<BookingState>> {
         await _bookingService.getReceivedBookings(pageNumber: pageNumber);
     emit(DataResponse(
       data: BookingState(
-          myBookings: state.data?.myBookings,
-          lenderBookings: response.data),
+          myBookings: state.data?.myBookings, lenderBookings: response.data),
       errorMessage: response.errorMessage,
     ));
   }

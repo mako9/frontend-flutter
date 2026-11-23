@@ -16,12 +16,15 @@ class JsonUtil {
     if (dateTime == null) return null;
     var dateString = DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(dateTime);
     var offset = dateTime.timeZoneOffset;
-    var offsetInHours = offset.inHours > 0 ? offset.inHours : 1; // For fixing divide by 0
+    var offsetInHours =
+        offset.inHours > 0 ? offset.inHours : 1; // For fixing divide by 0
 
     if (!offset.isNegative) {
-      dateString = "$dateString+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (offsetInHours * 60)).toString().padLeft(2, '0')}";
+      dateString =
+          "$dateString+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (offsetInHours * 60)).toString().padLeft(2, '0')}";
     } else {
-      dateString = "$dateString-${(-offset.inHours).toString().padLeft(2, '0')}:${(offset.inMinutes % (offsetInHours * 60)).toString().padLeft(2, '0')}";
+      dateString =
+          "$dateString-${(-offset.inHours).toString().padLeft(2, '0')}:${(offset.inMinutes % (offsetInHours * 60)).toString().padLeft(2, '0')}";
     }
     debugPrint(dateString);
     return dateString;

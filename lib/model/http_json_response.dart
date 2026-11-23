@@ -42,15 +42,15 @@ enum HttpStatus {
   const HttpStatus(this.value);
 
   bool isSuccessful() {
-    return this == HttpStatus.ok
-        || this == HttpStatus.created
-        || this == HttpStatus.noContent;
+    return this == HttpStatus.ok ||
+        this == HttpStatus.created ||
+        this == HttpStatus.noContent;
   }
 
   factory HttpStatus.fromValue(int value) {
     try {
       return HttpStatus.values.firstWhere((element) => element.value == value);
-    } catch(_) {
+    } catch (_) {
       return HttpStatus.undefined;
     }
   }

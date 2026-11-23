@@ -9,7 +9,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -17,11 +16,13 @@ void main() {
   late CommunityCubit communityCubit;
   final response = DataResponse<DataPage<Community>>(
       data: DataPage(
-        content: [Community(
-          uuid: 'uuid',
-          name: 'name',
-          radius: 10,
-        )],
+        content: [
+          Community(
+            uuid: 'uuid',
+            name: 'name',
+            radius: 10,
+          )
+        ],
         isFirstPage: true,
         isLastPage: true,
         pageNumber: 1,
@@ -29,8 +30,7 @@ void main() {
         totalElements: 1,
         totalPages: 1,
       ),
-      errorMessage: null
-  );
+      errorMessage: null);
 
   setUpAll(() async {
     getServices();
@@ -40,15 +40,20 @@ void main() {
     communityCubit = CommunityCubit(DataResponse.empty());
   });
 
-  test('when loading all communities with success, then state is set to data response', () async {
-    when(mockCommunityService.getAllCommunities()).thenAnswer((_) async => response);
+  test(
+      'when loading all communities with success, then state is set to data response',
+      () async {
+    when(mockCommunityService.getAllCommunities())
+        .thenAnswer((_) async => response);
     await communityCubit.loadAllCommunities();
 
     expect(communityCubit.state, response);
   });
 
-  test('when loading my communities with success, then state is communityPage', () async {
-    when(mockCommunityService.getMyCommunities()).thenAnswer((_) async => response);
+  test('when loading my communities with success, then state is communityPage',
+      () async {
+    when(mockCommunityService.getMyCommunities())
+        .thenAnswer((_) async => response);
     await communityCubit.loadMyCommunities();
 
     expect(communityCubit.state, response);

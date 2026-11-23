@@ -66,7 +66,8 @@ void main() {
     bookingService = BookingService();
   });
 
-  test('when booking item with success, then returns booking response', () async {
+  test('when booking item with success, then returns booking response',
+      () async {
     final startAt = DateTime(2024, 1, 10, 9, 0);
     final endAt = DateTime(2024, 1, 10, 17, 0);
     when(mockRequestService.request(
@@ -106,7 +107,8 @@ void main() {
     expect(response.data, null);
   });
 
-  test('when getting my bookings with success, then returns page of bookings', () async {
+  test('when getting my bookings with success, then returns page of bookings',
+      () async {
     when(mockRequestService.request(
       'user/item/booking',
       queryParameters: {'pageSize': '20', 'pageNumber': '0'},
@@ -124,7 +126,8 @@ void main() {
     expect(page?.isLastPage, true);
   });
 
-  test('when getting my bookings with error, then returns error message', () async {
+  test('when getting my bookings with error, then returns error message',
+      () async {
     when(mockRequestService.request(
       'user/item/booking',
       queryParameters: {'pageSize': '20', 'pageNumber': '0'},
@@ -137,7 +140,8 @@ void main() {
     expect(response.data, null);
   });
 
-  test('when approving booking with success, then returns updated booking', () async {
+  test('when approving booking with success, then returns updated booking',
+      () async {
     final confirmedJson = Map<String, dynamic>.from(bookingJson)
       ..['status'] = 'confirmed';
     when(mockRequestService.request(
@@ -153,7 +157,8 @@ void main() {
     expect(response.data?.status, BookingStatus.confirmed);
   });
 
-  test('when approving booking with error, then returns error message', () async {
+  test('when approving booking with error, then returns error message',
+      () async {
     when(mockRequestService.request(
       'user/item/booking/$bookingUuid/approve',
       method: HttpMethod.patch,
@@ -166,7 +171,8 @@ void main() {
     expect(response.data, null);
   });
 
-  test('when declining booking with success, then returns updated booking', () async {
+  test('when declining booking with success, then returns updated booking',
+      () async {
     final declinedJson = Map<String, dynamic>.from(bookingJson)
       ..['status'] = 'declined';
     when(mockRequestService.request(
@@ -182,7 +188,8 @@ void main() {
     expect(response.data?.status, BookingStatus.declined);
   });
 
-  test('when declining booking with error, then returns error message', () async {
+  test('when declining booking with error, then returns error message',
+      () async {
     when(mockRequestService.request(
       'user/item/booking/$bookingUuid/decline',
       method: HttpMethod.patch,
@@ -195,7 +202,8 @@ void main() {
     expect(response.data, null);
   });
 
-  test('when cancelling booking with success, then returns updated booking', () async {
+  test('when cancelling booking with success, then returns updated booking',
+      () async {
     final cancelledJson = Map<String, dynamic>.from(bookingJson)
       ..['status'] = 'cancelled';
     when(mockRequestService.request(
@@ -211,7 +219,8 @@ void main() {
     expect(response.data?.status, BookingStatus.cancelled);
   });
 
-  test('when cancelling booking with error, then returns error message', () async {
+  test('when cancelling booking with error, then returns error message',
+      () async {
     when(mockRequestService.request(
       'user/item/booking/$bookingUuid/cancel',
       method: HttpMethod.patch,

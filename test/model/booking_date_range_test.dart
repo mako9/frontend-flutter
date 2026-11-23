@@ -9,7 +9,9 @@ void main() {
     endAt: DateTime(2026, 6, 6, 17, 0),
   );
 
-  test('the day a booking starts on counts as booked even when the handover is later that day', () {
+  test(
+      'the day a booking starts on counts as booked even when the handover is later that day',
+      () {
     expect(june.coversDay(DateTime(2026, 6, 4)), isTrue);
     expect(june.coversDay(DateTime(2026, 6, 4, 23, 59)), isTrue);
   });

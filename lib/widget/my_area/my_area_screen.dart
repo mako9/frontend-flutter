@@ -90,8 +90,7 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
                     Text(AppLocalizations.of(context)!.myAreaScreen_myItems),
                     Text(AppLocalizations.of(context)!
                         .myAreaScreen_myCommunities),
-                    Text(
-                        AppLocalizations.of(context)!.myAreaScreen_myBookings),
+                    Text(AppLocalizations.of(context)!.myAreaScreen_myBookings),
                     Text(AppLocalizations.of(context)!
                         .myAreaScreen_lenderBookings),
                   ],
@@ -104,8 +103,8 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
                       .errorMessage(dataResponse.errorMessage!))
                 ] else if (_index == 0) ...[
                   Expanded(
-                      child: ItemCardView(
-                          _groupedItems, _errorMessage, (firstIndex, secondIndex) {
+                      child: ItemCardView(_groupedItems, _errorMessage,
+                          (firstIndex, secondIndex) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(

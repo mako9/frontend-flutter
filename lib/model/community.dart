@@ -59,16 +59,16 @@ class Community implements ListableModel {
   }
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'street': street,
-    'houseNumber': houseNumber,
-    'postalCode': postalCode,
-    'city': city,
-    'radius': radius,
-    'latitude': latitude,
-    'longitude': longitude,
-    'canBeJoined': canBeJoined,
-  };
+        'name': name,
+        'street': street,
+        'houseNumber': houseNumber,
+        'postalCode': postalCode,
+        'city': city,
+        'radius': radius,
+        'latitude': latitude,
+        'longitude': longitude,
+        'canBeJoined': canBeJoined,
+      };
 
   @override
   String title() {

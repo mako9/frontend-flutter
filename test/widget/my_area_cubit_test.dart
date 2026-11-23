@@ -11,7 +11,6 @@ import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -20,7 +19,10 @@ void main() {
   late MyAreaCubit myAreaCubit;
 
   final itemList = [
-    Item(uuid: 'uuid', name: 'name', itemCategories: [ItemCategory.tool, ItemCategory.other]),
+    Item(
+        uuid: 'uuid',
+        name: 'name',
+        itemCategories: [ItemCategory.tool, ItemCategory.other]),
     Item(uuid: 'uuidTwo', name: 'nameTwo', itemCategories: [ItemCategory.other])
   ];
   final itemPage = DataPage(
@@ -30,12 +32,9 @@ void main() {
       pageNumber: 1,
       pageSize: 1,
       totalElements: 2,
-      totalPages: 1
-  );
-  final itemResponse = DataResponse<DataPage<Item>>(
-      data: itemPage,
-      errorMessage: null
-  );
+      totalPages: 1);
+  final itemResponse =
+      DataResponse<DataPage<Item>>(data: itemPage, errorMessage: null);
   final communityPage = DataPage(
       content: [Community(uuid: 'uuid')],
       isFirstPage: true,
@@ -43,19 +42,15 @@ void main() {
       pageNumber: 1,
       pageSize: 1,
       totalElements: 1,
-      totalPages: 1
-  );
+      totalPages: 1);
   final communityResponse = DataResponse<DataPage<Community>>(
-      data: communityPage,
-      errorMessage: null
-  );
+      data: communityPage, errorMessage: null);
   final state = MyAreaState(
       communities: communityPage,
       items: Map.fromEntries([
         MapEntry(ItemCategory.tool, [itemList[0]]),
         MapEntry(ItemCategory.other, itemList),
-      ])
-  );
+      ]));
 
   setUpAll(() async {
     getServices();
@@ -65,24 +60,31 @@ void main() {
     mockCommunityService = MockCommunityService();
     await getIt.unregister<CommunityService>();
     getIt.registerLazySingleton<CommunityService>(() => mockCommunityService);
-    when(mockItemService.getItemsOwnedByMe()).thenAnswer((_) async => itemResponse);
-    when(mockCommunityService.getCommunitiesOwnedByMe()).thenAnswer((_) async => communityResponse);
+    when(mockItemService.getItemsOwnedByMe())
+        .thenAnswer((_) async => itemResponse);
+    when(mockCommunityService.getCommunitiesOwnedByMe())
+        .thenAnswer((_) async => communityResponse);
 
     myAreaCubit = MyAreaCubit(DataResponse.empty());
   });
 
-  test('when getting initial state, then state is set to data response', () async {
+  test('when getting initial state, then state is set to data response',
+      () async {
     expect(myAreaCubit.state.data?.items, state.items);
     expect(myAreaCubit.state.data?.communities, state.communities);
   });
 
-  test('when getting items owned with success, then state is set to data response', () async {
+  test(
+      'when getting items owned with success, then state is set to data response',
+      () async {
     await myAreaCubit.loadItemsOwnedByMe();
 
     expect(myAreaCubit.state.data?.items, state.items);
   });
 
-  test('when getting communities owned with success, then state is set to data response', () async {
+  test(
+      'when getting communities owned with success, then state is set to data response',
+      () async {
     await myAreaCubit.loadCommunitiesOwnedByMe();
 
     expect(myAreaCubit.state.data?.communities, state.communities);
