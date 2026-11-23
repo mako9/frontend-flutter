@@ -97,7 +97,9 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                if (dataResponse.errorMessage != null) ...[
+                // the two booking tabs are backed by BookingCubit, so a failure of the items/communities
+                // load must not blank them out too
+                if (dataResponse.errorMessage != null && _index < 2) ...[
                   Text(AppLocalizations.of(context)!
                       .errorMessage(dataResponse.errorMessage!))
                 ] else if (_index == 0) ...[
