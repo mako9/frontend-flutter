@@ -63,12 +63,18 @@ class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
     });
   }
 
+  /// The day being asked about is free when no booking of this item covers it. Without this the neighbour
+  /// finds out by being refused after they submit.
+  bool _dayIsFree(DateTime day) =>
+      !_bookedRanges.any((range) => range.coversDay(day));
+
   Future<void> _selectStartDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2050),
+      selectableDayPredicate: (day) => _dayIsFree(day),
     );
     if (picked != null) {
       setState(() {
@@ -86,6 +92,7 @@ class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
       initialDate: _startDate ?? DateTime.now(),
       firstDate: _startDate ?? DateTime.now(),
       lastDate: DateTime(2050),
+      selectableDayPredicate: (day) => _dayIsFree(day),
     );
     if (picked != null) {
       setState(() {
@@ -129,8 +136,11 @@ class _ItemDetailScreenContentState extends State<_ItemDetailScreenContent> {
           if (dataResponse.data != null) {
             item = dataResponse.data;
           }
+          // only ever shown to the borrower, so an owner opening their own item does not pay for the call
           final itemUuid = item?.uuid;
-          if (itemUuid != null && itemUuid != _bookedRangesLoadedFor) {
+          if (itemUuid != null &&
+              item!.isOwner == false &&
+              itemUuid != _bookedRangesLoadedFor) {
             _bookedRangesLoadedFor = itemUuid;
             _loadBookedRanges(itemUuid);
           }

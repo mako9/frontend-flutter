@@ -11,6 +11,19 @@ class BookingDateRange {
     this.endAt,
   });
 
+  /// Whether [day] is one of the days this booking occupies. Compared whole-day on purpose: a booking
+  /// picked up at nine in the morning still means the item is not available that day, and that is the only
+  /// question a calendar asks.
+  bool coversDay(DateTime day) {
+    if (startAt == null || endAt == null) return false;
+    final from = DateTime(startAt!.year, startAt!.month, startAt!.day);
+    final to = DateTime(endAt!.year, endAt!.month, endAt!.day);
+    // the day asked about is floored too, or an evening would fall outside a booking that started that
+    // very morning
+    final at = DateTime(day.year, day.month, day.day);
+    return !at.isBefore(from) && !at.isAfter(to);
+  }
+
   factory BookingDateRange.fromJson(Map<String, dynamic> json) {
     return BookingDateRange(
       startAt: JsonUtil.parseDateString(json['startAt']),
