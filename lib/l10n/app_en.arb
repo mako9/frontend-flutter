@@ -74,6 +74,7 @@
   "myAreaScreen_createCommunity": "Create new community",
   "myAreaScreen_createItem": "Create new item",
   "myAreaScreen_myBookings": "My bookings",
+  "myAreaScreen_lenderBookings": "Requests for my items",
   "bookingDetailScreen_title": "Booking details",
   "bookingDetailScreen_from": "From:",
   "bookingDetailScreen_to": "To:",

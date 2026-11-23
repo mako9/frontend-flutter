@@ -60,6 +60,7 @@
     "myAreaScreen_createCommunity": "Erstelle neue Community",
     "myAreaScreen_createItem": "Erstelle neues Item",
     "myAreaScreen_myBookings": "Meine Buchungen",
+    "myAreaScreen_lenderBookings": "Anfragen für meine Gegenstände",
     "bookingDetailScreen_title": "Buchungsdetails",
     "bookingDetailScreen_from": "Von:",
     "bookingDetailScreen_to": "Bis:",

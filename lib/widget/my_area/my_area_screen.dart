@@ -42,7 +42,7 @@ class _MyAreaScreenContent extends StatefulWidget {
 
 //ignore: must_be_immutable
 class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
-  final List<bool> _selectedToggle = <bool>[true, false, false];
+  final List<bool> _selectedToggle = <bool>[true, false, false, false];
   bool _isInitialized = false;
   int _index = 0;
   Map<ItemCategory, List<Item>>? _groupedItems;
@@ -92,6 +92,8 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
                         .myAreaScreen_myCommunities),
                     Text(
                         AppLocalizations.of(context)!.myAreaScreen_myBookings),
+                    Text(AppLocalizations.of(context)!
+                        .myAreaScreen_lenderBookings),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -123,8 +125,10 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
                         .loadCommunitiesOwnedByMe(pageNumber: index);
                   }),
                   const Spacer(),
+                ] else if (_index == 2) ...[
+                  Expanded(child: _BookingsList(isLender: false)),
                 ] else ...[
-                  Expanded(child: _BookingsList()),
+                  Expanded(child: _BookingsList(isLender: true)),
                 ],
                 const SizedBox(height: 16.0),
                 if (_index == 0) ...[
@@ -155,11 +159,19 @@ class _MyAreaScreenContentState extends State<_MyAreaScreenContent> {
 }
 
 class _BookingsList extends StatelessWidget {
+  /// Which of the two booking lists to show. The same flag decides that the detail screen is opened as
+  /// the owner: the list you are looking at is what tells you whose side of the booking you are on.
+  const _BookingsList({required this.isLender});
+
+  final bool isLender;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BookingCubit, DataResponse<BookingState>>(
       builder: (_, response) {
-        final bookings = response.data?.myBookings?.content ?? [];
+        final bookings = isLender
+            ? response.data?.lenderBookings?.content ?? []
+            : response.data?.myBookings?.content ?? [];
         if (bookings.isEmpty) {
           return Center(child: Text(AppLocalizations.of(context)!.emptyList));
         }
@@ -178,7 +190,7 @@ class _BookingsList extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => BookingDetailScreen(
                       booking: booking,
-                      isOwner: false,
+                      isOwner: isLender,
                     ),
                   ),
                 );

@@ -7,7 +7,8 @@ import 'dart:async' as _i7;
 import 'dart:convert' as _i12;
 import 'dart:typed_data' as _i11;
 
-import 'package:frontend_flutter/model/app_notification.dart' as _i25;
+import 'package:frontend_flutter/model/app_notification.dart' as _i26;
+import 'package:frontend_flutter/model/booking_date_range.dart' as _i24;
 import 'package:frontend_flutter/model/community.dart' as _i19;
 import 'package:frontend_flutter/model/credential.dart' as _i16;
 import 'package:frontend_flutter/model/data_page.dart' as _i18;
@@ -21,7 +22,7 @@ import 'package:frontend_flutter/service/auth_service.dart' as _i14;
 import 'package:frontend_flutter/service/booking_service.dart' as _i22;
 import 'package:frontend_flutter/service/community_service.dart' as _i17;
 import 'package:frontend_flutter/service/item_service.dart' as _i20;
-import 'package:frontend_flutter/service/notification_service.dart' as _i24;
+import 'package:frontend_flutter/service/notification_service.dart' as _i25;
 import 'package:frontend_flutter/service/request_service.dart' as _i15;
 import 'package:frontend_flutter/service/storage_service.dart' as _i6;
 import 'package:frontend_flutter/service/user_service.dart' as _i8;
@@ -1742,16 +1743,100 @@ class MockBookingService extends _i1.Mock implements _i22.BookingService {
           ),
         )),
       ) as _i7.Future<_i2.DataResponse<_i23.ItemBooking>>);
+  @override
+  _i7.Future<
+      _i2.DataResponse<_i18.DataPage<_i23.ItemBooking>>> getReceivedBookings(
+          {int? pageNumber = 0}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getReceivedBookings,
+          [],
+          {#pageNumber: pageNumber},
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<_i18.DataPage<_i23.ItemBooking>>>.value(
+                _FakeDataResponse_0<_i18.DataPage<_i23.ItemBooking>>(
+          this,
+          Invocation.method(
+            #getReceivedBookings,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i18.DataPage<_i23.ItemBooking>>>.value(
+                _FakeDataResponse_0<_i18.DataPage<_i23.ItemBooking>>(
+          this,
+          Invocation.method(
+            #getReceivedBookings,
+            [],
+            {#pageNumber: pageNumber},
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i18.DataPage<_i23.ItemBooking>>>);
+  @override
+  _i7.Future<_i2.DataResponse<_i23.ItemBooking>> returnBooking(
+          String? bookingUuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #returnBooking,
+          [bookingUuid],
+        ),
+        returnValue: _i7.Future<_i2.DataResponse<_i23.ItemBooking>>.value(
+            _FakeDataResponse_0<_i23.ItemBooking>(
+          this,
+          Invocation.method(
+            #returnBooking,
+            [bookingUuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<_i23.ItemBooking>>.value(
+                _FakeDataResponse_0<_i23.ItemBooking>(
+          this,
+          Invocation.method(
+            #returnBooking,
+            [bookingUuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<_i23.ItemBooking>>);
+  @override
+  _i7.Future<_i2.DataResponse<List<_i24.BookingDateRange>>> getBookingDates(
+          String? itemUuid) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getBookingDates,
+          [itemUuid],
+        ),
+        returnValue:
+            _i7.Future<_i2.DataResponse<List<_i24.BookingDateRange>>>.value(
+                _FakeDataResponse_0<List<_i24.BookingDateRange>>(
+          this,
+          Invocation.method(
+            #getBookingDates,
+            [itemUuid],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i2.DataResponse<List<_i24.BookingDateRange>>>.value(
+                _FakeDataResponse_0<List<_i24.BookingDateRange>>(
+          this,
+          Invocation.method(
+            #getBookingDates,
+            [itemUuid],
+          ),
+        )),
+      ) as _i7.Future<_i2.DataResponse<List<_i24.BookingDateRange>>>);
 }
 
 /// A class which mocks [NotificationService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationService extends _i1.Mock
-    implements _i24.NotificationService {
+    implements _i25.NotificationService {
   @override
   _i7.Future<
-      _i2.DataResponse<_i18.DataPage<_i25.AppNotification>>> getNotifications(
+      _i2.DataResponse<_i18.DataPage<_i26.AppNotification>>> getNotifications(
           {int? pageNumber = 0}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1760,8 +1845,8 @@ class MockNotificationService extends _i1.Mock
           {#pageNumber: pageNumber},
         ),
         returnValue: _i7.Future<
-                _i2.DataResponse<_i18.DataPage<_i25.AppNotification>>>.value(
-            _FakeDataResponse_0<_i18.DataPage<_i25.AppNotification>>(
+                _i2.DataResponse<_i18.DataPage<_i26.AppNotification>>>.value(
+            _FakeDataResponse_0<_i18.DataPage<_i26.AppNotification>>(
           this,
           Invocation.method(
             #getNotifications,
@@ -1770,8 +1855,8 @@ class MockNotificationService extends _i1.Mock
           ),
         )),
         returnValueForMissingStub: _i7.Future<
-                _i2.DataResponse<_i18.DataPage<_i25.AppNotification>>>.value(
-            _FakeDataResponse_0<_i18.DataPage<_i25.AppNotification>>(
+                _i2.DataResponse<_i18.DataPage<_i26.AppNotification>>>.value(
+            _FakeDataResponse_0<_i18.DataPage<_i26.AppNotification>>(
           this,
           Invocation.method(
             #getNotifications,
@@ -1779,7 +1864,7 @@ class MockNotificationService extends _i1.Mock
             {#pageNumber: pageNumber},
           ),
         )),
-      ) as _i7.Future<_i2.DataResponse<_i18.DataPage<_i25.AppNotification>>>);
+      ) as _i7.Future<_i2.DataResponse<_i18.DataPage<_i26.AppNotification>>>);
   @override
   _i7.Future<int> getUnreadCount() => (super.noSuchMethod(
         Invocation.method(
