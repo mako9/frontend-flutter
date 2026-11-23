@@ -40,27 +40,47 @@ void main() {
     bookingDetailCubit = BookingDetailCubit.ofInitialState(booking: pending);
   });
 
-  test('when approving booking with success, then state is CONFIRMED', () async {
-    when(mockBookingService.approveBooking(pending.uuid!))
-        .thenAnswer((_) async => confirmedResponse);
-    await bookingDetailCubit.approve();
-    expect(bookingDetailCubit.state.data?.status, BookingStatus.confirmed);
+  group('approve', () {
+    test('when approving with success, then status becomes CONFIRMED', () async {
+      when(mockBookingService.approveBooking(pending.uuid!))
+          .thenAnswer((_) async => confirmedResponse);
+
+      await bookingDetailCubit.approve();
+
+      expect(bookingDetailCubit.state.data?.status, BookingStatus.confirmed);
+    });
+
+    test('when approving with error, then state has error', () async {
+      when(mockBookingService.approveBooking(pending.uuid!))
+          .thenAnswer((_) async => DataResponse<ItemBooking>(
+              data: null, errorMessage: 'error'));
+
+      await bookingDetailCubit.approve();
+
+      expect(bookingDetailCubit.state.errorMessage, 'error');
+    });
   });
 
-  test('when declining booking with success, then state is DECLINED', () async {
-    bookingDetailCubit = BookingDetailCubit.ofInitialState(booking: pending);
-    when(mockBookingService.declineBooking(pending.uuid!))
-        .thenAnswer((_) async => declinedResponse);
-    await bookingDetailCubit.decline();
-    expect(bookingDetailCubit.state.data?.status, BookingStatus.declined);
+  group('decline', () {
+    test('when declining with success, then status becomes DECLINED', () async {
+      when(mockBookingService.declineBooking(pending.uuid!))
+          .thenAnswer((_) async => declinedResponse);
+
+      await bookingDetailCubit.decline();
+
+      expect(bookingDetailCubit.state.data?.status, BookingStatus.declined);
+    });
   });
 
-  test('when cancelling booking with success, then state is CANCELLED', () async {
-    bookingDetailCubit = BookingDetailCubit.ofInitialState(booking: confirmed);
-    when(mockBookingService.cancelBooking(confirmed.uuid!))
-        .thenAnswer((_) async => cancelledResponse);
-    await bookingDetailCubit.cancel();
-    expect(bookingDetailCubit.state.data?.status, BookingStatus.cancelled);
+  group('cancel', () {
+    test('when cancelling with success, then status becomes CANCELLED', () async {
+      when(mockBookingService.cancelBooking(pending.uuid!))
+          .thenAnswer((_) async => cancelledResponse);
+
+      await bookingDetailCubit.cancel();
+
+      expect(bookingDetailCubit.state.data?.status, BookingStatus.cancelled);
+    });
   });
 
   test('when marking returned with success, then state is RETURNED', () async {
@@ -74,13 +94,27 @@ void main() {
     expect(bookingDetailCubit.state.data?.status, BookingStatus.returned);
   });
 
-  test('when marking returned fails, then state has error', () async {
+  // An error response carries no booking, so "emit whatever came back" would blank the state - and every
+  // action starts by reading the uuid out of the state, which would leave the screen able to do nothing at
+  // all for the rest of its life. The retry is what proves the difference: had the booking been wiped, the
+  // second tap would be a silent no-op.
+  test('a failed action keeps the booking and a retry still reaches the server', () async {
+    final returned = ItemBooking(uuid: 'b1', status: BookingStatus.returned);
+    final answers = [
+      DataResponse<ItemBooking>(data: null, errorMessage: 'error'),
+      DataResponse<ItemBooking>(data: returned, errorMessage: null),
+    ];
     when(mockBookingService.returnBooking(pending.uuid!))
-        .thenAnswer((_) async => DataResponse<ItemBooking>(
-            data: null, errorMessage: 'error'));
+        .thenAnswer((_) async => answers.removeAt(0));
 
     await bookingDetailCubit.markReturned();
 
     expect(bookingDetailCubit.state.errorMessage, 'error');
+    expect(bookingDetailCubit.state.data?.uuid, 'b1');
+
+    await bookingDetailCubit.markReturned();
+
+    expect(bookingDetailCubit.state.errorMessage, isNull);
+    expect(bookingDetailCubit.state.data?.status, BookingStatus.returned);
   });
 }

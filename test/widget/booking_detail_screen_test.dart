@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
+import 'package:frontend_flutter/model/data_response.dart';
 import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
 import 'package:frontend_flutter/model/item_booking.dart';
 import 'package:frontend_flutter/service/booking_service.dart';
 import 'package:frontend_flutter/widget/booking/booking_detail_screen.dart';
+import 'package:frontend_flutter/widget/element/loading_overlay.dart';
+import 'package:mockito/mockito.dart';
 
 import '../mock/mock.mocks.dart';
 
@@ -140,5 +143,43 @@ void main() {
     expect(find.text('Decline'), findsNothing);
     expect(find.text('Cancel booking'), findsNothing);
     expect(find.text('Mark as returned'), findsNothing);
+  });
+
+  // The handler used to pop the screen as soon as the call came back, successful or not, which threw away
+  // the very frame that was supposed to tell the user the return had failed.
+  testWidgets('a failed return leaves the screen open and says what went wrong',
+      (WidgetTester tester) async {
+    when(mockBookingService.returnBooking('b1')).thenAnswer((_) async =>
+        DataResponse<ItemBooking>(
+            data: null, errorMessage: 'something went wrong'));
+
+    await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en', '')],
+      home: Builder(builder: (context) => Scaffold(
+        body: TextButton(
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => LoadingOverlay(
+                      child: BookingDetailScreen(booking: confirmedBooking)))),
+          child: const Text('open'),
+        ),
+      )),
+    ));
+    await tester.pump();
+
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Mark as returned'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Booking details'), findsOneWidget);
+    expect(find.textContaining('something went wrong'), findsOneWidget);
   });
 }
