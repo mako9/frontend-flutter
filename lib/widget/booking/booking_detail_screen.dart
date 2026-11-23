@@ -75,8 +75,9 @@ class _BookingDetailScreenContent extends StatelessWidget {
                       LoadingOverlay.of(context).hide();
                       // a failed action stays on screen - popping would throw away the message that
                       // says it failed, and the person reading the screen is the one who has to retry
-                      if (cubit.state.errorMessage == null)
+                      if (cubit.state.errorMessage == null) {
                         Navigator.pop(context);
+                      }
                     }
                   }),
                   const SizedBox(height: 8),
@@ -90,8 +91,9 @@ class _BookingDetailScreenContent extends StatelessWidget {
                       LoadingOverlay.of(context).hide();
                       // a failed action stays on screen - popping would throw away the message that
                       // says it failed, and the person reading the screen is the one who has to retry
-                      if (cubit.state.errorMessage == null)
+                      if (cubit.state.errorMessage == null) {
                         Navigator.pop(context);
+                      }
                     }
                   }),
                 ],
@@ -110,8 +112,9 @@ class _BookingDetailScreenContent extends StatelessWidget {
                       LoadingOverlay.of(context).hide();
                       // a failed action stays on screen - popping would throw away the message that
                       // says it failed, and the person reading the screen is the one who has to retry
-                      if (cubit.state.errorMessage == null)
+                      if (cubit.state.errorMessage == null) {
                         Navigator.pop(context);
+                      }
                     }
                   }),
                 ],
@@ -127,8 +130,9 @@ class _BookingDetailScreenContent extends StatelessWidget {
                       LoadingOverlay.of(context).hide();
                       // a failed action stays on screen - popping would throw away the message that
                       // says it failed, and the person reading the screen is the one who has to retry
-                      if (cubit.state.errorMessage == null)
+                      if (cubit.state.errorMessage == null) {
                         Navigator.pop(context);
+                      }
                     }
                   }),
                 ],

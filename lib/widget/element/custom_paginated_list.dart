@@ -57,8 +57,9 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
                             widget._content[index].isSelected =
                                 isChecked ?? false;
                           });
-                          if (widget._onElementTap != null)
+                          if (widget._onElementTap != null) {
                             widget._onElementTap!(index);
+                          }
                         })
                     : null,
                 title: Text(widget._content[index].title()),
@@ -69,8 +70,9 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
                           !widget._content[index].isSelected;
                     });
                   }
-                  if (widget._onElementTap != null)
+                  if (widget._onElementTap != null) {
                     widget._onElementTap!(index);
+                  }
                 },
               ));
             }),
@@ -86,9 +88,10 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
                           ? null
                           : () {
                               LoadingOverlay.of(context).show();
-                              if (widget._onPageChangeTap != null)
+                              if (widget._onPageChangeTap != null) {
                                 widget._onPageChangeTap!(
                                     widget._page.pageNumber - 1);
+                              }
                             },
                       child: const Icon(Icons.navigate_before)),
                   const SizedBox(width: 12),
@@ -109,9 +112,10 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
                                   return;
                                 }
                                 LoadingOverlay.of(context).show();
-                                if (widget._onPageChangeTap != null)
+                                if (widget._onPageChangeTap != null) {
                                   widget
                                       ._onPageChangeTap!(int.parse(value) - 1);
+                                }
                               })),
                       const SizedBox(width: 12),
                       Text(AppLocalizations.of(context)!
@@ -129,9 +133,10 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
                                 return;
                               }
                               LoadingOverlay.of(context).show();
-                              if (widget._onPageChangeTap != null)
+                              if (widget._onPageChangeTap != null) {
                                 widget._onPageChangeTap!(
                                     widget._page.pageNumber + 1);
+                              }
                             },
                       child: const Icon(Icons.navigate_next)),
                 ],

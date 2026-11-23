@@ -61,9 +61,10 @@ class ItemService {
         await _requestService.request('$_itemPath/$uuid/image');
     final imageUuids =
         (imageUuidResponse.getData() as List<dynamic>).cast<String>();
-    if (imageUuids.isEmpty)
+    if (imageUuids.isEmpty) {
       return DataResponse(
           data: null, errorMessage: imageUuidResponse.errorMessage);
+    }
     final imageDataResponse = await _requestService.request(
         '$_itemPath/image/${imageUuids.first}',
         acceptType: HttpContentType.octetStream);
