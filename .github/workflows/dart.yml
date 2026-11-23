@@ -30,16 +30,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
+      # lib/gen_l10n/ is generated from lib/l10n/*.arb and is gitignored, and neither `flutter analyze` nor
+      # `flutter test` runs the generator: without this step the checkout has no AppLocalizations at all and
+      # analysis reports 162 errors, 27 test files fail to compile. Measured on 2026-11-23 with the directory
+      # deleted; `flutter gen-l10n` recreates it byte-for-byte.
+      - name: Generate localizations
+        run: flutter gen-l10n
 
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      # flutter analyze, not dart analyze: it applies the Flutter-specific lints from analysis_options.yaml
+      # that `dart analyze` does not.
       - name: Analyze project source
-        run: dart analyze
+        run: flutter analyze
 
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
       - name: Run tests
         run: flutter test
