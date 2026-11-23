@@ -40,7 +40,7 @@ void main() {
     'houseNumber': item.houseNumber,
     'postalCode': item.postalCode,
     'city': item.city,
-    'active': item.isActive,
+    'isActive': item.isActive,
     'communityUuid': item.communityUuid,
     'availability': item.availability,
     'availableUntil': JsonUtil.parseDateTime(item.availableUntil),
@@ -65,8 +65,8 @@ void main() {
     ],
     'pageNumber': 0,
     'pageSize': 10,
-    'lastPage': true,
-    'firstPage': true,
+    'isLastPage': true,
+    'isFirstPage': true,
     'totalPages': 1,
     'totalElements': 2
   };
@@ -89,8 +89,8 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
@@ -114,8 +114,8 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
@@ -139,8 +139,8 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
@@ -208,5 +208,29 @@ void main() {
 
     expect(dataResponse.data, null);
     expect(dataResponse.errorMessage, null);
+  });
+
+  // The write half of Item already used the is-prefixed names and the read half did not, so a
+  // mobile-created item reached the backend with the flag it never sent back. Nothing tested that the two
+  // directions agree, which is how it survived.
+  test('an item written by toJson is read back by fromJson with isActive preserved', () {
+    final roundTripped = Item.fromJson(item.toJson());
+
+    expect(roundTripped.isActive, isTrue);
+    expect(roundTripped.name, item.name);
+  });
+
+  test('fromJson reads the is-prefixed fields the backend sends', () {
+    final parsed = Item.fromJson({
+      'uuid': item.uuid,
+      'name': 'Test',
+      'isActive': true,
+      'isOwner': true,
+      'communityUuid': item.communityUuid,
+      'userUuid': item.userUuid,
+    });
+
+    expect(parsed.isActive, isTrue);
+    expect(parsed.isOwner, isTrue);
   });
 }

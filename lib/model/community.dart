@@ -48,12 +48,12 @@ class Community implements ListableModel {
       radius: json['radius'],
       latitude: json['latitude'],
       longitude: json['longitude'],
-      isAdmin: json['admin'],
+      isAdmin: json['isAdmin'],
       adminUuid: json['adminUuid'],
       adminFirstName: json['adminFirstName'],
       adminLastName: json['adminLastName'],
       canBeJoined: json['canBeJoined'],
-      isMember: json['member'],
+      isMember: json['isMember'],
       hasRequestedMembership: json['hasRequestedMembership'],
     );
   }

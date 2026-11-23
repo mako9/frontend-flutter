@@ -42,7 +42,7 @@ void main() {
     'radius': community.radius,
     'latitude': community.latitude,
     'longitude': community.longitude,
-    'admin': true,
+    'isAdmin': true,
     'adminFirstName': community.adminFirstName,
     'adminLastName': community.adminFirstName
   };
@@ -67,8 +67,8 @@ void main() {
     ],
     'pageNumber': 0,
     'pageSize': 10,
-    'lastPage': true,
-    'firstPage': true,
+    'isLastPage': true,
+    'isFirstPage': true,
     'totalPages': 1,
     'totalElements': 2
   };
@@ -95,8 +95,8 @@ void main() {
     'content': userList,
     'pageNumber': 0,
     'pageSize': 10,
-    'lastPage': true,
-    'firstPage': true,
+    'isLastPage': true,
+    'isFirstPage': true,
     'totalPages': 1,
     'totalElements': 2
   };
@@ -119,8 +119,8 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
@@ -144,8 +144,8 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
@@ -160,8 +160,8 @@ void main() {
     expect(page?.content.length, (jsonPage['content'] as List).length);
     expect(page?.totalElements, jsonPage['totalElements']);
     expect(page?.totalPages, jsonPage['totalPages']);
-    expect(page?.isFirstPage, jsonPage['firstPage']);
-    expect(page?.isLastPage, jsonPage['lastPage']);
+    expect(page?.isFirstPage, jsonPage['isFirstPage']);
+    expect(page?.isLastPage, jsonPage['isLastPage']);
     expect(page?.pageNumber, jsonPage['pageNumber']);
     expect(page?.pageSize, jsonPage['pageSize']);
   });
@@ -269,8 +269,8 @@ void main() {
     expect(page.content.length, (jsonPage['content'] as List).length);
     expect(page.totalElements, jsonPage['totalElements']);
     expect(page.totalPages, jsonPage['totalPages']);
-    expect(page.isFirstPage, jsonPage['firstPage']);
-    expect(page.isLastPage, jsonPage['lastPage']);
+    expect(page.isFirstPage, jsonPage['isFirstPage']);
+    expect(page.isLastPage, jsonPage['isLastPage']);
     expect(page.pageNumber, jsonPage['pageNumber']);
     expect(page.pageSize, jsonPage['pageSize']);
   });
@@ -294,8 +294,8 @@ void main() {
     expect(page.content.length, (jsonPage['content'] as List).length);
     expect(page.totalElements, jsonPage['totalElements']);
     expect(page.totalPages, jsonPage['totalPages']);
-    expect(page.isFirstPage, jsonPage['firstPage']);
-    expect(page.isLastPage, jsonPage['lastPage']);
+    expect(page.isFirstPage, jsonPage['isFirstPage']);
+    expect(page.isLastPage, jsonPage['isLastPage']);
     expect(page.pageNumber, jsonPage['pageNumber']);
     expect(page.pageSize, jsonPage['pageSize']);
   });

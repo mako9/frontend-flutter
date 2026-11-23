@@ -52,8 +52,8 @@ void main() {
     'content': [bookingJson],
     'pageNumber': 0,
     'pageSize': 20,
-    'firstPage': true,
-    'lastPage': true,
+    'isFirstPage': true,
+    'isLastPage': true,
     'totalPages': 1,
     'totalElements': 1,
   };

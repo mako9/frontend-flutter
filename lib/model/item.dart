@@ -56,13 +56,13 @@ class Item implements ListableModel {
       houseNumber: json['houseNumber'],
       postalCode: json['postalCode'],
       city: json['city'],
-      isActive: json['active'],
+      isActive: json['isActive'],
       communityUuid: json['communityUuid'],
       userUuid: json['userUuid'],
       availability: json['availability'],
       availableUntil: JsonUtil.parseDateString(json['availableUntil']),
       description: json['description'],
-      isOwner: json['owner'] ?? false,
+      isOwner: json['isOwner'] ?? false,
       requiresApproval: json['requiresApproval'] ?? true,
     );
   }

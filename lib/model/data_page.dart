@@ -34,8 +34,8 @@ class DataPage<E> {
     final parsedContent = content.map((e) => convert(e)).toList().cast<E>();
     return DataPage(
       content: parsedContent,
-      isFirstPage: json['firstPage'],
-      isLastPage: json['lastPage'],
+      isFirstPage: json['isFirstPage'],
+      isLastPage: json['isLastPage'],
       pageNumber: json['pageNumber'],
       pageSize: json['pageSize'],
       totalElements: json['totalElements'],
