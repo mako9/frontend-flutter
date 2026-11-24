@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend_flutter/di/service_locator.dart';
 import 'package:frontend_flutter/model/http_json_response.dart';
 import 'package:frontend_flutter/model/item.dart';
+import 'package:frontend_flutter/model/item_time_interval.dart';
 import 'package:frontend_flutter/service/item_service.dart';
 import 'package:frontend_flutter/service/request_service.dart';
 import 'package:frontend_flutter/util/http_helper.dart';
@@ -28,7 +29,13 @@ void main() {
     isActive: true,
     communityUuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
     userUuid: 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
-    availability: null,
+    availability: const [
+      ItemTimeInterval(
+          startDayOfWeek: 1,
+          endDayOfWeek: 3,
+          startTimeAt: '09:00Z',
+          endTimeAt: '17:00Z'),
+    ],
     availableUntil: DateTime.now(),
     description: 'test',
   );
@@ -42,7 +49,7 @@ void main() {
     'city': item.city,
     'isActive': item.isActive,
     'communityUuid': item.communityUuid,
-    'availability': item.availability,
+    'availability': item.availability.map((e) => e.toJson()).toList(),
     'availableUntil': JsonUtil.parseDateTime(item.availableUntil),
     'description': item.description,
   };
@@ -58,7 +65,7 @@ void main() {
         'postalCode': '36039',
         'city': 'city',
         'communityUuid': 'B5CEDBB7-0CAD-4638-8CA6-1FB283FDE5A8',
-        'availability': 'otherFirst',
+        'availability': const [],
         'availableUntil': '20221224T12:12:12-2000',
         'description': 'test2',
       }
