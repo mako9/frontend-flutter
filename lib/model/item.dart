@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:frontend_flutter/gen_l10n/app_localizations.dart';
+import 'package:frontend_flutter/model/item_time_interval.dart';
 import 'package:frontend_flutter/model/listable_model.dart';
 import 'package:frontend_flutter/util/json_util.dart';
 
@@ -16,7 +17,15 @@ class Item implements ListableModel {
   final bool? isActive;
   final String? communityUuid;
   final String? userUuid;
-  final String? availability;
+
+  /// When the item can be lent out, as the backend sent it. Empty means *no restriction*, not
+  /// "never": `checkItemAvailability` only applies the interval check when the list is non-empty
+  /// (`ItemService.kt:485`), which is why an item created on a phone — where there is no availability editor
+  /// yet — is bookable for any date until its owner sets a window on the web.
+  ///
+  /// Never null, and always sent back the way it arrived: `PATCH /api/user/item/{uuid}` replaces the column
+  /// from the request body, so windows the app does not display are still windows it must not lose.
+  final List<ItemTimeInterval> availability;
   final DateTime? availableUntil;
   final String? description;
   final bool isOwner;
@@ -37,7 +46,7 @@ class Item implements ListableModel {
     this.isActive,
     this.communityUuid,
     this.userUuid,
-    this.availability,
+    this.availability = const [],
     this.availableUntil,
     this.description,
     this.isOwner = false,
@@ -60,7 +69,10 @@ class Item implements ListableModel {
       isActive: json['isActive'],
       communityUuid: json['communityUuid'],
       userUuid: json['userUuid'],
-      availability: json['availability'],
+      availability: (json['availability'] as List?)
+              ?.map((e) => ItemTimeInterval.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       availableUntil: JsonUtil.parseDateString(json['availableUntil']),
       description: json['description'],
       isOwner: json['isOwner'] ?? false,
@@ -77,7 +89,7 @@ class Item implements ListableModel {
         'city': city,
         'isActive': isActive,
         'communityUuid': communityUuid,
-        'availability': availability,
+        'availability': availability.map((e) => e.toJson()).toList(),
         'availableUntil': JsonUtil.parseDateTime(availableUntil),
         'description': description,
         'requiresApproval': requiresApproval,
