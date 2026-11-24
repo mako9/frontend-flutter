@@ -100,14 +100,35 @@ void main() {
         Item.fromJson({'uuid': 'i1', 'name': 'drill'}).availability, isEmpty);
   });
 
-  // Review Focus 5: the artifact answers an interval with unknown keys with HTTP 400 rather than ignoring it,
-  // so an interval this client cannot name is a contract break. Dropping it would silently eat the owner's
-  // lending window.
-  test('an interval whose keys the DTO does not know is rejected, not ignored',
+  // Review Focus 5, as the artifact actually behaves (measured 2026-11-24): an interval that is *missing* one
+  // of the four is a contract break and must not be guessed at. Unknown extra keys are the opposite case and
+  // are ignored - the server ignores them too, which the next test pins down.
+  test('an interval missing any of the four wire keys is rejected, not guessed',
       () {
     expect(
       () => ItemTimeInterval.fromJson({'startAt': '09:00Z', 'endAt': '17:00Z'}),
       throwsA(isA<ArgumentError>()),
+    );
+  });
+
+  // Characterization, not RED->GREEN: this asserts behaviour that already exists and is deliberate, because the
+  // alternative (throwing on an unknown key) would break the app the day the backend adds a harmless field.
+  // Measured on the packaged artifact the same day: an interval sent with a 5th key is accepted (HTTP 200) and
+  // comes back without it - so a server-side field this client does not carry is erased by the next save, and
+  // this test is where that trade-off is written down in code.
+  test('an interval carries only the four wire keys, dropping anything else',
+      () {
+    final interval = ItemTimeInterval.fromJson({
+      'startDayOfWeek': 1,
+      'endDayOfWeek': 3,
+      'startTimeAt': '09:00Z',
+      'endTimeAt': '17:00Z',
+      'tz': 'Europe/Berlin',
+    });
+
+    expect(
+      interval.toJson().keys.toSet(),
+      {'startDayOfWeek', 'endDayOfWeek', 'startTimeAt', 'endTimeAt'},
     );
   });
 

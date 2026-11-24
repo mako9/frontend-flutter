@@ -106,6 +106,12 @@ void main() {
   // body (ItemController.kt:138, ItemRequestDto.availability defaults to emptyList()). So a field the form
   // does not show is a field it erases unless it is carried across - here, the weekly window an owner set on
   // the web.
+  //
+  // The item the screen is OPENED with is deliberately not the one getItem hands back. In production the
+  // opening payload is a page entry, and the page DTO (ItemDto) carries no availability at all, so its windows
+  // are always empty: the carry-across works only because getItem has replaced the screen's item by the time
+  // Save is possible. Handing both the same object would keep this green after a cleanup like
+  // `_item = widget.item`, which in production would wipe every owner's window on the first mobile save.
   testWidgets('saving an edited item keeps the lending windows the server sent',
       (WidgetTester tester) async {
     const windows = [
@@ -115,15 +121,18 @@ void main() {
           startTimeAt: '09:00Z',
           endTimeAt: '17:00Z')
     ];
-    final saved = Item(uuid: 'i3', name: 'Ladder', availability: windows);
+    final pageItem = Item(uuid: 'i3', name: 'Ladder');
+    final detailItem = Item(uuid: 'i3', name: 'Ladder', availability: windows);
+    expect(pageItem.availability, isEmpty,
+        reason: 'the page payload must not be what carries the windows');
     when(mockItemService.getItem('i3')).thenAnswer(
-        (_) async => DataResponse<Item>(data: saved, errorMessage: null));
+        (_) async => DataResponse<Item>(data: detailItem, errorMessage: null));
     when(mockItemService.getItemImage('i3')).thenAnswer(
         (_) async => DataResponse<Uint8List?>(data: null, errorMessage: null));
     when(mockItemService.updateItem(any)).thenAnswer(
-        (_) async => DataResponse<Item>(data: saved, errorMessage: null));
+        (_) async => DataResponse<Item>(data: detailItem, errorMessage: null));
 
-    await tester.pumpWidget(_wrap(ItemEditScreen(item: saved)));
+    await tester.pumpWidget(_wrap(ItemEditScreen(item: pageItem)));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
