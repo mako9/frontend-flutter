@@ -9,6 +9,7 @@ import 'package:frontend_flutter/model/community.dart';
 import 'package:frontend_flutter/model/data_page.dart';
 import 'package:frontend_flutter/model/data_response.dart';
 import 'package:frontend_flutter/model/item.dart';
+import 'package:frontend_flutter/model/item_time_interval.dart';
 import 'package:frontend_flutter/service/community_service.dart';
 import 'package:frontend_flutter/service/item_service.dart';
 import 'package:frontend_flutter/widget/item/item_edit_screen.dart';
@@ -44,7 +45,7 @@ bool _switchValue(WidgetTester tester, String label) {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late ItemService mockItemService;
+  late MockItemService mockItemService;
   late CommunityService mockCommunityService;
 
   final communityPage = DataPage<Community>(
@@ -99,5 +100,36 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_switchValue(tester, 'Requires approval'), isFalse);
+  });
+
+  // The save builds its request from the form's own fields, and PATCH replaces the lending window from that
+  // body (ItemController.kt:138, ItemRequestDto.availability defaults to emptyList()). So a field the form
+  // does not show is a field it erases unless it is carried across - here, the weekly window an owner set on
+  // the web.
+  testWidgets('saving an edited item keeps the lending windows the server sent',
+      (WidgetTester tester) async {
+    const windows = [
+      ItemTimeInterval(
+          startDayOfWeek: 1,
+          endDayOfWeek: 3,
+          startTimeAt: '09:00Z',
+          endTimeAt: '17:00Z')
+    ];
+    final saved = Item(uuid: 'i3', name: 'Ladder', availability: windows);
+    when(mockItemService.getItem('i3')).thenAnswer(
+        (_) async => DataResponse<Item>(data: saved, errorMessage: null));
+    when(mockItemService.getItemImage('i3')).thenAnswer(
+        (_) async => DataResponse<Uint8List?>(data: null, errorMessage: null));
+    when(mockItemService.updateItem(any)).thenAnswer(
+        (_) async => DataResponse<Item>(data: saved, errorMessage: null));
+
+    await tester.pumpWidget(_wrap(ItemEditScreen(item: saved)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    final sent =
+        verify(mockItemService.updateItem(captureAny)).captured.single as Item;
+    expect(sent.availability, windows);
   });
 }

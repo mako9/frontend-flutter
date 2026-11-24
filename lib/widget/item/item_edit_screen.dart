@@ -291,6 +291,9 @@ class _ItemEditScreenState extends State<_ItemEditScreenStateful> {
                             () async {
                           final updatedItem = Item(
                             uuid: _item?.uuid,
+                            // Not a form field, and the server replaces the column from this body, so the
+                            // windows have to be carried across by hand or saving clears them.
+                            availability: _item?.availability ?? const [],
                             name: _nameController.text,
                             itemCategories: _selectedCategories.entries
                                 .where((element) => element.value)
